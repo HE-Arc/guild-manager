@@ -12,12 +12,12 @@
 - Un admin peut créer un event et s'y inscrire
 - Un utilisateur peut s'inscrire à un event
 - Un admin peut choisir les membres pour chaque event
-- Un admin peut attribuer un système de loot à sa guilde
-- Un admin peut modifier ce système de loot
 - Un utilisateur peut visualiser l'historique d'attribution des loots
 - Un admin peut entrer les loots obtenus par les membres lors d'un event
 
 ### Fonctionnalités supplémentaires:
+- Un admin peut attribuer un système de loot à sa guilde
+- Un admin peut modifier ce système de loot
 - Un utilisateur peut enregistrer un/des items sur un personnage
 - Un utilisateur peut visualiser les items de chaque membres
 
