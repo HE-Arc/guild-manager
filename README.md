@@ -1,4 +1,4 @@
-## LootMasterClassic
+## GuildManager
 
 ### Buts
 - Faciliter la gestion d'une guilde sur le jeu World of Warcraft Classic
