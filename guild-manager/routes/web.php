@@ -14,7 +14,4 @@ use App\Http\Controllers\UsersController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::get('/getUsers', [UsersController::class, 'getUsers']);
+Route::get('/{any}', 'App\Http\Controllers\SpaController@index')->where('any', '.*');
