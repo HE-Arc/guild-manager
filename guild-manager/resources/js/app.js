@@ -29,4 +29,12 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 const app = new Vue({
     el: '#app',
+    getUsers: function getUsers(){
+        var _this = this;
+        axios.get('/getUsers').then(function(response){
+            _this.users = response.data;
+        }).catch(error=>{
+            console.log("Get All: "+error);
+        });
+    },
 });
