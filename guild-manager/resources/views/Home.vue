@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <p>salut jfdksajfssss</p>
+  <v-app>
+    <p>salut</p>
     <p>This is the homepage</p>
-    <v-alert type="success"></v-alert>
-  </div>
+    <v-alert type="success">Success</v-alert>
+  </v-app>
 </template>

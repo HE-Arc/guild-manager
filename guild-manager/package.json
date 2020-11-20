@@ -26,8 +26,11 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "case-sensitive-paths-webpack-plugin": "^2.3.0",
+        "es6-promise": "^4.2.8",
         "vue-router": "^3.4.9",
         "vuetify": "^2.3.18",
-        "vuetify-loader": "^1.6.0"
+        "vuetify-loader": "^1.4.3",
+        "vuex": "^3.5.1"
     }
 }

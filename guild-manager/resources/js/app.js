@@ -9,18 +9,16 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 /**
- * Import and install the VueRouter and Vuetify plugins
+ * Import and install the VueRouter, Vuex and Vuetify plugins
  */
 
 import VueRouter from 'vue-router'
-//import Vuetify from 'vuetify/lib'
+import 'es6-promise/auto'
+import Vuex from 'vuex'
+import Vuetify from '../plugins/vuetify'
 
 Vue.use(VueRouter)
-/*Vue.use(Vuetify)
-
-const opts = {}
-
-export default new Vuetify(opts)*/
+Vue.use(Vuex)
 
 /**
  * The following block of code may be used to automatically register your
@@ -70,8 +68,8 @@ const router = new VueRouter({
  */
 
 const app = new Vue({
+    vuetify: Vuetify,
     el: '#app',
     components: { App },
     router,
-    //vuetify: Vuetify,
 });

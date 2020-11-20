@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <v-app>
         <h1>Vue Router Demo App</h1>
 
         <p>
@@ -10,7 +10,7 @@
         <div class="container">
             <router-view></router-view>
         </div>
-    </div>
+    </v-app>
 </template>
 <script>
     export default {}
