@@ -57,15 +57,13 @@
     </v-app-bar>
 
     <!-- Sizes your content based upon application components -->
-    <v-app>
-      <v-content>
-        <!-- Provides the application the proper gutter -->
-        <v-container fluid>
-          <!-- For vue-router -->
-          <router-view></router-view>
-        </v-container>
-      </v-content>
-    </v-app>
+    <v-main>
+      <!-- Provides the application the proper gutter -->
+      <v-container fluid>
+        <!-- For vue-router -->
+        <router-view></router-view>
+      </v-container>
+    </v-main>
 
     <v-footer app>
       <!-- -->
