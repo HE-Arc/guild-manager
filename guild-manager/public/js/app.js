@@ -37662,7 +37662,17 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("p", [_vm._v("This is the homepage")])
+  return _c(
+    "div",
+    [
+      _c("p", [_vm._v("salut jfdksajfssss")]),
+      _vm._v(" "),
+      _c("p", [_vm._v("This is the homepage")]),
+      _vm._v(" "),
+      _c("v-alert", { attrs: { type: "success" } })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -52934,11 +52944,18 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /**
- * Import and install the VueRouter plugin
+ * Import and install the VueRouter and Vuetify plugins
  */
 
+ //import Vuetify from 'vuetify/lib'
 
 Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]);
+/*Vue.use(Vuetify)
+
+const opts = {}
+
+export default new Vuetify(opts)*/
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -52984,7 +53001,8 @@ var app = new Vue({
   components: {
     App: _views_App__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  router: router
+  router: router //vuetify: Vuetify,
+
 });
 
 /***/ }),

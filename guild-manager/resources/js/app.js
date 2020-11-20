@@ -9,12 +9,18 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 /**
- * Import and install the VueRouter plugin
+ * Import and install the VueRouter and Vuetify plugins
  */
 
 import VueRouter from 'vue-router'
+//import Vuetify from 'vuetify/lib'
 
 Vue.use(VueRouter)
+/*Vue.use(Vuetify)
+
+const opts = {}
+
+export default new Vuetify(opts)*/
 
 /**
  * The following block of code may be used to automatically register your
@@ -67,4 +73,5 @@ const app = new Vue({
     el: '#app',
     components: { App },
     router,
+    //vuetify: Vuetify,
 });
