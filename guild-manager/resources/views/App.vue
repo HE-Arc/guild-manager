@@ -1,17 +1,58 @@
 <template>
-    <div>
-        <h1>Vue Router Demo App</h1>
+  <!-- App.vue -->
+  <v-app>
+    <v-navigation-drawer app v-model="drawer" absolute temporary>
+      <v-list nav>
+        <v-list-item-group
+          v-model="group"
+          active-class="deep-purple--text text--accent-4"
+        >
+          <v-list-item @click="$router.push({ name: 'home' })">
+            <v-list-item-icon>
+              <v-icon>mdi-home</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Events</v-list-item-title>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-navigation-drawer>
 
-        <p>
-            <router-link :to="{ name: 'home' }">Home</router-link> |
-            <router-link :to="{ name: 'hello' }">Hello World</router-link>
-        </p>
+    <v-app-bar app sticky color="gray" elevate-on-scroll>
+      <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
 
-        <div class="container">
-            <router-view></router-view>
-        </div>
-    </div>
+      <v-toolbar-title>Guild Manager</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+
+      <v-btn icon>
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
+
+      <v-btn icon>
+        <v-icon>mdi-account-circle</v-icon>
+      </v-btn>
+    </v-app-bar>
+
+    <!-- Sizes your content based upon application components -->
+    <v-main>
+      <!-- Provides the application the proper gutter -->
+      <v-container fluid>
+        <!-- For vue-router -->
+        <router-view></router-view>
+      </v-container>
+    </v-main>
+
+    <v-footer app>
+      <!-- -->
+    </v-footer>
+  </v-app>
 </template>
+
 <script>
-    export default {}
+export default {
+  data: () => ({
+    drawer: false,
+    group: null,
+  }),
+};
 </script>
