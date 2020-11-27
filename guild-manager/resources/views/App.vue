@@ -1,10 +1,6 @@
 <template>
   <!-- App.vue -->
   <v-app>
-    <v-navigation-drawer app>
-      <!-- -->
-    </v-navigation-drawer>
-
     <v-app-bar
       app
       sticky
