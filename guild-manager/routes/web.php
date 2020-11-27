@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UsersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +13,6 @@ use App\Http\Controllers\UsersController;
 |
 */
 
-Route::get('/getUsers', 'App\Http\Controllers\UserController@getUsers');
+Route::get('/getGmUsers', 'App\Http\Controllers\GmUserController@getGmUsers');
+Route::get('/getServers', 'App\Http\Controllers\ServerController@getServers');
 Route::get('/{any}', 'App\Http\Controllers\SpaController@index')->where('any', '.*');

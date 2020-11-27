@@ -26,7 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Guild $guild
  * @property Role $role
  * @property Server $server
- * @property User $user
+ * @property GmUser $gm_user
  * @property Collection|Event[] $events
  * @property Collection|History[] $histories
  * @property Collection|Item[] $items
@@ -61,7 +61,7 @@ class Character extends Model
 
 	public function class()
 	{
-		return $this->belongsTo(CharacterClass::class);
+		return $this->belongsTo(Class::class);
 	}
 
 	public function faction()
@@ -84,9 +84,9 @@ class Character extends Model
 		return $this->belongsTo(Server::class);
 	}
 
-	public function user()
+	public function gm_user()
 	{
-		return $this->belongsTo(User::class);
+		return $this->belongsTo(GmUser::class, 'user_id');
 	}
 
 	public function events()

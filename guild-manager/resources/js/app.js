@@ -72,10 +72,18 @@ const app = new Vue({
     el: '#app',
     components: { App },
     router,
-    getUsers: function getUsers(){
+    getGmUsers: function getGmUsers(){
         var _this = this;
-        axios.get('/getUsers').then(function(response){
-            _this.users = response.data;
+        axios.get('/getGmUsers').then(function(response){
+            _this.gm_users = response.data;
+        }).catch(error=>{
+            console.log("Get All: "+error);
+        });
+    },
+    getServers: function getServers(){
+        var _this = this;
+        axios.get('/getServers').then(function(response){
+            _this.servers = response.data;
         }).catch(error=>{
             console.log("Get All: "+error);
         });

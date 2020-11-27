@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  */
-class CharacterClass extends Model
+class Class extends Model
 {
 	protected $table = 'class';
 	public $incrementing = false;
