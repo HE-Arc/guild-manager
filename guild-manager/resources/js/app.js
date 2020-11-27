@@ -38,7 +38,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  */
 
 import App from '../views/App'
-import Hello from '../views/Hello'
+import EventPrep from '../views/EventPrep'
 import Home from '../views/Home'
 
 /**
@@ -54,9 +54,9 @@ const router = new VueRouter({
             component: Home
         },
         {
-            path: '/hello',
-            name: 'hello',
-            component: Hello,
+            path: '/event/prep',
+            name: 'event-prep',
+            component: EventPrep,
         },
     ],
 });

@@ -44,8 +44,8 @@
             </router-link>
           </v-tab>
           <v-tab>
-            <router-link :to="{ name: 'hello' }" style="color: white">
-              Hello World
+            <router-link :to="{ name: 'event-prep' }" style="color: white">
+              Events
             </router-link>
           </v-tab>
         </v-tabs>
