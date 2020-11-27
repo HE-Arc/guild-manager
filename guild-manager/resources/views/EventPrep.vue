@@ -1,9 +1,11 @@
 <template>
   <v-app>
-    <p>EventPrep</p>
+    <event-info-component></event-info-component>
   </v-app>
 </template>
 
 <script>
-export default {};
+import EventInfoComponent from '../js/components/EventInfoComponent.vue';
+export default {
+  components: { EventInfoComponent },};
 </script>
