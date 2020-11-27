@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $faction_id
  * @property int $server_id
  * 
- * @property Class $class
+ * @property CharacterClass $character_class
  * @property Faction $faction
  * @property Guild $guild
  * @property Role $role
@@ -59,9 +59,9 @@ class Character extends Model
 		'server_id'
 	];
 
-	public function class()
+	public function character_class()
 	{
-		return $this->belongsTo(Class::class);
+		return $this->belongsTo(CharacterClass::class, 'class_id');
 	}
 
 	public function faction()

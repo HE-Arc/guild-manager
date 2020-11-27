@@ -150,7 +150,7 @@ const router = new VueRouter({
             path: '/event/prep',
             name: 'event-prep',
             component: EventPrep,
-            meta: { requiresAuth: true }
+            meta: { requiresAuth: false }
         }
     ],
 });

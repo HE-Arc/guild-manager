@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Class
+ * Class CharacterClass
  * 
  * @property int $id
  * @property string $name
@@ -19,9 +19,9 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  */
-class Class extends Model
+class CharacterClass extends Model
 {
-	protected $table = 'class';
+	protected $table = 'character_class';
 	public $incrementing = false;
 	public $timestamps = false;
 
@@ -35,6 +35,6 @@ class Class extends Model
 
 	public function characters()
 	{
-		return $this->hasMany(Character::class);
+		return $this->hasMany(Character::class, 'class_id');
 	}
 }
