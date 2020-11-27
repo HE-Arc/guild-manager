@@ -5,3 +5,12 @@
     <v-alert type="success">Success</v-alert>
   </v-app>
 </template>
+
+<script>
+export default {
+  data: () => ({
+    drawer: false,
+    group: null,
+  }),
+};
+</script>

@@ -1,24 +1,24 @@
 <template>
   <!-- App.vue -->
   <v-app>
-    <v-app-bar
-      app
-      sticky
-      color="#6A76AB"
-      dark
-      shrink-on-scroll
-      prominent
-      src="https://picsum.photos/1920/1080?random"
-      fade-img-on-scroll
-    >
-      <template v-slot:img="{ props }">
-        <v-img
-          v-bind="props"
-          gradient="to top right, rgba(100,115,201,.7), rgba(25,32,72,.7)"
-        ></v-img>
-      </template>
+    <v-navigation-drawer app v-model="drawer" absolute temporary>
+      <v-list nav>
+        <v-list-item-group
+          v-model="group"
+          active-class="deep-purple--text text--accent-4"
+        >
+          <v-list-item @click="$router.push({ name: 'home' })">
+            <v-list-item-icon>
+              <v-icon>mdi-home</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Events</v-list-item-title>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-navigation-drawer>
 
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+    <v-app-bar app sticky color="gray" elevate-on-scroll>
+      <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
 
       <v-toolbar-title>Guild Manager</v-toolbar-title>
 
@@ -29,27 +29,8 @@
       </v-btn>
 
       <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
+        <v-icon>mdi-account-circle</v-icon>
       </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
-
-      <template v-slot:extension>
-        <v-tabs align-with-title>
-          <v-tab>
-            <router-link :to="{ name: 'home' }" style="color: white">
-              Home
-            </router-link>
-          </v-tab>
-          <v-tab>
-            <router-link :to="{ name: 'event-prep' }" style="color: white">
-              Events
-            </router-link>
-          </v-tab>
-        </v-tabs>
-      </template>
     </v-app-bar>
 
     <!-- Sizes your content based upon application components -->
@@ -66,6 +47,12 @@
     </v-footer>
   </v-app>
 </template>
+
 <script>
-export default {};
+export default {
+  data: () => ({
+    drawer: false,
+    group: null,
+  }),
+};
 </script>

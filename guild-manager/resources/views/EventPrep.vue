@@ -1,6 +1,9 @@
 <template>
   <v-app>
-    <p>salut</p>
-    <p>This is the eventpage</p>
+    <p>EventPrep</p>
   </v-app>
 </template>
+
+<script>
+export default {};
+</script>
