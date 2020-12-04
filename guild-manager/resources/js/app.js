@@ -34,6 +34,7 @@ Vue.use(Vuex)
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('event-info-component', require('./components/EventInfoComponent.vue').default);
 Vue.component('event-role-component', require('./components/EventRoleComponent.vue').default);
+Vue.component('event-action-component', require('./components/EventActionComponent.vue').default);
 
 /**
  * Import Vue components

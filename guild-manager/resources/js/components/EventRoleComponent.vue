@@ -1,43 +1,53 @@
 <template>
-  <v-simple-table dense>
-    <template v-slot:default>
-    {{ title }}
+ <v-card outlined>
+  <v-card-title>{{title}}</v-card-title>
+  <v-simple-table dense height="200px">
+
       <tbody>
         <tr
           v-for="item in characters"
-          :key="item.name"
+          :key="item.name"          
         >
           <td>{{ item.name }}</td>
           <td>{{ item.calories }}</td>
-          <td v-if="makeButton">
-              <v-btn id="bench-button" class="ma-2" tile outlined color="black" dark>{{ buttonLabel }}</v-btn>
+          <td>
+              <v-btn v-show="makeButton === 'true'" id="bench-button" class="ma-2" small tile outlined color="black" dark>{{ buttonLabel }}</v-btn>
           </td>
         </tr>
       </tbody>
-    </template>
+
   </v-simple-table>
+ </v-card>
 </template>
 
 <script>
-  export default {
+export default {
     props: ['title', 'makeButton', 'buttonLabel'],
     data () {
-      return {
-        characters: [
-          {
-            name: 'FrozenBoi',
-            calories: 'Warrior',
-          },
-          {
-            name: 'Giaccomo',
-            calories: 'Druid',
-          },
-          {
-            name: 'Thunderfurry',
-            calories: 'Warrior',
-          }
-        ]
-      }
+        return {
+            characters: [
+                {
+                name: 'FrozenBoi',
+                calories: 'Warrior',
+                },
+                {
+                name: 'Giaccomo',
+                calories: 'Druid',
+                },
+                {
+                name: 'Thunderfurry',
+                calories: 'Warrior',
+                },
+                                {
+                name: 'Zugzugzugzugzugzugzug',
+                calories: 'Warrior',
+                },
+                {
+                name: 'Giaccometty',
+                calories: 'Druid',
+                },
+            ],
+        }
     },
-  }
+}
 </script>
