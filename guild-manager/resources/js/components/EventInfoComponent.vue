@@ -1,14 +1,8 @@
 <template>
-  <v-container class="grey lighten-5">
+  <v-container class="grey lighten-5" fluid>
     <v-row>
       <v-col cols="4">
-        <v-card
-              class="pa-2"
-              outlined
-              tile
-            >
-              Raid
-        </v-card>
+        Raid
       </v-col>
       <v-col cols="8">
         <v-row no-gutters>
