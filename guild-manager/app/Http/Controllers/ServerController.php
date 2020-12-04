@@ -9,8 +9,10 @@ use App\Models\Server;
 
 class ServerController extends Controller {
 
-        public function getServers(Request $request) {
+        public function postServers(Request $request, $id) {
         $servers = Server::all();
+
+        print($id);
 
         return $servers;
     }

@@ -190,16 +190,17 @@ const app = new Vue({
     router,
     getGmUsers: function getGmUsers(){
         var _this = this;
-        axios.get('/getGmUsers').then(function(response){
+        axios.get('/getGmUsers/1').then(function(response){
             _this.gm_users = response.data;
         }).catch(error=>{
             console.log("Get All: "+error);
         });
     },
-    getServers: function getServers(){
+    postServers: function postServers(){
         var _this = this;
-        axios.get('/getServers').then(function(response){
+        axios.post('/postServers', {'id':'2'}).then(function(response){
             _this.servers = response.data;
+            console.log(response.data);
         }).catch(error=>{
             console.log("Get All: "+error);
         });

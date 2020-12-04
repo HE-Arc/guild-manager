@@ -9,8 +9,10 @@ use App\Models\GmUser;
 
 class GmUserController extends Controller {
 
-        public function getGmUsers(Request $request) {
+        public function getGmUsers(Request $request, $id) {
         $gm_users = GmUser::all();
+
+        print($id);
 
         return $gm_users;
     }
