@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/getGmUsers/{id}', 'App\Http\Controllers\GmUserController@getGmUsers');
+Route::get('/users', 'App\Http\Controllers\GmUserController@getGmUsers');
+Route::get('/user/{id}', 'App\Http\Controllers\GmUserController@getGmUser');
+Route::post('/login', 'App\Http\Controllers\GmUserController@login');
+Route::post('/register', 'App\Http\Controllers\GmUserController@register');
+
 Route::post('/postServers', 'App\Http\Controllers\ServerController@postServers');
 Route::get('/{any}', 'App\Http\Controllers\SpaController@index')->where('any', '.*');

@@ -28,7 +28,7 @@
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
 
-      <v-btn icon>
+      <v-btn icon @click="$router.push({ name: 'login' })">
         <v-icon>mdi-account-circle</v-icon>
       </v-btn>
     </v-app-bar>

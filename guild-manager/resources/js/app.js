@@ -60,7 +60,7 @@ const store = new Vuex.Store({
         auth_request(state) {
             state.status = 'loading'
         },
-        auth_success(state, token, user) {
+        auth_success(state, { token, user }) {
             state.status = 'success'
             state.token = token
             state.user = user
@@ -77,13 +77,13 @@ const store = new Vuex.Store({
         login({ commit }, user) {
             return new Promise((resolve, reject) => {
                 commit('auth_request')
-                axios({ url: 'http://localhost:3000/login', data: user, method: 'POST' })
+                axios({ url: '/login', data: user, method: 'POST' })
                     .then(resp => {
                         const token = resp.data.token
                         const user = resp.data.user
                         localStorage.setItem('token', token)
                         axios.defaults.headers.common['Authorization'] = token
-                        commit('auth_success', token, user)
+                        commit('auth_success', { token, user })
                         resolve(resp)
                     })
                     .catch(err => {
@@ -96,7 +96,7 @@ const store = new Vuex.Store({
         register({ commit }, user) {
             return new Promise((resolve, reject) => {
                 commit('auth_request')
-                axios({ url: 'http://localhost:3000/register', data: user, method: 'POST' })
+                axios({ url: '/register', data: user, method: 'POST' })
                     .then(resp => {
                         const token = resp.data.token
                         const user = resp.data.user
@@ -153,7 +153,7 @@ const router = new VueRouter({
             path: '/event/prep',
             name: 'event-prep',
             component: EventPrep,
-            meta: { requiresAuth: false }
+            meta: { requiresAuth: true }
         }
     ],
 });
@@ -166,9 +166,9 @@ router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
         // this route requires auth, check if logged in
         // if not, redirect to login page.
-        if (!store.isLoggedIn) {
+        if (!store.getters.isLoggedIn) {
             next({
-                path: '/', // todo => '/login',
+                path: '/login',
                 query: { redirect: to.fullPath }
             })
         } else
@@ -188,21 +188,22 @@ const app = new Vue({
     el: '#app',
     components: { App },
     router,
-    getGmUsers: function getGmUsers(){
+    store,
+    getGmUsers: function getGmUsers() {
         var _this = this;
-        axios.get('/getGmUsers/1').then(function(response){
+        axios.get('/getGmUsers/1').then(function (response) {
             _this.gm_users = response.data;
-        }).catch(error=>{
-            console.log("Get All: "+error);
+        }).catch(error => {
+            console.log("Get All: " + error);
         });
     },
-    postServers: function postServers(){
+    postServers: function postServers() {
         var _this = this;
-        axios.post('/postServers', {'id':'2'}).then(function(response){
+        axios.post('/postServers', { 'id': '2' }).then(function (response) {
             _this.servers = response.data;
             console.log(response.data);
-        }).catch(error=>{
-            console.log("Get All: "+error);
+        }).catch(error => {
+            console.log("Get All: " + error);
         });
     },
 });
