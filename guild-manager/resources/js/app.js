@@ -42,6 +42,7 @@ import App from '../views/App'
 import Home from '../views/Home'
 import Login from '../views/Login'
 import Register from '../views/Register'
+import Events from '../views/Events'
 import EventPrep from '../views/EventPrep'
 
 /**
@@ -135,7 +136,7 @@ const router = new VueRouter({
         {
             path: '/',
             name: 'home',
-            component: Home
+            component: Events
         },
         {
             path: '/login',
