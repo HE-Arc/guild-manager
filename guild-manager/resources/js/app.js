@@ -1,7 +1,5 @@
 /**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
+ * Load the core and Vue module
  */
 
 require('./bootstrap');
@@ -9,7 +7,7 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 /**
- * Import and install the VueRouter, Vuex and Vuetify plugins
+ * Import and use the VueRouter, Vuex and Vuetify plugins
  */
 
 import VueRouter from 'vue-router'
@@ -28,13 +26,15 @@ Vue.use(Vuex)
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+const files = require.context('./', true, /\.vue$/i)
+files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
+/* The old way
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('event-info-component', require('./components/EventInfoComponent.vue').default);
 Vue.component('event-role-component', require('./components/EventRoleComponent.vue').default);
 Vue.component('event-action-component', require('./components/EventActionComponent.vue').default);
+*/
 
 /**
  * Import Vue components
@@ -138,7 +138,7 @@ const router = new VueRouter({
         {
             path: '/',
             name: 'home',
-            component: Events
+            component: Home
         },
         {
             path: '/login',
@@ -149,6 +149,11 @@ const router = new VueRouter({
             path: '/register',
             name: 'register',
             component: Register
+        },
+        {
+            path: '/events',
+            name: 'events',
+            component: Events
         },
         {
             path: '/event/prep',
@@ -179,9 +184,7 @@ router.beforeEach((to, from, next) => {
 })
 
 /**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
+ * Create the Vue application instance and attach it to the page
  */
 
 const app = new Vue({

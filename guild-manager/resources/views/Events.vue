@@ -27,8 +27,8 @@
         class="elevation-1"
       >
         <template v-slot:[`item.actions`]="{ item }">
-          <v-btn small @click="clickItem(item)">Subscribe</v-btn>
-          <v-btn small @click="clickItem(item)">Skip</v-btn>
+          <v-btn color="green" small @click="clickItem(item)">Joindre</v-btn>
+          <v-btn color="orange" small @click="clickItem(item)">Passer</v-btn>
         </template>
       </v-data-table>
     </v-container>

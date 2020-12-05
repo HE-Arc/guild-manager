@@ -1,7 +1,7 @@
 <template>
   <!-- App.vue -->
   <v-app>
-    <v-navigation-drawer app v-model="drawer" absolute temporary>
+    <v-navigation-drawer app v-model="drawer" sticky temporary>
       <v-list nav>
         <v-list-item-group
           v-model="group"
@@ -11,7 +11,13 @@
             <v-list-item-icon>
               <v-icon>mdi-home</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Events</v-list-item-title>
+            <v-list-item-title>Accueil</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="$router.push({ name: 'events' })">
+            <v-list-item-icon>
+              <v-icon>mdi-calendar</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Évênements</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
       </v-list>
