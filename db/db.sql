@@ -18,7 +18,7 @@ USE `lootmasterclassic`;
 
 -- Listage de la structure de la table lootmasterclassic. boss
 CREATE TABLE IF NOT EXISTS `boss` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` char(50) NOT NULL DEFAULT '',
   `location_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `boss` (
 
 -- Listage de la structure de la table lootmasterclassic. character
 CREATE TABLE IF NOT EXISTS `character` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` char(50) NOT NULL DEFAULT '0',
   `user_id` int(11) NOT NULL DEFAULT '0',
   `guild_id` int(11) NOT NULL DEFAULT '0',
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `character` (
 
 -- Listage de la structure de la table lootmasterclassic. class
 CREATE TABLE IF NOT EXISTS `class` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` char(50) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `class` (
 
 -- Listage de la structure de la table lootmasterclassic. event
 CREATE TABLE IF NOT EXISTS `event` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` char(50) NOT NULL DEFAULT '',
   `date` date NOT NULL,
   `password` char(50) NOT NULL DEFAULT '',
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `event` (
 
 -- Listage de la structure de la table lootmasterclassic. event_character
 CREATE TABLE IF NOT EXISTS `event_character` (
-  `event_id` int(11) NOT NULL,
+  `event_id` int(11) NOT NULL AUTO_INCREMENT,
   `character_id` int(11) NOT NULL,
   `bench` tinyint(1) NOT NULL,
   `absent` tinyint(1) NOT NULL,
@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `event_character` (
 
 -- Listage de la structure de la table lootmasterclassic. faction
 CREATE TABLE IF NOT EXISTS `faction` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` char(50) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `faction` (
 
 -- Listage de la structure de la table lootmasterclassic. guild
 CREATE TABLE IF NOT EXISTS `guild` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` char(50) NOT NULL DEFAULT '',
   `faction_id` int(11) NOT NULL,
   `server_id` int(11) NOT NULL,
@@ -124,7 +124,7 @@ CREATE TABLE IF NOT EXISTS `guild` (
 
 -- Listage de la structure de la table lootmasterclassic. history
 CREATE TABLE IF NOT EXISTS `history` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `event_id` int(11) NOT NULL,
   `character_id` int(11) NOT NULL,
   `item_id` int(11) NOT NULL,
@@ -141,7 +141,7 @@ CREATE TABLE IF NOT EXISTS `history` (
 
 -- Listage de la structure de la table lootmasterclassic. item
 CREATE TABLE IF NOT EXISTS `item` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   `rarity` char(50) NOT NULL,
   `type` char(50) NOT NULL,
@@ -156,7 +156,7 @@ CREATE TABLE IF NOT EXISTS `item` (
 
 -- Listage de la structure de la table lootmasterclassic. item_character
 CREATE TABLE IF NOT EXISTS `item_character` (
-  `item_id` int(11) NOT NULL,
+  `item_id` int(11) NOT NULL AUTO_INCREMENT,
   `enchant` char(50) DEFAULT '',
   `character_id` int(11) NOT NULL,
   PRIMARY KEY (`item_id`,`character_id`),
@@ -169,7 +169,7 @@ CREATE TABLE IF NOT EXISTS `item_character` (
 
 -- Listage de la structure de la table lootmasterclassic. item_guild
 CREATE TABLE IF NOT EXISTS `item_guild` (
-  `item_id` int(11) NOT NULL,
+  `item_id` int(11) NOT NULL AUTO_INCREMENT,
   `guild_id` int(11) NOT NULL,
   PRIMARY KEY (`item_id`,`guild_id`),
   KEY `FK_item_guild_guild` (`guild_id`),
@@ -181,7 +181,7 @@ CREATE TABLE IF NOT EXISTS `item_guild` (
 
 -- Listage de la structure de la table lootmasterclassic. location
 CREATE TABLE IF NOT EXISTS `location` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` char(50) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -190,7 +190,7 @@ CREATE TABLE IF NOT EXISTS `location` (
 
 -- Listage de la structure de la table lootmasterclassic. role
 CREATE TABLE IF NOT EXISTS `role` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` char(10) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -199,7 +199,7 @@ CREATE TABLE IF NOT EXISTS `role` (
 
 -- Listage de la structure de la table lootmasterclassic. server
 CREATE TABLE IF NOT EXISTS `server` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` char(50) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -208,7 +208,7 @@ CREATE TABLE IF NOT EXISTS `server` (
 
 -- Listage de la structure de la table lootmasterclassic. user
 CREATE TABLE IF NOT EXISTS `user` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` char(50) NOT NULL DEFAULT '',
   `password` char(50) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
