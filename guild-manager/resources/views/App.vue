@@ -7,13 +7,13 @@
           v-model="group"
           active-class="deep-purple--text text--accent-4"
         >
-          <v-list-item @click="$router.push({ name: 'home' })">
+          <v-list-item @click="$router.push({ name: 'home' }).catch(()=>{})">
             <v-list-item-icon>
               <v-icon>mdi-home</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Accueil</v-list-item-title>
           </v-list-item>
-          <v-list-item @click="$router.push({ name: 'events' })">
+          <v-list-item @click="$router.push({ name: 'events' }).catch(()=>{})">
             <v-list-item-icon>
               <v-icon>mdi-calendar</v-icon>
             </v-list-item-icon>
@@ -34,7 +34,7 @@
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
 
-      <v-btn icon @click="$router.push({ name: 'login' })">
+      <v-btn icon @click="$router.push({ name: 'login' }).catch(()=>{})">
         <v-icon>mdi-account-circle</v-icon>
       </v-btn>
     </v-app-bar>

@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <p>salut</p>
-    <p>This is the homepage</p>
+    <h1>Accueil</h1>
+    <p>Bienvenue sur <i>Guild Manager</i>.</p>
     <v-alert type="success">Success</v-alert>
   </v-app>
 </template>
