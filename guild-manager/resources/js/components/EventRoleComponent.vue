@@ -1,21 +1,19 @@
 <template>
- <v-card outlined>
+ <v-card outlined style="margin: 5px 0px 5px">
   <v-card-title>{{title}}</v-card-title>
   <v-simple-table dense height="200px">
-
       <tbody>
         <tr
           v-for="item in characters"
           :key="item.name"          
         >
-          <td>{{ item.name }}</td>
-          <td>{{ item.calories }}</td>
-          <td>
-              <v-btn v-show="makeButton === 'true'" id="bench-button" class="ma-2" small tile outlined color="black" dark>{{ buttonLabel }}</v-btn>
+          <td colspan = "2">{{ item.name }}</td>
+          <td colspan = "1">{{ item.calories }}</td>
+          <td colspan = "1">
+              <v-btn v-show="makeButton === 'true'" id="bench-button" class="ma-2" small tile outlined color="black" dark style="font-size: 0.56em">{{ buttonLabel }}</v-btn>
           </td>
         </tr>
       </tbody>
-
   </v-simple-table>
  </v-card>
 </template>
@@ -39,7 +37,7 @@ export default {
                 calories: 'Warrior',
                 },
                                 {
-                name: 'Zugzugzugzugzugzugzug',
+                name: 'Zugzug',
                 calories: 'Warrior',
                 },
                 {
