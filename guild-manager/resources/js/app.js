@@ -7,6 +7,17 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 /**
+ * Load the axios HTTP library
+ */
+
+window.axios = require('axios');
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+const token = localStorage.getItem('token')
+if (token)
+    axios.defaults.headers.common['Authorization'] = token
+
+/**
  * Import and use the VueRouter, Vuex and Vuetify plugins
  */
 
@@ -45,6 +56,7 @@ import Home from '../views/Home'
 import Login from '../views/Login'
 import Register from '../views/Register'
 import Events from '../views/Events'
+import EventNew from '../views/EventNew'
 import EventPrep from '../views/EventPrep'
 
 /**
@@ -78,7 +90,7 @@ const store = new Vuex.Store({
         login({ commit }, user) {
             return new Promise((resolve, reject) => {
                 commit('auth_request')
-                axios({ url: '/login', data: user, method: 'POST' })
+                axios({ url: '/api/login', data: user, method: 'POST' })
                     .then(resp => {
                         const token = resp.data.token
                         const user = resp.data.user
@@ -97,7 +109,7 @@ const store = new Vuex.Store({
         register({ commit }, user) {
             return new Promise((resolve, reject) => {
                 commit('auth_request')
-                axios({ url: '/register', data: user, method: 'POST' })
+                axios({ url: '/api/register', data: user, method: 'POST' })
                     .then(resp => {
                         const token = resp.data.token
                         const user = resp.data.user
@@ -153,7 +165,14 @@ const router = new VueRouter({
         {
             path: '/events',
             name: 'events',
-            component: Events
+            component: Events,
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/event/new',
+            name: 'event-new',
+            component: EventNew,
+            meta: { requiresAuth: true }
         },
         {
             path: '/event/prep',
@@ -192,22 +211,5 @@ const app = new Vue({
     el: '#app',
     components: { App },
     router,
-    store,
-    getGmUsers: function getGmUsers() {
-        var _this = this;
-        axios.get('/getGmUsers/1').then(function (response) {
-            _this.gm_users = response.data;
-        }).catch(error => {
-            console.log("Get All: " + error);
-        });
-    },
-    postServers: function postServers() {
-        var _this = this;
-        axios.post('/postServers', { 'id': '2' }).then(function (response) {
-            _this.servers = response.data;
-            console.log(response.data);
-        }).catch(error => {
-            console.log("Get All: " + error);
-        });
-    },
+    store
 });

@@ -13,10 +13,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/users', 'App\Http\Controllers\GmUserController@getGmUsers');
-Route::get('/user/{id}', 'App\Http\Controllers\GmUserController@getGmUser');
-Route::post('/login', 'App\Http\Controllers\GmUserController@login');
-Route::post('/register', 'App\Http\Controllers\GmUserController@register');
+// User
+Route::get('/api/users', 'App\Http\Controllers\GmUserController@getGmUsers');
+Route::get('/api/user/{id}', 'App\Http\Controllers\GmUserController@getGmUser');
+Route::post('/api/login', 'App\Http\Controllers\GmUserController@login');
+Route::post('/api/register', 'App\Http\Controllers\GmUserController@register');
 
+// Event
+Route::get('/api/character/{characterId}/events', 'App\Http\Controllers\EventController@getCharacterEvents');
+
+// EventCharacter
+Route::post('/api/character/{characterId}/event/{eventId}/subscribe', 'App\Http\Controllers\EventCharacterController@subscribe');
+Route::post('/api/character/{characterId}/event/{eventId}/skip', 'App\Http\Controllers\EventCharacterController@skip');
+
+// Characters
+Route::get('/api/characters', 'App\Http\Controllers\CharacterController@getMyCharacters');
+
+// Other
 Route::post('/postServers', 'App\Http\Controllers\ServerController@postServers');
 Route::get('/{any}', 'App\Http\Controllers\SpaController@index')->where('any', '.*');

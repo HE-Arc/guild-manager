@@ -31,7 +31,7 @@ class GmUserController extends Controller
         $user = GmUser::where('name', $name)->where('password', $password)->first();
 
         if ($user == null)
-            return response()->json('Wrong credentials', 401);
+            return response('Wrong credentials', 401);
         else
             return array(
                 "token" => strval($user->id),
