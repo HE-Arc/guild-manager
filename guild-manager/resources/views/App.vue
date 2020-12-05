@@ -7,13 +7,15 @@
           v-model="group"
           active-class="deep-purple--text text--accent-4"
         >
-          <v-list-item @click="$router.push({ name: 'home' }).catch(()=>{})">
+          <v-list-item @click="$router.push({ name: 'home' }).catch(() => {})">
             <v-list-item-icon>
               <v-icon>mdi-home</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Accueil</v-list-item-title>
           </v-list-item>
-          <v-list-item @click="$router.push({ name: 'events' }).catch(()=>{})">
+          <v-list-item
+            @click="$router.push({ name: 'events' }).catch(() => {})"
+          >
             <v-list-item-icon>
               <v-icon>mdi-calendar</v-icon>
             </v-list-item-icon>
@@ -34,7 +36,7 @@
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
 
-      <v-btn icon @click="$router.push({ name: 'login' }).catch(()=>{})">
+      <v-btn icon @click="$router.push({ name: 'login' }).catch(() => {})">
         <v-icon>mdi-account-circle</v-icon>
       </v-btn>
     </v-app-bar>
@@ -61,10 +63,13 @@ export default {
     group: null,
   }),
   created: function () {
-    this.$http.interceptors.response.use(undefined, function (err) {
+    // Handling expired token cases
+    let _this = this;
+    axios.interceptors.response.use(undefined, function (err) {
       return new Promise(function (resolve, reject) {
-        if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
-          this.$store.dispatch(logout);
+        if (err.response && err.response.status === 401 && err.config && !err.config.__isRetryRequest) {
+          _this.$store.dispatch("logout");
+          _this.$router.push({ name: 'login' }).catch(() => {})
         }
         throw err;
       });
