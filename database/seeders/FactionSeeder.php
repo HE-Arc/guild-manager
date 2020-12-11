@@ -21,7 +21,7 @@ class FactionSeeder extends Seeder
         );
 
         foreach ($factionData as $faction) {
-            DB::table('faction')->insert([
+            DB::table('factions')->insert([
                 'name' => $faction['name']
             ]);
         }

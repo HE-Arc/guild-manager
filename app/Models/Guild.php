@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,6 +18,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $faction_id
  * @property int $server_id
  * @property string|null $password
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * 
  * @property Faction $faction
  * @property Server $server
@@ -28,12 +31,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Guild extends Model
 {
-	protected $table = 'guild';
-	public $incrementing = false;
-	public $timestamps = false;
+	protected $table = 'guilds';
 
 	protected $casts = [
-		'id' => 'int',
 		'faction_id' => 'int',
 		'server_id' => 'int'
 	];
@@ -71,6 +71,8 @@ class Guild extends Model
 
 	public function items()
 	{
-		return $this->belongsToMany(Item::class, 'item_guild');
+		return $this->belongsToMany(Item::class, 'guild_items_value')
+					->withPivot('value')
+					->withTimestamps();
 	}
 }

@@ -21,7 +21,7 @@ class GuildSeeder extends Seeder
         );
 
         foreach ($guildData as $guild) {
-            DB::table('guild')->insert([
+            DB::table('guilds')->insert([
                 'name' => $guild['name'],
                 'faction_id' => $guild['faction_id'],
                 'server_id' => $guild['server_id'],

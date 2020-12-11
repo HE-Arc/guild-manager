@@ -14,17 +14,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 // User
-Route::get('/api/users', 'App\Http\Controllers\GmUserController@getGmUsers');
-Route::get('/api/user/{id}', 'App\Http\Controllers\GmUserController@getGmUser');
-Route::post('/api/login', 'App\Http\Controllers\GmUserController@login');
-Route::post('/api/register', 'App\Http\Controllers\GmUserController@register');
+Route::get('/api/users', 'App\Http\Controllers\UserController@getUsers');
+Route::get('/api/user/{id}', 'App\Http\Controllers\UserController@getUser');
+Route::post('/api/login', 'App\Http\Controllers\UserController@login');
+Route::post('/api/register', 'App\Http\Controllers\UserController@register');
 
 // Event
-Route::get('/api/character/{characterId}/events', 'App\Http\Controllers\EventController@getCharacterEvents');
+Route::get('/api/character/{characterId}/events', 'App\Http\Controllers\EventController@getCharacterSubscriptions');
 
 // EventCharacter
-Route::post('/api/character/{characterId}/event/{eventId}/subscribe', 'App\Http\Controllers\EventCharacterController@subscribe');
-Route::post('/api/character/{characterId}/event/{eventId}/skip', 'App\Http\Controllers\EventCharacterController@skip');
+Route::post('/api/character/{characterId}/event/{eventId}/subscribe', 'App\Http\Controllers\SubscriptionController@subscribe');
+Route::post('/api/character/{characterId}/event/{eventId}/skip', 'App\Http\Controllers\SubscriptionController@skip');
 
 // Characters
 Route::get('/api/characters', 'App\Http\Controllers\CharacterController@getMyCharacters');

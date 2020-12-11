@@ -33,7 +33,7 @@ class BossSeeder extends Seeder
         );
 
         foreach ($bossData as $boss) {
-            DB::table('boss')->insert([
+            DB::table('bosses')->insert([
                 'name' => $boss['name'],
                 'location_id' => $boss['location_id']
             ]);

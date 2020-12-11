@@ -3,18 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\GmUser;
+use App\Models\User;
 use App\Models\Character;
-use App\Models\EventCharacter;
+use App\Models\Subscription;
 use App\Models\Event;
 use App\Models\Location;
 
 class EventController extends Controller
 {
-    public function getCharacterEvents(Request $request, $characterId)
+    public function getCharacterSubscriptions(Request $request, $characterId)
     {
         $token = $request->header('Authorization');
-        $user = GmUser::where('id', $token)->first();
+        $user = User::where('id', $token)->first();
 
         if ($user == null)
             return response('Invalid token', 401);
@@ -30,7 +30,7 @@ class EventController extends Controller
 
         foreach ($eventsRaw as $eventRaw) {
             $location = Location::where('id', $eventRaw->location_id)->first();
-            $subscribtion = EventCharacter::where('event_id', $eventRaw->id)->where('character_id', $character->id)->first();
+            $subscribtion = Subscription::where('event_id', $eventRaw->id)->where('character_id', $character->id)->first();
 
             $event = array(
                 "id" => $eventRaw->id,

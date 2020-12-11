@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\GmUser;
+use App\Models\User;
 use App\Models\Character;
 
 class CharacterController extends Controller
@@ -11,7 +11,7 @@ class CharacterController extends Controller
     public function getMyCharacters(Request $request)
     {
         $token = $request->header('Authorization');        
-        $user = GmUser::where('id', $token)->first();
+        $user = User::where('id', $token)->first();
 
         if ($user == null)
             return response('Invalid token', 401);

@@ -16,31 +16,36 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string $name
  * @property Carbon $date
+ * @property Carbon $subscription_delay
+ * @property int $player_count
+ * @property bool $auto_bench
  * @property string $password
- * @property int $guild_id
- * @property int $location_id
+ * @property int|null $guild_id
+ * @property int|null $location_id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * 
- * @property Guild $guild
- * @property Location $location
- * @property Collection|Character[] $characters
+ * @property Guild|null $guild
+ * @property Location|null $location
  * @property Collection|History[] $histories
+ * @property Collection|Subscription[] $subscriptions
  *
  * @package App\Models
  */
 class Event extends Model
 {
-	protected $table = 'event';
-	public $incrementing = false;
-	public $timestamps = false;
+	protected $table = 'events';
 
 	protected $casts = [
-		'id' => 'int',
+		'player_count' => 'int',
+		'auto_bench' => 'bool',
 		'guild_id' => 'int',
 		'location_id' => 'int'
 	];
 
 	protected $dates = [
-		'date'
+		'date',
+		'subscription_delay'
 	];
 
 	protected $hidden = [
@@ -50,6 +55,9 @@ class Event extends Model
 	protected $fillable = [
 		'name',
 		'date',
+		'subscription_delay',
+		'player_count',
+		'auto_bench',
 		'password',
 		'guild_id',
 		'location_id'
@@ -65,14 +73,13 @@ class Event extends Model
 		return $this->belongsTo(Location::class);
 	}
 
-	public function characters()
-	{
-		return $this->belongsToMany(Character::class, 'event_character')
-					->withPivot('bench', 'absent');
-	}
-
 	public function histories()
 	{
 		return $this->hasMany(History::class);
+	}
+
+	public function subscriptions()
+	{
+		return $this->hasMany(Subscription::class);
 	}
 }

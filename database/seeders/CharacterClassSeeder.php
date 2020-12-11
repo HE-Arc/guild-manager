@@ -28,7 +28,7 @@ class CharacterClassSeeder extends Seeder
         );
 
         foreach ($characterClassData as $characterClass) {
-            DB::table('class')->insert([
+            DB::table('character_classes')->insert([
                 'name' => $characterClass['name']
             ]);
         }

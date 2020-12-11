@@ -22,7 +22,7 @@ class LocationSeeder extends Seeder
         );
 
         foreach ($locationData as $location) {
-            DB::table('location')->insert([
+            DB::table('locations')->insert([
                 'name' => $location['name']
             ]);
         }

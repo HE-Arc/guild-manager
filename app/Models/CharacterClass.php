@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,6 +15,8 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property int $id
  * @property string $name
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * 
  * @property Collection|Character[] $characters
  *
@@ -21,13 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CharacterClass extends Model
 {
-	protected $table = 'character_class';
-	public $incrementing = false;
-	public $timestamps = false;
-
-	protected $casts = [
-		'id' => 'int'
-	];
+	protected $table = 'character_classes';
 
 	protected $fillable = [
 		'name'
@@ -35,6 +32,6 @@ class CharacterClass extends Model
 
 	public function characters()
 	{
-		return $this->hasMany(Character::class, 'class_id');
+		return $this->hasMany(Character::class);
 	}
 }

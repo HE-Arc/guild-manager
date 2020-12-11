@@ -21,7 +21,7 @@ class ServerSeeder extends Seeder
         );
         
         foreach ($serverData as $server) {
-            DB::table('server')->insert([
+            DB::table('servers')->insert([
                 'name' => $server['name']
             ]);
         }

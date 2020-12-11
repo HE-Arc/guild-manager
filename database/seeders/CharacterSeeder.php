@@ -22,12 +22,12 @@ class CharacterSeeder extends Seeder
         );
 
         foreach ($characterData as $character) {
-            DB::table('character')->insert([
+            DB::table('characters')->insert([
                 'name' => $character['name'],
                 'user_id' => $character['user_id'],
                 'guild_id' => $character['guild_id'],
                 'role_id' => $character['role_id'],
-                'class_id' => $character['class_id'],
+                'character_class_id' => $character['class_id'],
                 'faction_id' => $character['faction_id'],
                 'server_id' => $character['server_id'],
             ]);
