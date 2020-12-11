@@ -158,9 +158,11 @@ export default {
     dateRules() {
       const rules = [];
 
+      let _this = this;
+
       if (this.delay) {
         const rule = (v) =>
-          this.delay > this.date ||
+          _this.delay > _this.date ||
           `Le délais d'inscription ne peux être après la date`;
         rules.push(rule);
       }
@@ -170,9 +172,11 @@ export default {
     delayRules() {
       const rules = [];
 
+      let _this = this;
+
       if (this.date) {
         const rule = (v) =>
-          this.delay <= this.date ||
+          _this.delay > _this.date ||
           `Le délais d'inscription ne peux être après la date`;
         rules.push(rule);
       }
