@@ -13,8 +13,30 @@ class EventController extends Controller
 {
     public function getEvent(Request $request, $id)
     {
-        $event = Event::where('id', $id)->first();
+        $token = $request->header('Authorization');
+        $user = GmUser::where('id', $token)->first();
 
+        if ($user == null)
+            return response('Invalid token', 401);
+
+        $eventRaw = Event::where('id', $id)->first();
+
+        $event = array();
+
+        $location = Location::where('id', $eventRaw->location_id)->first();
+        $nbSubscribed = EventCharacter::where('event_id', $eventRaw->id)
+                            ->where('absent', 0)->count();
+
+        $event = array(
+            "id" => $eventRaw->id,
+            "name" => $eventRaw->name,
+            "location" => $location->name,
+            "date" => date('d-m-Y', strtotime($eventRaw->date)),
+            "deadline" => date('d-m-Y', strtotime($eventRaw->deadline)),
+            "nbSubscribed" => $nbSubscribed,
+            "maxSubscribed" => $eventRaw->player_count
+        );
+       
         return $event;
     }
 

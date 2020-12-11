@@ -1,6 +1,8 @@
 <template>
   <v-app>
-    <event-info-component></event-info-component>
+    <event-info-component
+       v-bind:eventId="this.eventId">
+      </event-info-component>
     <v-container class="grey lighten-5" fluid>
       <v-row dense>
         <v-col cols="12" md="6" lg="4">
@@ -146,23 +148,23 @@
         </v-col>
       </v-row>
     </v-container>
-    <!-- <v-speed-dial v-model="fab" fab fixed bottom right>
+    <v-speed-dial v-model="fab" fixed bottom right>
       <template v-slot:activator>
-        <v-btn v-model="fab" color="blue darken-2" dark fab>
-          <v-icon v-if="fab"> X </v-icon>
+        <v-btn fab color="blue darken-2" dark>
+          <v-icon v-if="fab"> x </v-icon>
           <v-icon v-else> + </v-icon>
         </v-btn>
       </template>
-      <v-btn fab dark small color="green">
-        <v-icon>s</v-icon>
+      <v-btn fab dark color="green">
+        <v-icon>mdi-play</v-icon>
       </v-btn>
-      <v-btn fab dark small color="indigo">
-        <v-icon>m</v-icon>
+      <v-btn fab dark color="indigo">
+        <v-icon>mdi-pencil</v-icon>
       </v-btn>
-      <v-btn fab dark small color="red">
-        <v-icon>d</v-icon>
+      <v-btn fab dark color="red">
+        <v-icon>mdi-delete</v-icon>
       </v-btn>
-    </v-speed-dial> -->
+    </v-speed-dial>
   </v-app>
 </template>
 
@@ -227,12 +229,12 @@ export default {
       this.eventCharacters = [];
       this.loadingEventCharacters = true;
       axios
-        .get("/api/event/" + this.eventId)
+        .get("/api/eventCharacters/" + this.eventId)
         .then(function (response) {
           _this.eventCharacters = response.data;
-          _this.rosterCharacters = _this.eventCharacters['roster'];
-          _this.benchCharacters = _this.eventCharacters['bench'];
-          _this.absentCharacters = _this.eventCharacters['absent'];
+          _this.rosterCharacters = _this.eventCharacters["roster"];
+          _this.benchCharacters = _this.eventCharacters["bench"];
+          _this.absentCharacters = _this.eventCharacters["absent"];
         })
         .catch(function (error) {
           console.log(error);

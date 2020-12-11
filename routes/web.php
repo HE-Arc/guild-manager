@@ -20,6 +20,7 @@ Route::post('/api/login', 'App\Http\Controllers\GmUserController@login');
 Route::post('/api/register', 'App\Http\Controllers\GmUserController@register');
 
 // Event
+Route::get('/api/event/{eventId}', 'App\Http\Controllers\EventController@getEvent');
 Route::get('/api/character/{characterId}/events', 'App\Http\Controllers\EventController@getCharacterEvents');
 
 
@@ -28,7 +29,7 @@ Route::post('/api/character/{characterId}/event/{eventId}/subscribe', 'App\Http\
 Route::post('/api/character/{characterId}/event/{eventId}/skip', 'App\Http\Controllers\EventCharacterController@skip');
 Route::post('/api/character/{characterId}/event/{eventId}/bench', 'App\Http\Controllers\EventCharacterController@bench');
 Route::post('/api/character/{characterId}/event/{eventId}/unbench', 'App\Http\Controllers\EventCharacterController@unbench');
-Route::get('/api/event/{eventId}', 'App\Http\Controllers\EventCharacterController@getCharactersByEvent');
+Route::get('/api/eventCharacters/{eventId}', 'App\Http\Controllers\EventCharacterController@getCharactersByEvent');
 
 
 // Characters
