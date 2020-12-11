@@ -21,8 +21,10 @@ class LocationSeeder extends Seeder
             array('name' => 'Naxxramas')
         );
 
+        DB::table('locations')->delete();
+
         foreach ($locationData as $location) {
-            DB::table('location')->insert([
+            DB::table('locations')->insert([
                 'name' => $location['name']
             ]);
         }

@@ -32,8 +32,10 @@ class BossSeeder extends Seeder
             array('name' => 'Maexxna', 'location_id' => '3')
         );
 
+        DB::table('bosses')->delete();
+
         foreach ($bossData as $boss) {
-            DB::table('boss')->insert([
+            DB::table('bosses')->insert([
                 'name' => $boss['name'],
                 'location_id' => $boss['location_id']
             ]);
