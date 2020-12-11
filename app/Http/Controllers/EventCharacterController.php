@@ -26,6 +26,7 @@ class EventCharacterController extends Controller
         $characters = array();
         $rosterCharacters = array();
         $benchCharacters = array();
+        $absentCharacters = array();
 
         foreach ($eventCharacters as $eventCharacter) {
             $characterRaw = Character::where('id', $eventCharacter->character_id)->first();
@@ -39,17 +40,20 @@ class EventCharacterController extends Controller
                 "class" => $class->name
             );
 
-            if ($eventCharacter->bench)
-                array_push($benchCharacters, $character);
-            else
-                array_push($rosterCharacters, $character);
-
-            array_push($characters, $character);
+            if ($eventCharacter->absent)
+                array_push($absentCharacters, $character);
+            else {
+                if ($eventCharacter->bench)
+                    array_push($benchCharacters, $character);
+                else
+                    array_push($rosterCharacters, $character);
+            }
         }
 
         $characters = array(
             'roster' => $rosterCharacters,
             'bench' => $benchCharacters,
+            'absent' => $absentCharacters,
         );
 
         return $characters;

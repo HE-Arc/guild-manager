@@ -7,7 +7,7 @@
           <template>
             <v-card>
               <v-card-title>
-                <h2>Roster</h2>
+                <h3>Roster</h3>
                 <v-spacer></v-spacer>
                 <v-text-field
                   v-model="search"
@@ -55,7 +55,7 @@
           <template>
             <v-card>
               <v-card-title>
-                <h2>Bench</h2>
+                <h3>Bench</h3>
                 <v-spacer></v-spacer>
                 <v-text-field
                   v-model="search"
@@ -100,22 +100,49 @@
           </template>
         </v-col>
         <v-col cols="12" md="6" lg="4">
-          <p style="font-size: 2em">DPS</p>
-          <event-role-component
-            title="Inscrits"
-            makeButton="true"
-            buttonLabel="Bench"
-          ></event-role-component>
-          <event-role-component
-            title="Benchs"
-            makeButton="true"
-            buttonLabel="Unbench"
-          ></event-role-component>
-          <event-role-component
-            title="Absents"
-            makeButton="false"
-            buttonLabel="Yo"
-          ></event-role-component>
+          <template>
+            <v-card>
+              <v-card-title>
+                <h3>Absent</h3>
+                <v-spacer></v-spacer>
+                <v-text-field
+                  v-model="search"
+                  append-icon="mdi-magnify"
+                  label="Search"
+                  single-line
+                  hide-details
+                ></v-text-field>
+              </v-card-title>
+              <v-data-table
+                dense
+                hide-default-footer
+                :headers="computedHeaders"
+                :items="absentCharacters"
+                sort-by="name"
+                group-by="role"
+                class="elevation-1"
+                show-group-by
+                :search="search"
+                :loading="loadingEventCharacters ? 'loading' : 'done'"
+              >
+                <template v-slot:[`item.name`]="{ item }">
+                  {{ item.name }}
+                </template>
+                <template
+                  v-slot:[`item.class_id`]="{ item }"
+                  v-if="!$vuetify.breakpoint.xsAndDown"
+                >
+                  {{ item.class_id }}
+                </template>
+                <template
+                  v-slot:[`item.role_id`]="{ item }"
+                  v-if="!$vuetify.breakpoint.xsAndDown"
+                >
+                  {{ item.role_id }}
+                </template>
+              </v-data-table>
+            </v-card>
+          </template>
         </v-col>
       </v-row>
     </v-container>
@@ -205,6 +232,7 @@ export default {
           _this.eventCharacters = response.data;
           _this.rosterCharacters = _this.eventCharacters['roster'];
           _this.benchCharacters = _this.eventCharacters['bench'];
+          _this.absentCharacters = _this.eventCharacters['absent'];
         })
         .catch(function (error) {
           console.log(error);
