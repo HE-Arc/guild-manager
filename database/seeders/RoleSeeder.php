@@ -20,8 +20,6 @@ class RoleSeeder extends Seeder
             array('name' => 'Healer'),
             array('name' => 'Dps')
         );
-
-        DB::table('roles')->delete();
         
         foreach ($roleData as $role) {
             DB::table('roles')->insert([

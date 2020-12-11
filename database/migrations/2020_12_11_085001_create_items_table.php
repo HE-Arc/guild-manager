@@ -19,7 +19,7 @@ class CreateItemsTable extends Migration
             $table->string('rarity');
             $table->string('type');
             $table->string('icon');
-            $table->foreignId('boss_id')->constrained('bosses')->onDelete('cascade');
+            $table->foreignId('boss_id')->constrained('bosses')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

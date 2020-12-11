@@ -20,8 +20,6 @@ class GuildSeeder extends Seeder
             array('name' => 'Reapers', 'faction_id' => '2', 'server_id' => '1', 'password' => NULL)
         );
 
-        DB::table('guilds')->delete();
-
         foreach ($guildData as $guild) {
             DB::table('guilds')->insert([
                 'name' => $guild['name'],

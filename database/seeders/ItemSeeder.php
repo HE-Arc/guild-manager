@@ -147,8 +147,6 @@ class ItemSeeder extends Seeder
             array('name' => 'Robe de toile cristalline', 'rarity' => 'épique', 'type' => 'Torse', 'icon' => '', 'boss_id' => '14')
         );
 
-        DB::table('items')->delete();
-
         foreach($itemData as $item){
             DB::table('items')->insert([
                 'name' => $item['name'],

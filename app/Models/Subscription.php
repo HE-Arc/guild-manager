@@ -6,26 +6,28 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class EventCharacter
+ * Class Subscription
  * 
  * @property int $event_id
  * @property int $character_id
  * @property bool $bench
  * @property bool $absent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * 
  * @property Character $character
  * @property Event $event
  *
  * @package App\Models
  */
-class EventCharacter extends Model
+class Subscription extends Model
 {
-	protected $table = 'event_character';
+	protected $table = 'subscriptions';
 	public $incrementing = false;
-	public $timestamps = false;
 
 	protected $casts = [
 		'event_id' => 'int',

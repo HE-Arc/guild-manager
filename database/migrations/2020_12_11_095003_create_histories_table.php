@@ -15,9 +15,9 @@ class CreateHistoriesTable extends Migration
     {
         Schema::create('histories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('event_id')->nullable()->constrained()->onUpdate('cascade');
-            $table->foreignId('character_id')->nullable()->constrained()->onUpdate('cascade');
-            $table->foreignId('item_id')->nullable()->constrained()->onUpdate('cascade');
+            $table->foreignId('event_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('character_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('item_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

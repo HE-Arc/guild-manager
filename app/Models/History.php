@@ -6,30 +6,30 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class History
  * 
  * @property int $id
- * @property int $event_id
- * @property int $character_id
- * @property int $item_id
+ * @property int|null $event_id
+ * @property int|null $character_id
+ * @property int|null $item_id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * 
- * @property Character $character
- * @property Event $event
- * @property Item $item
+ * @property Character|null $character
+ * @property Event|null $event
+ * @property Item|null $item
  *
  * @package App\Models
  */
 class History extends Model
 {
-	protected $table = 'history';
-	public $incrementing = false;
-	public $timestamps = false;
+	protected $table = 'histories';
 
 	protected $casts = [
-		'id' => 'int',
 		'event_id' => 'int',
 		'character_id' => 'int',
 		'item_id' => 'int'

@@ -19,8 +19,6 @@ class ServerSeeder extends Seeder
             array('name' => 'Amnennar'),
             array('name' => 'Sulfuron')
         );
-
-        DB::table('servers')->delete();
         
         foreach ($serverData as $server) {
             DB::table('servers')->insert([

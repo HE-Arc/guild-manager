@@ -21,8 +21,6 @@ class GmUserSeeder extends Seeder
             array('name' => 'Jacques', 'email' => 'jacques@hotmail.com', 'password' => '4321')
         );
 
-        DB::table('users')->delete();
-
         foreach ($gmUserData as $gmUser) {
             DB::table('users')->insert([
                 'name' => $gmUser['name'],

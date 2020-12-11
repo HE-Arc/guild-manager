@@ -14,8 +14,8 @@ class CreateSubscriptionsTable extends Migration
     public function up()
     {
         Schema::create('subscriptions', function (Blueprint $table) {
-            $table->foreignId('event_id')->constrained();
-            $table->foreignId('character_id')->constrained();
+            $table->foreignId('event_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('character_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->boolean('bench');
             $table->boolean('absent');
             $table->timestamps();

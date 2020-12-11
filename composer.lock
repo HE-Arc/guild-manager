@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7524f8c81ec9768c839473a04211d437",
+    "content-hash": "e79e7174bac6530b9f9791ca777697e4",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2414,16 +2414,16 @@
         },
         {
             "name": "reliese/laravel",
-            "version": "v0.0.18",
+            "version": "v0.0.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/reliese/laravel.git",
-                "reference": "35c3d1627284649399ac771b338e8af7462caedc"
+                "reference": "1f10ed43802b2a07ee7f308e9a87ca875cfb02ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/reliese/laravel/zipball/35c3d1627284649399ac771b338e8af7462caedc",
-                "reference": "35c3d1627284649399ac771b338e8af7462caedc",
+                "url": "https://api.github.com/repos/reliese/laravel/zipball/1f10ed43802b2a07ee7f308e9a87ca875cfb02ba",
+                "reference": "1f10ed43802b2a07ee7f308e9a87ca875cfb02ba",
                 "shasum": ""
             },
             "require": {
@@ -2437,8 +2437,8 @@
             },
             "require-dev": {
                 "fzaninotto/faker": "~1.4",
-                "mockery/mockery": "0.9.*",
-                "phpunit/phpunit": "~5.0"
+                "mockery/mockery": ">=1.4",
+                "phpunit/phpunit": "^9"
             },
             "type": "library",
             "extra": {
@@ -2473,7 +2473,7 @@
                 "issues": "https://github.com/reliese/laravel/issues",
                 "source": "https://github.com/reliese/laravel"
             },
-            "time": "2020-10-15T16:11:25+00:00"
+            "time": "2020-12-07T02:35:15+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",

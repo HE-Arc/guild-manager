@@ -6,25 +6,27 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class ItemCharacter
+ * Class CharacterItem
  * 
  * @property int $item_id
- * @property string|null $enchant
  * @property int $character_id
+ * @property string $enchant
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * 
  * @property Character $character
  * @property Item $item
  *
  * @package App\Models
  */
-class ItemCharacter extends Model
+class CharacterItem extends Model
 {
-	protected $table = 'item_character';
+	protected $table = 'character_items';
 	public $incrementing = false;
-	public $timestamps = false;
 
 	protected $casts = [
 		'item_id' => 'int',

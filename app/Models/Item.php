@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,22 +19,21 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $type
  * @property string $icon
  * @property int $boss_id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * 
  * @property Boss $boss
- * @property Collection|History[] $histories
  * @property Collection|Character[] $characters
  * @property Collection|Guild[] $guilds
+ * @property Collection|History[] $histories
  *
  * @package App\Models
  */
 class Item extends Model
 {
-	protected $table = 'item';
-	public $incrementing = false;
-	public $timestamps = false;
+	protected $table = 'items';
 
 	protected $casts = [
-		'id' => 'int',
 		'boss_id' => 'int'
 	];
 
@@ -50,19 +50,22 @@ class Item extends Model
 		return $this->belongsTo(Boss::class);
 	}
 
-	public function histories()
-	{
-		return $this->hasMany(History::class);
-	}
-
 	public function characters()
 	{
-		return $this->belongsToMany(Character::class, 'item_character')
-					->withPivot('enchant');
+		return $this->belongsToMany(Character::class, 'character_items')
+					->withPivot('enchant')
+					->withTimestamps();
 	}
 
 	public function guilds()
 	{
-		return $this->belongsToMany(Guild::class, 'item_guild');
+		return $this->belongsToMany(Guild::class, 'guild_items_value')
+					->withPivot('value')
+					->withTimestamps();
+	}
+
+	public function histories()
+	{
+		return $this->hasMany(History::class);
 	}
 }

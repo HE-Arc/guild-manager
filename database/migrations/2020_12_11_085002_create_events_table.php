@@ -21,8 +21,8 @@ class CreateEventsTable extends Migration
             $table->unsignedMediumInteger('player_count');
             $table->boolean('auto_bench');
             $table->string('password');
-            $table->foreignId('guild_id')->nullable()->constrained()->onUpdate('cascade');
-            $table->foreignId('location_id')->nullable()->constrained()->onUpdate('cascade');
+            $table->foreignId('guild_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('location_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

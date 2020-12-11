@@ -20,8 +20,6 @@ class FactionSeeder extends Seeder
             array('name' => 'Alliance')
         );
 
-        DB::table('factions')->delete();
-
         foreach ($factionData as $faction) {
             DB::table('factions')->insert([
                 'name' => $faction['name']

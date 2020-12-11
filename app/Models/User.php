@@ -11,33 +11,44 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Faction
+ * Class User
  * 
  * @property int $id
  * @property string $name
+ * @property string $email
+ * @property Carbon|null $email_verified_at
+ * @property string $password
+ * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
  * @property Collection|Character[] $characters
- * @property Collection|Guild[] $guilds
  *
  * @package App\Models
  */
-class Faction extends Model
+class User extends Model
 {
-	protected $table = 'factions';
+	protected $table = 'users';
+
+	protected $dates = [
+		'email_verified_at'
+	];
+
+	protected $hidden = [
+		'password',
+		'remember_token'
+	];
 
 	protected $fillable = [
-		'name'
+		'name',
+		'email',
+		'email_verified_at',
+		'password',
+		'remember_token'
 	];
 
 	public function characters()
 	{
 		return $this->hasMany(Character::class);
-	}
-
-	public function guilds()
-	{
-		return $this->hasMany(Guild::class);
 	}
 }

@@ -21,8 +21,6 @@ class CharacterSeeder extends Seeder
             array('name' => 'Bulzator','user_id' => '2','guild_id' => '1','role_id' => '1','class_id' => '1','faction_id' => '1','server_id' => '2')
         );
 
-        DB::table('characters')->delete();
-
         foreach ($characterData as $character) {
             DB::table('characters')->insert([
                 'name' => $character['name'],
