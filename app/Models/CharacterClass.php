@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CharacterClass extends Model
 {
-	protected $table = 'character_class';
+	protected $table = 'class';
 	public $incrementing = false;
 	public $timestamps = false;
 

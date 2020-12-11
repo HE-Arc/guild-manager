@@ -11,6 +11,13 @@ use App\Models\Location;
 
 class EventController extends Controller
 {
+    public function getEvent(Request $request, $id)
+    {
+        $event = Event::where('id', $id)->first();
+
+        return $event;
+    }
+
     public function getCharacterEvents(Request $request, $characterId)
     {
         $token = $request->header('Authorization');
