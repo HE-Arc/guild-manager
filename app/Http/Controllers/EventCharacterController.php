@@ -130,9 +130,9 @@ class EventCharacterController extends Controller
         $token = $request->header('Authorization');
         $user = GmUser::find($token);
         if ($user == null)
-            //return response('Invalid token', 401);
+            return response('Invalid token', 401);
 
-            $character = Character::find($characterId);
+        $character = Character::find($characterId);
         // The character must belong to the user
         if ($character->user_id != $user->id)
             return response('Invalid character id', 500);
@@ -141,8 +141,8 @@ class EventCharacterController extends Controller
 
 
         // Update bench
-        /*try {
-            if (!EventCharacter::where('event_id', $eventId)->where('character_id', $characterId)->exists()) {
+        try {
+            if (EventCharacter::where('event_id', $eventId)->where('character_id', $characterId)->exists()) {
                 EventCharacter::where('event_id', $eventId)->where('character_id', $characterId)->update(['bench' => 1]);
             } else
                 return response('Character does not exist', 500);
@@ -150,9 +150,7 @@ class EventCharacterController extends Controller
             return response("Benched successfully", 200);
         } catch (Exception $e) {
             return response("Bench failed: " + $e, 500);
-        }*/
-
-        return "YO";
+        }
     }
 
     public function unbench(Request $request, $characterId, $eventId)
@@ -171,7 +169,7 @@ class EventCharacterController extends Controller
 
         // Update bench
         try {
-            if (!EventCharacter::where('event_id', $eventId)->where('character_id', $characterId)->exists()) {
+            if (EventCharacter::where('event_id', $eventId)->where('character_id', $characterId)->exists()) {
                 EventCharacter::where('event_id', $eventId)->where('character_id', $characterId)->update(['bench' => 0]);
             } else
                 return response('Character does not exist', 500);

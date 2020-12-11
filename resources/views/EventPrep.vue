@@ -175,8 +175,7 @@ export default {
       axios
         .post("/api/character/" + character.id + "/event/" + this.eventId + "/bench")
         .then(function (response) {
-          console.log('YES')
-          //_this.loadEventCharacters();
+          _this.loadEventCharacters();
         })
         .catch(function (error) {
           console.log(error);
@@ -188,8 +187,7 @@ export default {
       axios
         .post("/api/character/" + character.id + "/event/" + this.eventId + "/unbench")
         .then(function (response) {
-          console.log('YES')
-          //_this.loadEventCharacters();
+          _this.loadEventCharacters();
         })
         .catch(function (error) {
           console.log(error);
