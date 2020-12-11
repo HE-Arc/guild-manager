@@ -5,20 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\GmUser;
+use App\Models\User;
 
-class GmUserController extends Controller
+class UserController extends Controller
 {
-    public function getGmUsers(Request $request)
+    public function getUsers(Request $request)
     {
-        $users = GmUser::all();
+        $users = User::all();
 
         return $users;
     }
 
-    public function getGmUser(Request $request, $id)
+    public function getUser(Request $request, $id)
     {
-        $user = GmUser::where('id', $id)->first();
+        $user = User::where('id', $id)->first();
 
         return $user;
     }
@@ -28,7 +28,7 @@ class GmUserController extends Controller
         $name = $request->input('name');
         $password = $request->input('password');
 
-        $user = GmUser::where('name', $name)->where('password', $password)->first();
+        $user = User::where('name', $name)->where('password', $password)->first();
 
         if ($user == null)
             return response('Wrong credentials', 401);
