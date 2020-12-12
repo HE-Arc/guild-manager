@@ -10,9 +10,8 @@ class CharacterController extends Controller
 {
     public function getMyCharacters(Request $request)
     {
-        $token = $request->header('Authorization');        
-        $user = User::where('id', $token)->first();
-
+        $token = $request->header('Authorization');
+        $user = User::find($token);
         if ($user == null)
             return response('Invalid token', 401);
         

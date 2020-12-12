@@ -19,7 +19,10 @@
           </v-col>
           <v-col cols="12" md="6">
             <v-select
+              v-model="selectedLocation"
               :items="locations"
+              item-text="name"
+              item-value="id"
               :rules="[rules.required]"
               label="Lieu"
               required
@@ -29,7 +32,10 @@
         <v-row>
           <v-col cols="12" md="6">
             <v-select
+              v-model="selectedGuild"
               :items="guilds"
+              item-text="name"
+              item-value="id"
               :rules="[rules.required]"
               label="Guilde"
               required
@@ -37,7 +43,7 @@
           </v-col>
           <v-col cols="12" md="6">
             <v-text-field
-              v-model="slider"
+              v-model="playerCount"
               :rules="[rules.required, freeSpotsRules.min, freeSpotsRules.max]"
               label="Nombre de places"
               type="number"
@@ -57,7 +63,7 @@
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
                   v-model="date"
-                  :rules="[rules.required, dateRules]"
+                  :rules="[rules.required, dateRules.chronology(date, delay)]"
                   label="Date"
                   prepend-icon="mdi-calendar"
                   readonly
@@ -83,7 +89,7 @@
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
                   v-model="delay"
-                  :rules="[rules.required, delayRules]"
+                  :rules="[rules.required, dateRules.chronology(date, delay)]"
                   label="Délais d'inscription"
                   prepend-icon="mdi-calendar"
                   readonly
@@ -104,14 +110,19 @@
             <v-text-field
               v-model="password"
               :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-              :rules="[rules.required, rules.min, rules.max]"
+              :rules="[rules.max]"
               :type="showPassword ? 'text' : 'password'"
               name="input-10-1"
-              label="Mot de passe"
-              hint="Au moins 8 charactères"
+              label="Mot de passe (facultatif)"
               counter
               @click:append="showPassword = !showPassword"
             ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="6">
+            <v-switch
+              v-model="autoBench"
+              :label="`Bench automatique: ${autoBench ? `activé` : `désactivé`}`"
+            ></v-switch>
           </v-col>
         </v-row>
         <v-row>
@@ -137,60 +148,77 @@ export default {
     valid: false,
     rules: {
       required: (value) => !!value || "Ce champs est requis",
-      min: (v) => v.length >= 8 || "Au moins 8 charactères",
+      min: (v) => v.length >= 4 || "Au moins 4 charactères",
       max: (v) => v.length <= 64 || "Au maximum de 64 lettres",
     },
     freeSpotsRules: {
       max: (v) => v <= 100 || "Il ne peut y avoir plus de 100 places",
       min: (v) => v >= 5 || "Il ne peut y avoir moins de 5 places",
     },
+    dateRules: {
+      chronology: (dateAfter, dateBefore) =>
+        dateAfter >= dateBefore ||
+        "Le délais d'inscription ne peux être après l'évênement",
+    },
     name: "",
-    locations: ["Foo", "Bar", "Fizz", "Buzz"],
-    guilds: ["Foor", "Bard"],
+    playerCount: 40,
+    locations: [],
+    selectedLocation: null,
+    guilds: [],
+    selectedGuild: null,
     password: "",
+    autoBench: false,
     date: new Date().toISOString().substr(0, 10),
     dateMenu: false,
     delay: new Date().toISOString().substr(0, 10),
     delayMenu: false,
     showPassword: false,
   }),
-  computed: {
-    dateRules() {
-      const rules = [];
-
-      let _this = this;
-
-      if (this.delay) {
-        const rule = (v) =>
-          _this.delay > _this.date ||
-          `Le délais d'inscription ne peux être après la date`;
-        rules.push(rule);
-      }
-
-      return rules;
-    },
-    delayRules() {
-      const rules = [];
-
-      let _this = this;
-
-      if (this.date) {
-        const rule = (v) =>
-          _this.delay > _this.date ||
-          `Le délais d'inscription ne peux être après la date`;
-        rules.push(rule);
-      }
-
-      return rules;
-    },
-  },
   methods: {
     createEvent() {
-      if (this.delay > this.date)
-        alert("Le délais d'inscription ne peux être après la date.");
-      else alert("WIP");
+      let _this = this;
+
+      axios
+        .post("/api/event/create", {
+          name: this.name,
+          date: this.date,
+          subscription_delay: this.delay,
+          player_count: this.playerCount,
+          auto_bench: this.autoBench,
+          password: this.password,
+          guild_id: this.selectedGuild,
+          location_id: this.selectedLocation,
+        })
+        .then(function (response) {
+          alert("DONE SUCCESSFULLY!");
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
   },
-  created: function () {},
+  created: function () {
+    let _this = this;
+
+    // Get locations
+    axios
+      .get("/api/locations")
+      .then(function (response) {
+        _this.locations = response.data;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+    // Get user's guilds
+    axios
+      .get("/api/guilds")
+      .then(function (response) {
+        _this.guilds = response.data;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  },
 };
 </script>

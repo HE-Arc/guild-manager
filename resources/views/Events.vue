@@ -48,6 +48,9 @@
           <template v-slot:[`item.location`]="{ item }">
             {{ item.location.name }}
           </template>
+          <template v-slot:[`item.playerCount`]="{ item }">
+            {{ item.playerCount.subscribed }} / {{ item.playerCount.size }}
+          </template>
           <template v-slot:[`item.status`]="{ item }">
             <v-chip
               :color="getEventStatusColor(item.subscribed, item.skipped)"
@@ -98,6 +101,8 @@ export default {
         { text: "Nom", value: "name" },
         { text: "Lieu", value: "location" },
         { text: "Date", value: "date" },
+        { text: "Délais", value: "delay" },
+        { text: "Inscrits", value: "playerCount" },
         //{ text: "Délais", value: "delay" },
         //{ text: "Inscrits", value: "subscribed" },
         //{ text: "Total", value: "total" },

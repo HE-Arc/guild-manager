@@ -21,6 +21,7 @@ Route::post('api/register', 'App\Http\Controllers\UserController@register');
 
 // Event
 Route::get('api/character/{characterId}/events', 'App\Http\Controllers\EventController@getCharacterSubscriptions');
+Route::post('api/event/create', 'App\Http\Controllers\EventController@create');
 
 // EventCharacter
 Route::post('api/character/{characterId}/event/{eventId}/subscribe', 'App\Http\Controllers\SubscriptionController@subscribe');
@@ -28,6 +29,12 @@ Route::post('api/character/{characterId}/event/{eventId}/skip', 'App\Http\Contro
 
 // Characters
 Route::get('api/characters', 'App\Http\Controllers\CharacterController@getMyCharacters');
+
+// Guilds
+Route::get('api/guilds', 'App\Http\Controllers\GuildController@getMyGuilds');
+
+// Locations
+Route::get('api/locations', 'App\Http\Controllers\LocationController@getLocations');
 
 // Other
 Route::post('postServers', 'App\Http\Controllers\ServerController@postServers');
