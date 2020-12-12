@@ -1,19 +1,67 @@
 <template>
   <v-app>
-    <h1>Login</h1>
+    <v-container>
+      <v-form ref="form" v-model="valid" v-if="!isLoggedIn">
+        <v-row>
+          <v-col>
+            <h1>Identification</h1>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12" md="6">
+            <v-text-field
+              v-model="name"
+              :rules="[rules.required, rules.max]"
+              :counter="64"
+              label="Nom"
+              required
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="6">
+            <v-text-field
+              v-model="password"
+              :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+              :rules="[rules.required, rules.max]"
+              :type="showPassword ? 'text' : 'password'"
+              name="input-10-1"
+              label="Mot de passe"
+              hint="Au moins 8 charactères"
+              counter
+              @click:append="showPassword = !showPassword"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12" md="6">
+            <v-btn
+              :disabled="!valid"
+              color="success"
+              class="mr-4"
+              @click="login"
+            >
+              S'identifier
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-form>
+      <div v-else>
+        <v-row>
+          <v-col>
+            <h1>Déconnexion</h1>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-btn color="error" class="mr-4" @click="logout">
+              Se déconnecter
+            </v-btn>
+          </v-col>
+        </v-row>
+      </div>
+    </v-container>
 
     <v-container fluid>
       <v-row>
-        <v-col class="col-sm-12 col-md-6">
-          <p v-if="!isLoggedIn">
-            <v-btn @click="login"> LOGIN </v-btn>
-            <v-btn v-if="!isLoggedIn" @click="login2"> LOGIN wrong pwd </v-btn>
-          </p>
-          <p v-else>
-            <v-btn @click="logout"> LOGOUT </v-btn>
-          </p>
-        </v-col>
-
         <v-col class="col-sm-12 col-md-6">
           <p>Status: {{ this.$store.state.status }}</p>
           <p>Token: {{ this.$store.state.token }}</p>
@@ -28,9 +76,15 @@
 <script>
 export default {
   data: () => ({
-    name: "jean",
+    valid: false,
+    rules: {
+      required: (value) => !!value || "Ce champs est requis",
+      min: (v) => v.length >= 8 || "Au moins 8 charactères",
+      max: (v) => v.length <= 64 || "Au maximum de 64 lettres",
+    },
+    name: "Jean",
     password: "1234",
-    wrongPassword: "123",
+    showPassword: false,
   }),
   computed: {
     isLoggedIn() {
@@ -44,22 +98,13 @@ export default {
 
       this.$store
         .dispatch("login", { name, password })
-        .then(() => this.$router.push('/'))
-        .catch((err) => console.log(err));
-    },
-    login2: function () {
-      let name = this.name;
-      let password = this.wrongPassword;
-
-      this.$store
-        .dispatch("login", { name, password })
-        .then(() => this.$router.push('/'))
+        .then(() => this.$router.push("/"))
         .catch((err) => console.log(err));
     },
     logout: function () {
       this.$store
         .dispatch("logout")
-        .then(() => this.$router.push('/'))
+        .then(() => this.$router.push("/"))
         .catch((err) => console.log(err));
     },
   },
