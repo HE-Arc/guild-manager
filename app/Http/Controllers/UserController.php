@@ -18,7 +18,7 @@ class UserController extends Controller
 
     public function getUser(Request $request, $id)
     {
-        $user = User::where('id', $id)->first();
+        $user = User::find($id);
 
         return $user;
     }
