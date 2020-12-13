@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Exception;
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\GmUser;
 use App\Models\Character;
 use App\Models\Subscription;
 use App\Models\Event;
@@ -21,7 +21,7 @@ class SubscriptionController extends Controller
         if ($user == null)
             return response('Invalid token', 401);
 
-        $eventCharacters = EventCharacter::where('event_id', $eventId)->get();
+        $eventCharacters = Subscription::where('event_id', $eventId)->get();
 
         $characters = array();
         $rosterCharacters = array();
@@ -31,7 +31,7 @@ class SubscriptionController extends Controller
         foreach ($eventCharacters as $eventCharacter) {
             $characterRaw = Character::where('id', $eventCharacter->character_id)->first();
             $role = Role::where('id', $characterRaw->role_id)->first();
-            $class = CharacterClass::where('id', $characterRaw->class_id)->first();
+            $class = CharacterClass::where('id', $characterRaw->character_class_id)->first();
 
             $character = array(
                 "id" => $characterRaw->id,
@@ -62,13 +62,13 @@ class SubscriptionController extends Controller
     public function subscribe(Request $request, $characterId, $eventId)
     {
         $token = $request->header('Authorization');
-        $user = User::find($token);
+        $user = GmUser::find($token);
         if ($user == null)
             return response('Invalid token', 401);
 
         $character = Character::find($characterId);
         // The character must belong to the user
-        if ($character->user_id != $user->id)
+        if ($character->gm_user_id != $user->id)
             return response('Invalid character id', 500);
 
         $event = Event::find($eventId);
@@ -97,13 +97,13 @@ class SubscriptionController extends Controller
     public function skip(Request $request, $characterId, $eventId)
     {
         $token = $request->header('Authorization');
-        $user = User::find($token);
+        $user = GmUser::find($token);
         if ($user == null)
             return response('Invalid token', 401);
 
         $character = Character::find($characterId);
         // The character must belong to the user
-        if ($character->user_id != $user->id)
+        if ($character->gm_user_id != $user->id)
             return response('Invalid character id', 500);
 
         $event = Event::find($eventId);
@@ -138,7 +138,7 @@ class SubscriptionController extends Controller
 
         $character = Character::find($characterId);
         // The character must belong to the user
-        if ($character->user_id != $user->id)
+        if ($character->gm_user_id != $user->id)
             return response('Invalid character id', 500);
 
         //TODO check if character is subscribed to the event
@@ -146,8 +146,8 @@ class SubscriptionController extends Controller
 
         // Update bench
         try {
-            if (EventCharacter::where('event_id', $eventId)->where('character_id', $characterId)->exists()) {
-                EventCharacter::where('event_id', $eventId)->where('character_id', $characterId)->update(['bench' => 1]);
+            if (Subscription::where('event_id', $eventId)->where('character_id', $characterId)->exists()) {
+                Subscription::where('event_id', $eventId)->where('character_id', $characterId)->update(['bench' => 1]);
             } else
                 return response('Character does not exist', 500);
 
@@ -166,15 +166,15 @@ class SubscriptionController extends Controller
 
         $character = Character::find($characterId);
         // The character must belong to the user
-        if ($character->user_id != $user->id)
+        if ($character->gm_user_id != $user->id)
             return response('Invalid character id', 500);
 
         //TODO check if character is subscribed to the event
 
         // Update bench
         try {
-            if (EventCharacter::where('event_id', $eventId)->where('character_id', $characterId)->exists()) {
-                EventCharacter::where('event_id', $eventId)->where('character_id', $characterId)->update(['bench' => 0]);
+            if (Subscription::where('event_id', $eventId)->where('character_id', $characterId)->exists()) {
+                Subscription::where('event_id', $eventId)->where('character_id', $characterId)->update(['bench' => 0]);
             } else
                 return response('Character does not exist', 500);
 

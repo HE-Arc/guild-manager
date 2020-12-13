@@ -16,7 +16,7 @@ class CreateCharactersTable extends Migration
         Schema::create('characters', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('gm_user_id')->constrained('gm_users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('role_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('character_class_id')->constrained('character_classes')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('guild_id')->constrained()->onUpdate('cascade')->onDelete('cascade');

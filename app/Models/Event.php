@@ -21,15 +21,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property bool $auto_bench
  * @property string $status
  * @property string|null $password
- * @property int $user_id
+ * @property int $gm_user_id
  * @property int $guild_id
  * @property int $location_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
+ * @property GmUser $gm_user
  * @property Guild $guild
  * @property Location $location
- * @property User $user
  * @property Collection|History[] $histories
  * @property Collection|Subscription[] $subscriptions
  *
@@ -42,7 +42,7 @@ class Event extends Model
 	protected $casts = [
 		'player_count' => 'int',
 		'auto_bench' => 'bool',
-		'user_id' => 'int',
+		'gm_user_id' => 'int',
 		'guild_id' => 'int',
 		'location_id' => 'int'
 	];
@@ -64,10 +64,15 @@ class Event extends Model
 		'auto_bench',
 		'status',
 		'password',
-		'user_id',
+		'gm_user_id',
 		'guild_id',
 		'location_id'
 	];
+
+	public function gm_user()
+	{
+		return $this->belongsTo(GmUser::class);
+	}
 
 	public function guild()
 	{
@@ -77,11 +82,6 @@ class Event extends Model
 	public function location()
 	{
 		return $this->belongsTo(Location::class);
-	}
-
-	public function user()
-	{
-		return $this->belongsTo(User::class);
 	}
 
 	public function histories()

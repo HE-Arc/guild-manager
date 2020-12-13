@@ -203,7 +203,7 @@ export default {
           auto_bench: this.autoBench,
           status: "preparing",
           password: this.password,
-          user_id: this.$store.state.token,
+          gm_user_id: this.$store.state.token,
           guild_id: this.selectedGuild,
           location_id: this.selectedLocation,
         })

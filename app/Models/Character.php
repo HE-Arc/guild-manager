@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property int $id
  * @property string $name
- * @property int $user_id
+ * @property int $gm_user_id
  * @property int $role_id
  * @property int $character_class_id
  * @property int $guild_id
@@ -27,11 +27,11 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property CharacterClass $character_class
  * @property Faction $faction
+ * @property GmUser $gm_user
  * @property Guild $guild
  * @property GuildRole $guild_role
  * @property Role $role
  * @property Server $server
- * @property User $user
  * @property Collection|Item[] $items
  * @property Collection|History[] $histories
  * @property Collection|Subscription[] $subscriptions
@@ -43,7 +43,7 @@ class Character extends Model
 	protected $table = 'characters';
 
 	protected $casts = [
-		'user_id' => 'int',
+		'gm_user_id' => 'int',
 		'role_id' => 'int',
 		'character_class_id' => 'int',
 		'guild_id' => 'int',
@@ -54,7 +54,7 @@ class Character extends Model
 
 	protected $fillable = [
 		'name',
-		'user_id',
+		'gm_user_id',
 		'role_id',
 		'character_class_id',
 		'guild_id',
@@ -71,6 +71,11 @@ class Character extends Model
 	public function faction()
 	{
 		return $this->belongsTo(Faction::class);
+	}
+
+	public function gm_user()
+	{
+		return $this->belongsTo(GmUser::class);
 	}
 
 	public function guild()
@@ -91,11 +96,6 @@ class Character extends Model
 	public function server()
 	{
 		return $this->belongsTo(Server::class);
-	}
-
-	public function user()
-	{
-		return $this->belongsTo(User::class);
 	}
 
 	public function items()

@@ -37,9 +37,7 @@
           sort-by="date"
           class="elevation-1"
           :loading="loadingEvents ? 'loading' : 'done'"
-          :loading-text="
-            loadingEvents ? 'Chargement en cours...' : 'Aucune donnée'
-          "
+          :loading-text="loadingEvents ? 'Chargement en cours...' : 'Aucune donnée'"
         >
           <template v-slot:top>
             <v-toolbar flat>
@@ -100,9 +98,7 @@
           sort-by="date"
           class="elevation-1"
           :loading="loadingEvents ? 'loading' : 'done'"
-          :loading-text="
-            loadingEvents ? 'Chargement en cours...' : 'Aucune donnée'
-          "
+          :loading-text="loadingEvents ? 'Chargement en cours...' : 'Aucune donnée'"
         >
           <template v-slot:top>
             <v-toolbar flat>
@@ -133,8 +129,8 @@
       <div v-else>
         <v-alert type="info">Veuillez sélectionner un personnage.</v-alert>
       </div>
-      <div v-if="deletedEvent">
-        <v-alert type="success">{{ deletedEvent }}</v-alert>
+      <div>
+        <v-alert v-model="eventDeleted" type="success" dismissible>{{ eventDeletedLabel }}</v-alert>
       </div>
     </v-container>
   </v-app>
@@ -165,14 +161,9 @@ export default {
       loadingEvents: false,
       characters: [],
       selectedCharacter: null,
+      eventDeleted: this.$route.params.deleted ? true : false,
+      eventDeletedLabel: "Événement " + this.$route.params.deleted + " supprimé"
     };
-  },
-  computed: {
-    // a computed getter
-    deletedEvent: function () {
-      // `this` points to the vm instance
-      return this.$route.params.deleted ?  "Événement " + this.$route.params.deleted + " supprimé" : false;
-    },
   },
   methods: {
     clickItem(item) {
@@ -183,11 +174,7 @@ export default {
 
       axios
         .post(
-          "/api/character/" +
-            this.selectedCharacter +
-            "/event/" +
-            event.id +
-            "/subscribe"
+          "/api/character/" + this.selectedCharacter + "/event/" + event.id + "/subscribe"
         )
         .then(function (response) {
           _this.loadEvents();
@@ -200,13 +187,7 @@ export default {
       let _this = this;
 
       axios
-        .post(
-          "/api/character/" +
-            this.selectedCharacter +
-            "/event/" +
-            event.id +
-            "/skip"
-        )
+        .post("/api/character/" + this.selectedCharacter + "/event/" + event.id + "/skip")
         .then(function (response) {
           _this.loadEvents();
         })
@@ -226,6 +207,7 @@ export default {
     loadEvents() {
       let characterId = this.selectedCharacter;
       let _this = this;
+      this.eventDeleted = false;
 
       // Get my events
       this.events = [];

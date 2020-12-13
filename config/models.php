@@ -339,7 +339,7 @@ return [
         |                   (post.author_id --> user.id)
         |                       generates the same as above.
         |               When the foreign key is redundant, it is omited.
-        |                   (post.user_id --> user.id)
+        |                   (post.gm_user_id --> user.id)
         |                       generates User::posts() and not User::posts_user()
         */
 

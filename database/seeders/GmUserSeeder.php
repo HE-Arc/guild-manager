@@ -22,7 +22,7 @@ class GmUserSeeder extends Seeder
         );
 
         foreach ($gmUserData as $gmUser) {
-            DB::table('users')->insert([
+            DB::table('gm_users')->insert([
                 'name' => $gmUser['name'],
                 'password' => $gmUser['password'],
                 'email' => $gmUser['email'],

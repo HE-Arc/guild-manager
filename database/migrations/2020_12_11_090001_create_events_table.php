@@ -22,7 +22,7 @@ class CreateEventsTable extends Migration
             $table->boolean('auto_bench');
             $table->string('status');
             $table->string('password')->nullable();
-            $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('gm_user_id')->constrained('gm_users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('guild_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('location_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();

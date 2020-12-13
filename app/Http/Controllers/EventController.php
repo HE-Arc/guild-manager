@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Exception;
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\GmUser;
 use App\Models\Character;
 use App\Models\Subscription;
 use App\Models\Event;
@@ -25,7 +25,7 @@ class EventController extends Controller
         $event = array();
 
         $location = Location::find($eventRaw->location_id);
-        $nbSubscribed = EventCharacter::where('event_id', $eventRaw->id)
+        $nbSubscribed = Subscription::where('event_id', $eventRaw->id)
                             ->where('absent', 0)->count();
 
         $event = array(
@@ -56,9 +56,7 @@ class EventController extends Controller
             if (Event::where('id', $eventId)->exists()) {
                 $eventName  = Event::find($eventId)['name'];
                 $event = Event::find($eventId);                           
-                Schema::disableForeignKeyConstraints();
-                $event->delete();
-                Schema::enableForeignKeyConstraints();                
+                $event->delete();              
             } else
                 return response('Event does not exist', 500);
 
@@ -71,13 +69,13 @@ class EventController extends Controller
     public function getCharacterSubscriptions(Request $request, $characterId)
     {
         $token = $request->header('Authorization');
-        $user = User::find($token);
+        $user = GmUser::find($token);
         if ($user == null)
             return response('Invalid token', 401);
 
         $character = Character::find($characterId);
         // The character must belong to the user
-        if ($character->user_id != $user->id)
+        if ($character->gm_user_id != $user->id)
             return response('Invalid character id', 500);
 
         $eventsRaw = Event::where('guild_id', $character->guild_id)->get();
@@ -108,7 +106,7 @@ class EventController extends Controller
     public function create(Request $request)
     {
         $token = $request->header('Authorization');
-        $user = User::find($token);
+        $user = GmUser::find($token);
         if ($user == null)
             return response('Invalid token', 401);
 
@@ -120,7 +118,7 @@ class EventController extends Controller
             'auto_bench' => 'required',
             'status' => 'required',
             'password' => 'nullable',
-            'user_id' => 'required',
+            'gm_user_id' => 'required',
             'guild_id' => 'required',
             'location_id' => 'required',
         ]);

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\GmUser;
 use App\Models\Character;
 use App\Models\Guild;
 
@@ -12,11 +12,11 @@ class GuildController extends Controller
     public function getMyGuilds(Request $request)
     {
         $token = $request->header('Authorization');
-        $user = User::find($token);
+        $user = GmUser::find($token);
         if ($user == null)
             return response('Invalid token', 401);
 
-        $characters = Character::where('user_id', $user->id)->get();
+        $characters = Character::where('gm_user_id', $user->id)->get();
         $guilds = array();
         $guildIds = array();
 

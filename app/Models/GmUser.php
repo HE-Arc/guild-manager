@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class User
+ * Class GmUser
  * 
  * @property int $id
  * @property string $name
@@ -27,9 +27,9 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  */
-class User extends Model
+class GmUser extends Model
 {
-	protected $table = 'users';
+	protected $table = 'gm_users';
 
 	protected $dates = [
 		'email_verified_at'

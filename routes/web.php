@@ -24,12 +24,13 @@ Route::get('api/character/{characterId}/events', 'App\Http\Controllers\EventCont
 Route::post('api/event/create', 'App\Http\Controllers\EventController@create');
 Route::post('/api/event/{eventId}/update', 'App\Http\Controllers\EventController@updateEvent');
 Route::post('/api/event/{eventId}/delete', 'App\Http\Controllers\EventController@deleteEvent');
+Route::get('/api/event/{eventId}', 'App\Http\Controllers\EventController@getEvent');
 
 
 // EventCharacter
-Route::post('/api/character/{characterId}/event/{eventId}/bench', 'App\Http\Controllers\EventCharacterController@bench');
-Route::post('/api/character/{characterId}/event/{eventId}/unbench', 'App\Http\Controllers\EventCharacterController@unbench');
-Route::get('/api/eventCharacters/{eventId}', 'App\Http\Controllers\EventCharacterController@getCharactersByEvent');
+Route::post('/api/character/{characterId}/event/{eventId}/bench', 'App\Http\Controllers\SubscriptionController@bench');
+Route::post('/api/character/{characterId}/event/{eventId}/unbench', 'App\Http\Controllers\SubscriptionController@unbench');
+Route::get('/api/eventCharacters/{eventId}', 'App\Http\Controllers\SubscriptionController@getCharactersByEvent');
 Route::post('api/character/{characterId}/event/{eventId}/subscribe', 'App\Http\Controllers\SubscriptionController@subscribe');
 Route::post('api/character/{characterId}/event/{eventId}/skip', 'App\Http\Controllers\SubscriptionController@skip');
 
