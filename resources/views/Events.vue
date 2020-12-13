@@ -55,7 +55,7 @@
             {{ item.location.name }}
           </template>
           <template v-slot:[`item.playerCount`]="{ item }">
-            {{ item.playerCount.subscribed }} / {{ item.playerCount.size }}
+            {{ item.subscription_count }} / {{ item.player_count }}
           </template>
           <template v-slot:[`item.status`]="{ item }">
             <v-chip
@@ -143,8 +143,8 @@ export default {
       ongoingEventsHeaders: [
         { text: "Nom", value: "name" },
         { text: "Lieu", value: "location" },
-        { text: "Date", value: "date" },
-        { text: "Délais", value: "delay" },
+        { text: "Date", value: "formated_date" },
+        { text: "Délais", value: "formated_subscription_delay" },
         { text: "Inscrits", value: "playerCount" },
         { text: "En cours", value: "status" },
         { text: "État", value: "state" },
@@ -154,7 +154,7 @@ export default {
       finishedEventsHeaders: [
         { text: "Nom", value: "name" },
         { text: "Lieu", value: "location" },
-        { text: "Date", value: "date" },
+        { text: "Date", value: "formated_date" },
         { text: "Participation", value: "state" },
       ],
       finishedEvents: [],

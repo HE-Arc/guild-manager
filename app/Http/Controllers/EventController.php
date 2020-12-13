@@ -12,32 +12,22 @@ use App\Models\Location;
 
 class EventController extends Controller
 {
-    public function getEvent(Request $request, $id)
+    public function getEvent(Request $request, $eventId)
     {
         $token = $request->header('Authorization');
-        $user = GmUser::where('id', $token)->first();
-
+        $user = User::find($token);
         if ($user == null)
             return response('Invalid token', 401);
 
-        $eventRaw = Event::where('id', $id)->first();
+        $event = Event::find($eventId);
+        $location = Location::find($event->location_id);
+        $subscriptionCount = Subscription::where('event_id', $event->id)->where('absent', false)->count();
 
-        $event = array();
+        $event->location = $location;
+        $event->formated_date = date('d-m-Y', strtotime($event->date));
+        $event->formated_subscription_delay = date('d-m-Y', strtotime($event->subscription_delay));
+        $event->subscription_count = $subscriptionCount;
 
-        $location = Location::find($eventRaw->location_id);
-        $nbSubscribed = Subscription::where('event_id', $eventRaw->id)
-                            ->where('absent', 0)->count();
-
-        $event = array(
-            "id" => $eventRaw->id,
-            "name" => $eventRaw->name,
-            "location" => $location->name,
-            "date" => date('d-m-Y', strtotime($eventRaw->date)),
-            "deadline" => date('d-m-Y', strtotime($eventRaw->deadline)),
-            "nbSubscribed" => $nbSubscribed,
-            "maxSubscribed" => $eventRaw->player_count
-        );
-       
         return $event;
     }
 
@@ -78,26 +68,19 @@ class EventController extends Controller
         if ($character->gm_user_id != $user->id)
             return response('Invalid character id', 500);
 
-        $eventsRaw = Event::where('guild_id', $character->guild_id)->get();
-        $events = array();
+        $events = Event::where('guild_id', $character->guild_id)->get();
 
-        foreach ($eventsRaw as $eventRaw) {
-            $location = Location::where('id', $eventRaw->location_id)->first();
-            $subscribtion = Subscription::where('event_id', $eventRaw->id)->where('character_id', $character->id)->first();
-            $subscribedCount = Subscription::where('event_id', $eventRaw->id)->where('absent', false)->count();
+        foreach ($events as $event) {
+            $location = Location::find($event->location_id);
+            $subscribtion = Subscription::where('event_id', $event->id)->where('character_id', $character->id)->first();
+            $subscriptionCount = Subscription::where('event_id', $event->id)->where('absent', false)->count();
 
-            $event = array(
-                "id" => $eventRaw->id,
-                "name" => $eventRaw->name,
-                "location" => $location,
-                "date" => date('d-m-Y', strtotime($eventRaw->date)),
-                "delay" => date('d-m-Y', strtotime($eventRaw->subscription_delay)),
-                "status" => $eventRaw->status,
-                "playerCount" => array("subscribed" => $subscribedCount, "size" => $eventRaw->player_count),
-                "subscribed" => $subscribtion ? true : false,
-                "skipped" => $subscribtion ? $subscribtion->absent : false,
-            );
-            array_push($events, $event);
+            $event->location = $location;
+            $event->formated_date = date('d-m-Y', strtotime($event->date));
+            $event->formated_subscription_delay = date('d-m-Y', strtotime($event->subscription_delay));
+            $event->subscription_count = $subscriptionCount;
+            $event->subscribed = $subscribtion ? true : false;
+            $event->skipped = $subscribtion ? $subscribtion->absent : false;
         }
 
         return $events;

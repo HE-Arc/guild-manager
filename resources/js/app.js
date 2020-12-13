@@ -58,6 +58,7 @@ import Register from '../views/Register'
 import Events from '../views/Events'
 import EventNew from '../views/EventNew'
 import EventPrep from '../views/EventPrep'
+import EventResult from '../views/EventResult'
 
 /**
  * Construct a new Store instance
@@ -178,6 +179,13 @@ const router = new VueRouter({
             path: '/event/:id',
             name: 'event-prep',
             component: EventPrep,
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/event/:eventId/result',
+            props: true,
+            name: 'event-result',
+            component: EventResult,
             meta: { requiresAuth: true }
         }
     ],
