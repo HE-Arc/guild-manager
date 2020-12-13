@@ -175,7 +175,7 @@ const router = new VueRouter({
             meta: { requiresAuth: true }
         },
         {
-            path: '/event/prep',
+            path: '/event/:id',
             name: 'event-prep',
             component: EventPrep,
             meta: { requiresAuth: true }
