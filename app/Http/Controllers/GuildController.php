@@ -21,7 +21,7 @@ class GuildController extends Controller
         $guildIds = array();
 
         foreach ($characters as $character) {
-            if (!in_array($character->guild_id, $guildIds)) {
+            if ($character->guild_id && !in_array($character->guild_id, $guildIds)) {
                 array_push($guildIds, $character->guild_id);
 
                 $guild = Guild::find($character->guild_id);

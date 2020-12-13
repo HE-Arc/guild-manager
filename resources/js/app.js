@@ -59,6 +59,9 @@ import Events from '../views/Events'
 import EventNew from '../views/EventNew'
 import EventPrep from '../views/EventPrep'
 import EventResult from '../views/EventResult'
+import Characters from '../views/Characters'
+import CharacterNew from '../views/CharacterNew'
+import Character from '../views/Character'
 
 /**
  * Construct a new Store instance
@@ -187,7 +190,26 @@ const router = new VueRouter({
             name: 'event-result',
             component: EventResult,
             meta: { requiresAuth: true }
-        }
+        },
+        {
+            path: '/characters',
+            name: 'characters',
+            component: Characters,
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/character/new',
+            name: 'character-new',
+            component: CharacterNew,
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/character/:characterId',
+            props: true,
+            name: 'character',
+            component: Character,
+            meta: { requiresAuth: true }
+        },
     ],
 });
 

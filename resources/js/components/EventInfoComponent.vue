@@ -44,7 +44,9 @@
               <v-tooltip bottom>
                 <template v-slot:activator="{ on, attrs }">
                   <div v-bind="attrs" v-on="on">
-                    <h3>{{ event.subscription_count }}/{{ event.player_count }}</h3>
+                    <h3>
+                      {{ event.subscription_count }}/{{ event.player_count }}
+                    </h3>
                   </div>
                 </template>
                 <span>Nombre de participants</span>
@@ -67,7 +69,7 @@
       </v-col>
     </v-row>
   </v-container>
-  <v-container v-else fill-height fluid>
+  <v-container v-else fluid>
     <v-row align="center" justify="center">
       <v-col style="text-align: center">
         <v-progress-circular
@@ -83,11 +85,9 @@
 <script>
 export default {
   props: ["eventId"],
-  data() {
-    return {
-      event,
-    };
-  },
+  data: () => ({
+    event: null,
+  }),
   methods: {
     loadEvent() {
       let _this = this;

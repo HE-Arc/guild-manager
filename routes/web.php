@@ -31,22 +31,38 @@ Route::get('/api/event/{eventId}', 'App\Http\Controllers\EventController@getEven
 Route::post('/api/character/{characterId}/event/{eventId}/bench', 'App\Http\Controllers\SubscriptionController@bench');
 Route::post('/api/character/{characterId}/event/{eventId}/unbench', 'App\Http\Controllers\SubscriptionController@unbench');
 Route::get('/api/eventCharacters/{eventId}', 'App\Http\Controllers\SubscriptionController@getCharactersByEvent');
+
 // Subscription
 Route::get('/api/event/{eventId}/subscriptions', 'App\Http\Controllers\SubscriptionController@getSubscriptions');
 Route::post('api/character/{characterId}/event/{eventId}/subscribe', 'App\Http\Controllers\SubscriptionController@subscribe');
 Route::post('api/character/{characterId}/event/{eventId}/skip', 'App\Http\Controllers\SubscriptionController@skip');
 
 // History
-Route::get('/api/event/{eventId}/histories', 'App\Http\Controllers\HistoryController@getHistories');
+Route::get('/api/event/{eventId}/histories', 'App\Http\Controllers\HistoryController@getEventHistories');
+Route::get('/api/character/{characterId}/histories', 'App\Http\Controllers\HistoryController@getCharacterHistories');
 
 // Characters
+Route::get('api/character/{characterId}', 'App\Http\Controllers\CharacterController@getCharacter');
 Route::get('api/characters', 'App\Http\Controllers\CharacterController@getMyCharacters');
+Route::post('api/character/create', 'App\Http\Controllers\CharacterController@create');
 
 // Guilds
 Route::get('api/guilds', 'App\Http\Controllers\GuildController@getMyGuilds');
 
 // Locations
 Route::get('api/locations', 'App\Http\Controllers\LocationController@getLocations');
+
+// Roles
+Route::get('api/roles', 'App\Http\Controllers\RoleController@getRoles');
+
+// Classes
+Route::get('api/classes', 'App\Http\Controllers\CharacterClassesController@getCharacterClasses');
+
+// Factions
+Route::get('api/factions', 'App\Http\Controllers\FactionController@getFactions');
+
+// Servers
+Route::get('api/servers', 'App\Http\Controllers\ServerController@getServers');
 
 // Other
 Route::post('postServers', 'App\Http\Controllers\ServerController@postServers');

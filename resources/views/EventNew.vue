@@ -208,8 +208,7 @@ export default {
           location_id: this.selectedLocation,
         })
         .then(function (response) {
-          _this.formSuccess = true;
-          _this.$refs.form.reset();
+          _this.$router.push({ name: "events" });
         })
         .catch(function (error) {
           console.log(error);

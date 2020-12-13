@@ -21,6 +21,14 @@
             </v-list-item-icon>
             <v-list-item-title>Évênements</v-list-item-title>
           </v-list-item>
+          <v-list-item
+            @click="$router.push({ name: 'characters' }).catch(() => {})"
+          >
+            <v-list-item-icon>
+              <v-icon>mdi-account-group</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Personnages</v-list-item-title>
+          </v-list-item>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>

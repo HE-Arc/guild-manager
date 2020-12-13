@@ -1,7 +1,6 @@
 <template>
   <v-app>
-    <event-info-component v-bind:eventId="this.eventId">
-    </event-info-component>
+    <event-info-component v-bind:eventId="this.eventId"> </event-info-component>
     <v-container class="grey lighten-5" fluid>
       <v-row dense>
         <v-col cols="12" md="6" lg="4">
@@ -30,7 +29,9 @@
                 :search="search"
                 :loading="loadingEventCharacters ? 'loading' : 'done'"
                 :loading-text="
-                  loadingEventCharacters ? 'Chargement en cours...' : 'Aucune donnée'
+                  loadingEventCharacters
+                    ? 'Chargement en cours...'
+                    : 'Aucune donnée'
                 "
               >
                 <template v-slot:[`item.name`]="{ item }">
@@ -49,7 +50,9 @@
                   {{ item.role_id }}
                 </template>
                 <template v-slot:[`item.action`]="{ item }">
-                  <v-btn color="orange" small dark @click="bench(item)"> Bench </v-btn>
+                  <v-btn color="orange" small dark @click="bench(item)">
+                    Bench
+                  </v-btn>
                 </template>
               </v-data-table>
             </v-card>
@@ -81,7 +84,9 @@
                 :search="search"
                 :loading="loadingEventCharacters ? 'loading' : 'done'"
                 :loading-text="
-                  loadingEventCharacters ? 'Chargement en cours...' : 'Aucune donnée'
+                  loadingEventCharacters
+                    ? 'Chargement en cours...'
+                    : 'Aucune donnée'
                 "
               >
                 <template v-slot:[`item.name`]="{ item }">
@@ -100,7 +105,9 @@
                   {{ item.role_id }}
                 </template>
                 <template v-slot:[`item.action`]="{ item }">
-                  <v-btn color="green" small dark @click="unbench(item)"> Unbench </v-btn>
+                  <v-btn color="green" small dark @click="unbench(item)">
+                    Unbench
+                  </v-btn>
                 </template>
               </v-data-table>
             </v-card>
@@ -132,7 +139,9 @@
                 :search="search"
                 :loading="loadingEventCharacters ? 'loading' : 'done'"
                 :loading-text="
-                  loadingEventCharacters ? 'Chargement en cours...' : 'Aucune donnée'
+                  loadingEventCharacters
+                    ? 'Chargement en cours...'
+                    : 'Aucune donnée'
                 "
               >
                 <template v-slot:[`item.name`]="{ item }">
@@ -182,7 +191,9 @@ export default {
   components: { EventInfoComponent },
   computed: {
     computedHeaders() {
-      return this.headers.filter((h) => !h.hide || !this.$vuetify.breakpoint[h.hide]);
+      return this.headers.filter(
+        (h) => !h.hide || !this.$vuetify.breakpoint[h.hide]
+      );
     },
   },
   data() {
@@ -211,7 +222,9 @@ export default {
       let _this = this;
 
       axios
-        .post("/api/character/" + character.id + "/event/" + this.eventId + "/bench")
+        .post(
+          "/api/character/" + character.id + "/event/" + this.eventId + "/bench"
+        )
         .then(function (response) {
           _this.loadEventCharacters();
         })
@@ -223,7 +236,13 @@ export default {
       let _this = this;
 
       axios
-        .post("/api/character/" + character.id + "/event/" + this.eventId + "/unbench")
+        .post(
+          "/api/character/" +
+            character.id +
+            "/event/" +
+            this.eventId +
+            "/unbench"
+        )
         .then(function (response) {
           _this.loadEventCharacters();
         })
@@ -271,9 +290,10 @@ export default {
       axios
         .post("/api/event/" + _this.eventId + "/delete")
         .then(function (response) {
-          _this.$router
-            .push({ name: "events", params: { deleted: response.data } })
-            .catch(() => {});
+          _this.$router.push({
+            name: "events",
+            params: { deleted: response.data },
+          });
         })
         .catch(function (error) {
           console.log(error);
