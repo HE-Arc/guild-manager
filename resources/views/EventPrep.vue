@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <event-info-component v-bind:eventId="this.eventId" v-bind:modifying="this.modifying">
+    <event-info-component v-bind:eventId="this.eventId">
     </event-info-component>
     <v-container class="grey lighten-5" fluid>
       <v-row dense>
@@ -253,9 +253,17 @@ export default {
         });
     },
     playEvent() {},
-    modifyEvent() {
+    activateModification() {
+      let _this = this;
 
-      
+      axios
+        .post("/api/event/" + _this.eventId + "/update")
+        .then(function (response) {
+          // do stuff
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
     deleteEvent() {
       let _this = this;
@@ -263,7 +271,6 @@ export default {
       axios
         .post("/api/event/" + _this.eventId + "/delete")
         .then(function (response) {
-          console.log(response.data);
           _this.$router
             .push({ name: "events", params: { deleted: response.data } })
             .catch(() => {});

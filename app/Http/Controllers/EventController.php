@@ -58,7 +58,7 @@ class EventController extends Controller
                 $eventName  = Event::find($eventId)['name'];
                 $event = Event::find($eventId);                           
                 Schema::disableForeignKeyConstraints();
-                //$event->delete();
+                $event->delete();
                 Schema::enableForeignKeyConstraints();                
             } else
                 return response('Event does not exist', 500);
