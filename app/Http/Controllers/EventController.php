@@ -38,15 +38,15 @@ class EventController extends Controller
 
         if ($user == null)
             return response('Invalid token', 401);
-        
+
         // TODO check if the character who created the event belongs to the users
         $eventName = "";
-        
+
         try {
             if (Event::where('id', $eventId)->exists()) {
                 $eventName  = Event::find($eventId)['name'];
-                $event = Event::find($eventId);                           
-                $event->delete();              
+                $event = Event::find($eventId);
+                $event->delete();
             } else
                 return response('Event does not exist', 500);
 
@@ -93,6 +93,10 @@ class EventController extends Controller
         if ($user == null)
             return response('Invalid token', 401);
 
+        $request->merge([
+            'gm_user_id' => $user->id,
+        ]);
+
         $request->validate([
             'name' => 'required',
             'date' => 'required',
@@ -101,7 +105,6 @@ class EventController extends Controller
             'auto_bench' => 'required',
             'status' => 'required',
             'password' => 'nullable',
-            'gm_user_id' => 'required',
             'guild_id' => 'required',
             'location_id' => 'required',
         ]);

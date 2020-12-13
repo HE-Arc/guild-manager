@@ -43,11 +43,17 @@
             :loading-text="
               loadingLootHistory ? 'Chargement en cours...' : 'Aucune donnée'
             "
+            hide-default-footer
           >
             <template v-slot:top>
               <v-toolbar flat>
                 <v-toolbar-title>Historique des loots</v-toolbar-title>
               </v-toolbar>
+            </template>
+            <template v-slot:[`item.character`]="{ item }">
+              <router-link :to="'/character/' + item.character.id">
+                {{ item.character.name }}
+              </router-link>
             </template>
           </v-data-table>
         </v-col>
@@ -61,6 +67,7 @@
             :loading-text="
               loadingSubscriptions ? 'Chargement en cours...' : 'Aucune donnée'
             "
+            hide-default-footer
           >
             <template v-slot:top>
               <v-toolbar flat>
@@ -101,7 +108,7 @@ export default {
     lootHistoryHeaders: [
       { text: "Pièce", value: "item.name" },
       { text: "Rareté", value: "item.rarity" },
-      { text: "Personnage", value: "character.name" },
+      { text: "Personnage", value: "character" },
     ],
     subscriptionsHeaders: [
       { text: "Nom", value: "name" },
@@ -120,7 +127,6 @@ export default {
         .get("/api/event/" + this.event.id + "/histories")
         .then(function (response) {
           _this.lootHistory = response.data;
-          console.log(response.data);
         })
         .catch(function (error) {
           console.log(error);

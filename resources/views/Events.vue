@@ -45,7 +45,6 @@
             </v-toolbar>
           </template>
           <template v-slot:[`item.name`]="{ item }">
-            <!-- TODO $router.push('/event/{id}') -->
             <v-btn small @click="$router.push('/event/' + item.id)">
               {{ item.name }}
               <v-icon right>mdi-arrow-right</v-icon>

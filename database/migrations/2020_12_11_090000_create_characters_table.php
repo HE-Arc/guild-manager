@@ -19,8 +19,8 @@ class CreateCharactersTable extends Migration
             $table->foreignId('gm_user_id')->constrained('gm_users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('role_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('character_class_id')->constrained('character_classes')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('guild_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('guild_role_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('guild_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('guild_role_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('faction_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('server_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
