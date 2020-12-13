@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// User
+// GmUser
 Route::get('api/users', 'App\Http\Controllers\UserController@getUsers');
 Route::get('api/user/{id}', 'App\Http\Controllers\UserController@getUser');
 Route::post('api/login', 'App\Http\Controllers\UserController@login');

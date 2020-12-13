@@ -16,7 +16,7 @@ class SubscriptionController extends Controller
     public function getSubscriptions(Request $request, $eventId)
     {
         $token = $request->header('Authorization');
-        $user = User::find($token);
+        $user = GmUser::find($token);
         if ($user == null)
             return response('Invalid token', 401);
 

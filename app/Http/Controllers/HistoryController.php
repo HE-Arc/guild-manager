@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\GmUser;
 use App\Models\Character;
 use App\Models\Item;
 use App\Models\History;
@@ -13,7 +13,7 @@ class HistoryController extends Controller
     public function getHistories(Request $request, $eventId)
     {
         $token = $request->header('Authorization');
-        $user = User::find($token);
+        $user = GmUser::find($token);
         if ($user == null)
             return response('Invalid token', 401);
 

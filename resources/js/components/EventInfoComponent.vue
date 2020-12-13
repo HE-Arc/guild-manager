@@ -18,7 +18,7 @@
               <v-tooltip bottom>
                 <template v-slot:activator="{ on, attrs }">
                   <div v-bind="attrs" v-on="on">
-                    <h3>{{ event.location }}</h3>
+                    <h3>{{ event.location.name }}</h3>
                   </div>
                 </template>
                 <span>Lieu</span>
@@ -30,7 +30,7 @@
               <v-tooltip bottom>
                 <template v-slot:activator="{ on, attrs }">
                   <div v-bind="attrs" v-on="on">
-                    <h3>{{ event.date }}</h3>
+                    <h3>{{ event.formated_date }}</h3>
                   </div>
                 </template>
                 <span>Date</span>
@@ -44,7 +44,7 @@
               <v-tooltip bottom>
                 <template v-slot:activator="{ on, attrs }">
                   <div v-bind="attrs" v-on="on">
-                    <h3>{{ event.nbSubscribed }}/{{ event.maxSubscribed }}</h3>
+                    <h3>{{ event.subscription_count }}/{{ event.player_count }}</h3>
                   </div>
                 </template>
                 <span>Nombre de participants</span>
@@ -56,7 +56,7 @@
               <v-tooltip bottom>
                 <template v-slot:activator="{ on, attrs }">
                   <div v-bind="attrs" v-on="on">
-                    <h3>{{ event.deadline }}</h3>
+                    <h3>{{ event.formated_subscription_delay }}</h3>
                   </div>
                 </template>
                 <span>Date limite pour l'inscription</span>
