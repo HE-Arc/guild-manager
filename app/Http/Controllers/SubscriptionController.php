@@ -8,9 +8,51 @@ use App\Models\User;
 use App\Models\Character;
 use App\Models\Subscription;
 use App\Models\Event;
+use App\Models\Role;
+use App\Models\CharacterClass;
 
 class SubscriptionController extends Controller
 {
+    public function getSubscriptions(Request $request, $eventId)
+    {
+        $token = $request->header('Authorization');
+        $user = User::find($token);
+        if ($user == null)
+            return response('Invalid token', 401);
+
+        $subscriptions = Subscription::where('event_id', $eventId)->get();
+
+        $rosterCharacters = array();
+        $benchCharacters = array();
+        $absentCharacters = array();
+
+        foreach ($subscriptions as $subscription) {
+            $character = Character::find($subscription->character_id);
+            $role = Role::find($character->role_id);
+            $class = CharacterClass::find($character->character_class_id);
+
+            $character->role = $role;
+            $character->class = $class;
+
+            if ($subscription->absent)
+                array_push($absentCharacters, $character);
+            else {
+                if ($subscription->bench)
+                    array_push($benchCharacters, $character);
+                else
+                    array_push($rosterCharacters, $character);
+            }
+        }
+
+        $characters = array(
+            'roster' => $rosterCharacters,
+            'bench' => $benchCharacters,
+            'absent' => $absentCharacters,
+        );
+
+        return $characters;
+    }
+
     public function subscribe(Request $request, $characterId, $eventId)
     {
         $token = $request->header('Authorization');
