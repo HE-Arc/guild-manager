@@ -121,7 +121,9 @@
           <v-col cols="12" md="6">
             <v-switch
               v-model="autoBench"
-              :label="`Bench automatique: ${autoBench ? `activé` : `désactivé`}`"
+              :label="`Bench automatique: ${
+                autoBench ? `activé` : `désactivé`
+              }`"
             ></v-switch>
           </v-col>
         </v-row>
@@ -135,6 +137,16 @@
             >
               Créer l'évênement
             </v-btn>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-alert v-model="formSuccess" dismissible type="success">
+              Évênement créé avec succès.
+            </v-alert>
+            <v-alert v-model="formError" dismissible type="error">
+              Erreur lors de la création de l'évênement.
+            </v-alert>
           </v-col>
         </v-row>
       </v-container>
@@ -173,10 +185,14 @@ export default {
     delay: new Date().toISOString().substr(0, 10),
     delayMenu: false,
     showPassword: false,
+    formSuccess: false,
+    formError: false,
   }),
   methods: {
     createEvent() {
       let _this = this;
+      this.formSuccess = false;
+      this.formError = false;
 
       axios
         .post("/api/event/create", {
@@ -185,15 +201,19 @@ export default {
           subscription_delay: this.delay,
           player_count: this.playerCount,
           auto_bench: this.autoBench,
+          status: "preparing",
           password: this.password,
+          user_id: this.$store.state.token,
           guild_id: this.selectedGuild,
           location_id: this.selectedLocation,
         })
         .then(function (response) {
-          alert("DONE SUCCESSFULLY!");
+          _this.formSuccess = true;
+          _this.$refs.form.reset();
         })
         .catch(function (error) {
           console.log(error);
+          _this.formError = true;
         });
     },
   },

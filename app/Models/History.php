@@ -13,15 +13,15 @@ use Illuminate\Database\Eloquent\Model;
  * Class History
  * 
  * @property int $id
- * @property int|null $event_id
- * @property int|null $character_id
- * @property int|null $item_id
+ * @property int $event_id
+ * @property int $character_id
+ * @property int $item_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
- * @property Character|null $character
- * @property Event|null $event
- * @property Item|null $item
+ * @property Character $character
+ * @property Event $event
+ * @property Item $item
  *
  * @package App\Models
  */

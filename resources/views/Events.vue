@@ -37,6 +37,7 @@
           sort-by="date"
           class="elevation-1"
           :loading="loadingEvents ? 'loading' : 'done'"
+          :loading-text="loadingEvents ? 'Chargement en cours...' : 'Aucune donnée'"
         >
           <template v-slot:[`item.name`]="{ item }">
             <!-- TODO $router.push('/event/{id}') -->
