@@ -30,6 +30,7 @@
                 show-group-by
                 :search="search"
                 :loading="loadingEventCharacters ? 'loading' : 'done'"
+                :loading-text="loadingEventCharacters ? 'Chargement en cours...' : 'Aucune donnée'"
               >
                 <template v-slot:[`item.name`]="{ item }">
                   {{ item.name }}
@@ -78,6 +79,7 @@
                 show-group-by
                 :search="search"
                 :loading="loadingEventCharacters ? 'loading' : 'done'"
+                :loading-text="loadingEventCharacters ? 'Chargement en cours...' : 'Aucune donnée'"
               >
                 <template v-slot:[`item.name`]="{ item }">
                   {{ item.name }}
@@ -126,6 +128,7 @@
                 show-group-by
                 :search="search"
                 :loading="loadingEventCharacters ? 'loading' : 'done'"
+                :loading-text="loadingEventCharacters ? 'Chargement en cours...' : 'Aucune donnée'"
               >
                 <template v-slot:[`item.name`]="{ item }">
                   {{ item.name }}
