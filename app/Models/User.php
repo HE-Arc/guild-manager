@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $updated_at
  * 
  * @property Collection|Character[] $characters
+ * @property Collection|Event[] $events
  *
  * @package App\Models
  */
@@ -50,5 +51,10 @@ class User extends Model
 	public function characters()
 	{
 		return $this->hasMany(Character::class);
+	}
+
+	public function events()
+	{
+		return $this->hasMany(Event::class);
 	}
 }

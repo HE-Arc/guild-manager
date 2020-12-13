@@ -30,10 +30,7 @@ class EventController extends Controller
         foreach ($eventsRaw as $eventRaw) {
             $location = Location::where('id', $eventRaw->location_id)->first();
             $subscribtion = Subscription::where('event_id', $eventRaw->id)->where('character_id', $character->id)->first();
-
-            // Subscriptions count
-            $subscribedList = Subscription::where('event_id', $eventRaw->id)->where('absent', false)->get();
-            $subscribedCount = $subscribedList->count();
+            $subscribedCount = Subscription::where('event_id', $eventRaw->id)->where('absent', false)->count();
 
             $event = array(
                 "id" => $eventRaw->id,
@@ -41,6 +38,7 @@ class EventController extends Controller
                 "location" => $location,
                 "date" => date('d-m-Y', strtotime($eventRaw->date)),
                 "delay" => date('d-m-Y', strtotime($eventRaw->subscription_delay)),
+                "status" => $eventRaw->status,
                 "playerCount" => array("subscribed" => $subscribedCount, "size" => $eventRaw->player_count),
                 "subscribed" => $subscribtion ? true : false,
                 "skipped" => $subscribtion ? $subscribtion->absent : false,
@@ -64,7 +62,9 @@ class EventController extends Controller
             'subscription_delay' => 'required',
             'player_count' => 'required',
             'auto_bench' => 'required',
-            'password' => 'required',
+            'status' => 'required',
+            'password' => 'nullable',
+            'user_id' => 'required',
             'guild_id' => 'required',
             'location_id' => 'required',
         ]);

@@ -22,13 +22,14 @@ class DatabaseSeeder extends Seeder
             CharacterClassSeeder::class,
             FactionSeeder::class,
             RoleSeeder::class,
+            GuildRolesSeeder::class,
             ServerSeeder::class,
             GmUserSeeder::class,
             GuildSeeder::class,
             LocationSeeder::class,
             CharacterSeeder::class,
             BossSeeder::class,            
-            ItemSeeder::class,           
+            ItemSeeder::class,     
         ]);
     }
 }

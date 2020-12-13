@@ -19,14 +19,17 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon $subscription_delay
  * @property int $player_count
  * @property bool $auto_bench
- * @property string $password
- * @property int|null $guild_id
- * @property int|null $location_id
+ * @property string $status
+ * @property string|null $password
+ * @property int $user_id
+ * @property int $guild_id
+ * @property int $location_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
- * @property Guild|null $guild
- * @property Location|null $location
+ * @property Guild $guild
+ * @property Location $location
+ * @property User $user
  * @property Collection|History[] $histories
  * @property Collection|Subscription[] $subscriptions
  *
@@ -39,6 +42,7 @@ class Event extends Model
 	protected $casts = [
 		'player_count' => 'int',
 		'auto_bench' => 'bool',
+		'user_id' => 'int',
 		'guild_id' => 'int',
 		'location_id' => 'int'
 	];
@@ -58,7 +62,9 @@ class Event extends Model
 		'subscription_delay',
 		'player_count',
 		'auto_bench',
+		'status',
 		'password',
+		'user_id',
 		'guild_id',
 		'location_id'
 	];
@@ -71,6 +77,11 @@ class Event extends Model
 	public function location()
 	{
 		return $this->belongsTo(Location::class);
+	}
+
+	public function user()
+	{
+		return $this->belongsTo(User::class);
 	}
 
 	public function histories()

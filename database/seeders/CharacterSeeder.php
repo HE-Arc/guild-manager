@@ -16,9 +16,9 @@ class CharacterSeeder extends Seeder
     {
         /* `guild_manager`.`character` */
         $characterData = array(
-            array('name' => 'ZugZug', 'user_id' => '1', 'guild_id' => '1', 'role_id' => '3', 'class_id' => '1', 'faction_id' => '1', 'server_id' => '2'),
-            array('name' => 'Archange', 'user_id' => '1', 'guild_id' => '2', 'role_id' => '2', 'class_id' => '3', 'faction_id' => '2', 'server_id' => '1'),
-            array('name' => 'Bulzator','user_id' => '2','guild_id' => '1','role_id' => '1','class_id' => '1','faction_id' => '1','server_id' => '2')
+            array('name' => 'ZugZug', 'user_id' => '1', 'guild_id' => '1', 'guild_role_id' => '1', 'role_id' => '3', 'class_id' => '1', 'faction_id' => '1', 'server_id' => '2'),
+            array('name' => 'Archange', 'user_id' => '1', 'guild_id' => '2', 'guild_role_id' => '1', 'role_id' => '2', 'class_id' => '3', 'faction_id' => '2', 'server_id' => '1'),
+            array('name' => 'Bulzator', 'user_id' => '2', 'guild_id' => '1', 'guild_role_id' => '3', 'role_id' => '1', 'class_id' => '1', 'faction_id' => '1', 'server_id' => '2')
         );
 
         foreach ($characterData as $character) {
@@ -26,6 +26,7 @@ class CharacterSeeder extends Seeder
                 'name' => $character['name'],
                 'user_id' => $character['user_id'],
                 'guild_id' => $character['guild_id'],
+                'guild_role_id' => $character['guild_role_id'],
                 'role_id' => $character['role_id'],
                 'character_class_id' => $character['class_id'],
                 'faction_id' => $character['faction_id'],

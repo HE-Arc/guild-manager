@@ -32,12 +32,20 @@
 
       <div v-if="selectedCharacter != null">
         <v-data-table
-          :headers="headers"
-          :items="events"
+          :headers="ongoingEventsHeaders"
+          :items="ongoingEvents"
           sort-by="date"
           class="elevation-1"
           :loading="loadingEvents ? 'loading' : 'done'"
+          :loading-text="
+            loadingEvents ? 'Chargement en cours...' : 'Aucune donnée'
+          "
         >
+          <template v-slot:top>
+            <v-toolbar flat>
+              <v-toolbar-title>En préparation/En cours</v-toolbar-title>
+            </v-toolbar>
+          </template>
           <template v-slot:[`item.name`]="{ item }">
             <!-- TODO $router.push('/event/{id}') -->
             <v-btn small @click="$router.push('/event/prep')">
@@ -52,6 +60,13 @@
             {{ item.playerCount.subscribed }} / {{ item.playerCount.size }}
           </template>
           <template v-slot:[`item.status`]="{ item }">
+            <v-chip
+              :color="item.status == 'ongoing' ? 'green' : 'red'"
+              small
+              dark
+            ></v-chip>
+          </template>
+          <template v-slot:[`item.state`]="{ item }">
             <v-chip
               :color="getEventStatusColor(item.subscribed, item.skipped)"
               small
@@ -85,6 +100,41 @@
             </div>
           </template>
         </v-data-table>
+        <v-data-table
+          :headers="finishedEventsHeaders"
+          :items="finishedEvents"
+          sort-by="date"
+          class="elevation-1"
+          :loading="loadingEvents ? 'loading' : 'done'"
+          :loading-text="
+            loadingEvents ? 'Chargement en cours...' : 'Aucune donnée'
+          "
+        >
+          <template v-slot:top>
+            <v-toolbar flat>
+              <v-toolbar-title>Terminés</v-toolbar-title>
+            </v-toolbar>
+          </template>
+          <template v-slot:[`item.name`]="{ item }">
+            <!-- TODO $router.push('/event/{id}') -->
+            <v-btn small @click="$router.push('/event/prep')">
+              {{ item.name }}
+              <v-icon right>mdi-arrow-right</v-icon>
+            </v-btn>
+          </template>
+          <template v-slot:[`item.location`]="{ item }">
+            {{ item.location.name }}
+          </template>
+          <template v-slot:[`item.state`]="{ item }">
+            <v-chip
+              :color="getEventStatusColor(item.subscribed, item.skipped)"
+              small
+              dark
+            >
+              {{ getEventStatusLabel(item.subscribed, item.skipped) }}
+            </v-chip>
+          </template>
+        </v-data-table>
       </div>
       <div v-else>
         <v-alert type="info">Veuillez sélectionner un personnage.</v-alert>
@@ -97,19 +147,24 @@
 export default {
   data() {
     return {
-      headers: [
+      ongoingEventsHeaders: [
         { text: "Nom", value: "name" },
         { text: "Lieu", value: "location" },
         { text: "Date", value: "date" },
         { text: "Délais", value: "delay" },
         { text: "Inscrits", value: "playerCount" },
-        //{ text: "Délais", value: "delay" },
-        //{ text: "Inscrits", value: "subscribed" },
-        //{ text: "Total", value: "total" },
-        { text: "État", value: "status" },
+        { text: "En cours", value: "status" },
+        { text: "État", value: "state" },
         { text: "Actions", value: "actions", sortable: false },
       ],
-      events: [],
+      ongoingEvents: [],
+      finishedEventsHeaders: [
+        { text: "Nom", value: "name" },
+        { text: "Lieu", value: "location" },
+        { text: "Date", value: "date" },
+        { text: "Participation", value: "state" },
+      ],
+      finishedEvents: [],
       loadingEvents: false,
       characters: [],
       selectedCharacter: null,
@@ -159,7 +214,7 @@ export default {
       return subscribed ? (skipped ? "orange" : "green") : "gray";
     },
     getEventStatusLabel(subscribed, skipped) {
-      return subscribed ? (skipped ? "absent" : "inscrit") : "indécis";
+      return subscribed ? (skipped ? "absent" : "inscrit") : "non-inscrit";
     },
     onChangeCharacter(event) {
       this.loadEvents();
@@ -174,7 +229,12 @@ export default {
       axios
         .get("/api/character/" + characterId + "/events")
         .then(function (response) {
-          _this.events = response.data;
+          _this.ongoingEvents = response.data.filter(
+            (event) => event.status != "finished"
+          );
+          _this.finishedEvents = response.data.filter(
+            (event) => event.status == "finished"
+          );
         })
         .catch(function (error) {
           console.log(error);

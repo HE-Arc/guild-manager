@@ -16,9 +16,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string $name
  * @property int $user_id
- * @property int $guild_id
  * @property int $role_id
  * @property int $character_class_id
+ * @property int $guild_id
+ * @property int $guild_role_id
  * @property int $faction_id
  * @property int $server_id
  * @property Carbon|null $created_at
@@ -27,6 +28,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property CharacterClass $character_class
  * @property Faction $faction
  * @property Guild $guild
+ * @property GuildRole $guild_role
  * @property Role $role
  * @property Server $server
  * @property User $user
@@ -42,9 +44,10 @@ class Character extends Model
 
 	protected $casts = [
 		'user_id' => 'int',
-		'guild_id' => 'int',
 		'role_id' => 'int',
 		'character_class_id' => 'int',
+		'guild_id' => 'int',
+		'guild_role_id' => 'int',
 		'faction_id' => 'int',
 		'server_id' => 'int'
 	];
@@ -52,9 +55,10 @@ class Character extends Model
 	protected $fillable = [
 		'name',
 		'user_id',
-		'guild_id',
 		'role_id',
 		'character_class_id',
+		'guild_id',
+		'guild_role_id',
 		'faction_id',
 		'server_id'
 	];
@@ -72,6 +76,11 @@ class Character extends Model
 	public function guild()
 	{
 		return $this->belongsTo(Guild::class);
+	}
+
+	public function guild_role()
+	{
+		return $this->belongsTo(GuildRole::class);
 	}
 
 	public function role()
