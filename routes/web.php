@@ -20,7 +20,9 @@ Route::post('/api/login', 'App\Http\Controllers\GmUserController@login');
 Route::post('/api/register', 'App\Http\Controllers\GmUserController@register');
 
 // Event
+
 Route::get('/api/event/{eventId}', 'App\Http\Controllers\EventController@getEvent');
+Route::post('/api/event/{eventId}/delete', 'App\Http\Controllers\EventController@deleteEvent');
 Route::get('/api/character/{characterId}/events', 'App\Http\Controllers\EventController@getCharacterEvents');
 
 

@@ -1,5 +1,5 @@
 <template>
-  <v-container class="grey lighten-5" fluid>
+  <v-container fluid>
     <v-row>
       <v-col cols="4">
         <h1 v-if="event">{{ event.name }}</h1>

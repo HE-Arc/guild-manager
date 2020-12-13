@@ -1,8 +1,7 @@
 <template>
   <v-app>
-    <event-info-component
-       v-bind:eventId="this.eventId">
-      </event-info-component>
+    <event-info-component v-bind:eventId="this.eventId" v-bind:modifying="this.modifying">
+    </event-info-component>
     <v-container class="grey lighten-5" fluid>
       <v-row dense>
         <v-col cols="12" md="6" lg="4">
@@ -30,7 +29,9 @@
                 show-group-by
                 :search="search"
                 :loading="loadingEventCharacters ? 'loading' : 'done'"
-                :loading-text="loadingEventCharacters ? 'Chargement en cours...' : 'Aucune donnée'"
+                :loading-text="
+                  loadingEventCharacters ? 'Chargement en cours...' : 'Aucune donnée'
+                "
               >
                 <template v-slot:[`item.name`]="{ item }">
                   {{ item.name }}
@@ -79,7 +80,9 @@
                 show-group-by
                 :search="search"
                 :loading="loadingEventCharacters ? 'loading' : 'done'"
-                :loading-text="loadingEventCharacters ? 'Chargement en cours...' : 'Aucune donnée'"
+                :loading-text="
+                  loadingEventCharacters ? 'Chargement en cours...' : 'Aucune donnée'
+                "
               >
                 <template v-slot:[`item.name`]="{ item }">
                   {{ item.name }}
@@ -128,7 +131,9 @@
                 show-group-by
                 :search="search"
                 :loading="loadingEventCharacters ? 'loading' : 'done'"
-                :loading-text="loadingEventCharacters ? 'Chargement en cours...' : 'Aucune donnée'"
+                :loading-text="
+                  loadingEventCharacters ? 'Chargement en cours...' : 'Aucune donnée'
+                "
               >
                 <template v-slot:[`item.name`]="{ item }">
                   {{ item.name }}
@@ -158,13 +163,13 @@
           <v-icon v-else> + </v-icon>
         </v-btn>
       </template>
-      <v-btn fab dark color="green">
+      <v-btn fab dark color="green" @click="playEvent()">
         <v-icon>mdi-play</v-icon>
       </v-btn>
-      <v-btn fab dark color="indigo">
+      <v-btn fab dark color="indigo" @click="modifyEvent()">
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
-      <v-btn fab dark color="red">
+      <v-btn fab dark color="red" @click="deleteEvent()">
         <v-icon>mdi-delete</v-icon>
       </v-btn>
     </v-speed-dial>
@@ -195,6 +200,7 @@ export default {
       benchCharacters: [],
       absentCharacters: [],
       eventId: this.$route.params["id"],
+      modifying: false,
     };
   },
   methods: {
@@ -244,6 +250,26 @@ export default {
         })
         .then(function (response) {
           _this.loadingEventCharacters = false;
+        });
+    },
+    playEvent() {},
+    modifyEvent() {
+
+      
+    },
+    deleteEvent() {
+      let _this = this;
+
+      axios
+        .post("/api/event/" + _this.eventId + "/delete")
+        .then(function (response) {
+          console.log(response.data);
+          _this.$router
+            .push({ name: "events", params: { deleted: response.data } })
+            .catch(() => {});
+        })
+        .catch(function (error) {
+          console.log(error);
         });
     },
   },

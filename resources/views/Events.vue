@@ -68,23 +68,20 @@
               >
                 Rejoindre
               </v-btn>
-              <v-btn v-else color="orange" small dark @click="skip(item)">
-                Passer
-              </v-btn>
+              <v-btn v-else color="orange" small dark @click="skip(item)"> Passer </v-btn>
             </div>
             <div v-else>
-              <v-btn color="green" small dark @click="subscribe(item)">
-                Joindre
-              </v-btn>
-              <v-btn color="orange" small dark @click="skip(item)">
-                Passer
-              </v-btn>
+              <v-btn color="green" small dark @click="subscribe(item)"> Joindre </v-btn>
+              <v-btn color="orange" small dark @click="skip(item)"> Passer </v-btn>
             </div>
           </template>
         </v-data-table>
       </div>
       <div v-else>
         <v-alert type="info">Veuillez sélectionner un personnage.</v-alert>
+      </div>
+      <div v-if="deletedEvent">
+        <v-alert type="success">{{ deletedEvent }}</v-alert>
       </div>
     </v-container>
   </v-app>
@@ -109,6 +106,13 @@ export default {
       characters: [],
       selectedCharacter: null,
     };
+  },
+  computed: {
+    // a computed getter
+    deletedEvent: function () {
+      // `this` points to the vm instance
+      return this.$route.params.deleted ?  "Événement " + this.$route.params.deleted + " supprimé" : false;
+    },
   },
   methods: {
     clickItem(item) {

@@ -74,5 +74,5 @@ class Event extends Model
 	public function histories()
 	{
 		return $this->hasMany(History::class);
-	}
+	}	
 }
