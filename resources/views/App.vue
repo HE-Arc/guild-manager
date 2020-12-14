@@ -29,6 +29,14 @@
             </v-list-item-icon>
             <v-list-item-title>Personnages</v-list-item-title>
           </v-list-item>
+          <v-list-item
+            @click="$router.push({ name: 'guilds' }).catch(() => {})"
+          >
+            <v-list-item-icon>
+              <v-icon>mdi-sword-cross</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Guildes</v-list-item-title>
+          </v-list-item>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
