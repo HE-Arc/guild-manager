@@ -63,15 +63,10 @@
           </v-data-table>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row v-if="this.$store.state.token == character.user.id">
         <v-col>
           <h3>Modération</h3>
-          <v-btn
-            color="red"
-            dark
-            class="mb-2"
-            @click="deleteCharacter()"
-          >
+          <v-btn color="red" dark class="mb-2" @click="deleteCharacter()">
             Supprimer le personnage
           </v-btn>
         </v-col>
@@ -141,8 +136,20 @@ export default {
         });
     },
     deleteCharacter() {
-      alert("WIP");
-    }
+      let _this = this;
+
+      axios
+        .post("/api/character/" + _this.character.id + "/delete")
+        .then(function (response) {
+          _this.$router.push({
+            name: "characters",
+            params: { deleted: response.data },
+          });
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
   },
   created: function () {
     let _this = this;

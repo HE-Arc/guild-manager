@@ -30,6 +30,12 @@
         </v-col>
       </v-row>
 
+      <div style="margin: 0 0 20px 0">
+        <v-alert v-model="eventDeleted" type="success" dismissible>
+          {{ eventDeletedLabel }}
+        </v-alert>
+      </div>
+
       <div v-if="selectedCharacter != null">
         <v-data-table
           :headers="ongoingEventsHeaders"
@@ -37,18 +43,19 @@
           sort-by="date"
           class="elevation-1"
           :loading="loadingEvents ? 'loading' : 'done'"
-          :loading-text="loadingEvents ? 'Chargement en cours...' : 'Aucune donnée'"
+          :loading-text="
+            loadingEvents ? 'Chargement en cours...' : 'Aucune donnée'
+          "
         >
           <template v-slot:top>
             <v-toolbar flat>
-              <v-toolbar-title>En préparation/En cours</v-toolbar-title>
+              <v-toolbar-title>Prochains évênements</v-toolbar-title>
             </v-toolbar>
           </template>
           <template v-slot:[`item.name`]="{ item }">
-            <v-btn small @click="$router.push('/event/' + item.id)">
+            <router-link :to="'/event/' + item.id">
               {{ item.name }}
-              <v-icon right>mdi-arrow-right</v-icon>
-            </v-btn>
+            </router-link>
           </template>
           <template v-slot:[`item.location`]="{ item }">
             {{ item.location.name }}
@@ -83,11 +90,17 @@
               >
                 Rejoindre
               </v-btn>
-              <v-btn v-else color="orange" small dark @click="skip(item)"> Passer </v-btn>
+              <v-btn v-else color="orange" small dark @click="skip(item)">
+                Passer
+              </v-btn>
             </div>
             <div v-else>
-              <v-btn color="green" small dark @click="subscribe(item)"> Joindre </v-btn>
-              <v-btn color="orange" small dark @click="skip(item)"> Passer </v-btn>
+              <v-btn color="green" small dark @click="subscribe(item)">
+                Joindre
+              </v-btn>
+              <v-btn color="orange" small dark @click="skip(item)">
+                Passer
+              </v-btn>
             </div>
           </template>
         </v-data-table>
@@ -97,7 +110,9 @@
           sort-by="date"
           class="elevation-1"
           :loading="loadingEvents ? 'loading' : 'done'"
-          :loading-text="loadingEvents ? 'Chargement en cours...' : 'Aucune donnée'"
+          :loading-text="
+            loadingEvents ? 'Chargement en cours...' : 'Aucune donnée'
+          "
         >
           <template v-slot:top>
             <v-toolbar flat>
@@ -127,9 +142,6 @@
       </div>
       <div v-else>
         <v-alert type="info">Veuillez sélectionner un personnage.</v-alert>
-      </div>
-      <div>
-        <v-alert v-model="eventDeleted" type="success" dismissible>{{ eventDeletedLabel }}</v-alert>
       </div>
     </v-container>
   </v-app>
@@ -161,7 +173,8 @@ export default {
       characters: [],
       selectedCharacter: null,
       eventDeleted: this.$route.params.deleted ? true : false,
-      eventDeletedLabel: "Événement " + this.$route.params.deleted + " supprimé"
+      eventDeletedLabel:
+        "Événement " + this.$route.params.deleted + " supprimé.",
     };
   },
   methods: {
@@ -173,7 +186,11 @@ export default {
 
       axios
         .post(
-          "/api/character/" + this.selectedCharacter + "/event/" + event.id + "/subscribe"
+          "/api/character/" +
+            this.selectedCharacter +
+            "/event/" +
+            event.id +
+            "/subscribe"
         )
         .then(function (response) {
           _this.loadEvents();
@@ -186,7 +203,13 @@ export default {
       let _this = this;
 
       axios
-        .post("/api/character/" + this.selectedCharacter + "/event/" + event.id + "/skip")
+        .post(
+          "/api/character/" +
+            this.selectedCharacter +
+            "/event/" +
+            event.id +
+            "/skip"
+        )
         .then(function (response) {
           _this.loadEvents();
         })
@@ -206,7 +229,6 @@ export default {
     loadEvents() {
       let characterId = this.selectedCharacter;
       let _this = this;
-      this.eventDeleted = false;
 
       // Get my events
       this.events = [];
