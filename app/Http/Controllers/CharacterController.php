@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
 use App\Models\GmUser;
 use App\Models\Character;
@@ -92,5 +93,30 @@ class CharacterController extends Controller
         ]);
 
         Character::create($request->all());
+    }
+
+    public function delete(Request $request, $characterId)
+    {
+        $token = $request->header('Authorization');
+        $user = GmUser::find($token);
+        if ($user == null)
+            return response('Invalid token', 401);
+
+        $character = Character::find($characterId);
+        // The character must belong to the user
+        if ($character->gm_user_id != $user->id)
+            return response('Invalid character id', 500);
+
+        try {
+            if (Character::where('id', $characterId)->exists()) {
+                $character  = Character::find($characterId);
+                $characterName = $character->name;
+                $character->delete();
+                return response($characterName, 200);
+            } else
+                return response('Character does not exist', 500);
+        } catch (Exception $e) {
+            return response("Delete failed: " + $e, 500);
+        }
     }
 }

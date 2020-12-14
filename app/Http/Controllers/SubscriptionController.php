@@ -56,8 +56,7 @@ class SubscriptionController extends Controller
     public function getCharactersByEvent(Request $request, $eventId)
     {
         $token = $request->header('Authorization');
-        $user = GmUser::where('id', $token)->first();
-
+        $user = GmUser::find($token);
         if ($user == null)
             return response('Invalid token', 401);
 

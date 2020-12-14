@@ -18,6 +18,12 @@
         </v-col>
       </v-row>
 
+      <div style="margin: 0 0 20px 0">
+        <v-alert v-model="characterDeleted" type="success" dismissible>
+          {{ characterDeletedLabel }}
+        </v-alert>
+      </div>
+
       <v-data-table
         :headers="charactersHeaders"
         :items="characters"
@@ -71,6 +77,9 @@ export default {
       ],
       characters: [],
       loadingCharacters: true,
+      characterDeleted: this.$route.params.deleted ? true : false,
+      characterDeletedLabel:
+        "Personnage " + this.$route.params.deleted + " supprimé.",
     };
   },
   methods: {
