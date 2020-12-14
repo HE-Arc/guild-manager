@@ -49,6 +49,7 @@ Route::post('/api/character/{characterId}/delete', 'App\Http\Controllers\Charact
 
 // Guilds
 Route::get('api/guilds', 'App\Http\Controllers\GuildController@getMyGuilds');
+Route::post('api/guild/create', 'App\Http\Controllers\GuildController@create');
 
 // Locations
 Route::get('api/locations', 'App\Http\Controllers\LocationController@getLocations');
