@@ -62,6 +62,7 @@ import EventResult from '../views/EventResult'
 import Characters from '../views/Characters'
 import CharacterNew from '../views/CharacterNew'
 import Character from '../views/Character'
+import Guilds from '../views/Guilds'
 
 /**
  * Construct a new Store instance
@@ -208,6 +209,12 @@ const router = new VueRouter({
             props: true,
             name: 'character',
             component: Character,
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/guilds',
+            name: 'guilds',
+            component: Guilds,
             meta: { requiresAuth: true }
         },
     ],
