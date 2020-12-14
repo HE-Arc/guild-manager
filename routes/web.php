@@ -48,6 +48,8 @@ Route::post('api/character/create', 'App\Http\Controllers\CharacterController@cr
 Route::post('/api/character/{characterId}/delete', 'App\Http\Controllers\CharacterController@delete');
 
 // Guilds
+Route::get('api/guild/{guildId}', 'App\Http\Controllers\GuildController@getGuild');
+Route::get('api/guild/{guildId}/characters', 'App\Http\Controllers\GuildController@getGuildMembers');
 Route::get('api/guilds', 'App\Http\Controllers\GuildController@getMyGuilds');
 Route::post('api/guild/create', 'App\Http\Controllers\GuildController@create');
 

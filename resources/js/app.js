@@ -64,6 +64,7 @@ import CharacterNew from '../views/CharacterNew'
 import Character from '../views/Character'
 import Guilds from '../views/Guilds'
 import GuildNew from '../views/GuildNew'
+import Guild from '../views/Guild'
 
 /**
  * Construct a new Store instance
@@ -222,6 +223,13 @@ const router = new VueRouter({
             path: '/guild/new',
             name: 'guild-new',
             component: GuildNew,
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/guild/:guildId',
+            props: true,
+            name: 'guild',
+            component: Guild,
             meta: { requiresAuth: true }
         },
     ],
