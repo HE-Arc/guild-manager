@@ -323,6 +323,11 @@ export default {
           _this.loadingEventCharacters = false;
         });
     },
+    modifyEvent() {
+      this.$router.push({
+        path: "/event/" + this.eventId + "/update",
+      });
+    },
     playEvent() {
       let _this = this;
 

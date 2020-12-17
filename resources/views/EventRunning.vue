@@ -11,9 +11,7 @@
             small
             dark
             class="mb-2"
-            @click="
-              $router.push({ name: 'event-prep', params: { eventId: this.eventId } })
-            "
+            @click="$router.push({ name: 'event-prep', params: { eventId: eventId } })"
           >
             <v-icon left>mdi-pen</v-icon>
             Gérer les participants
@@ -173,6 +171,7 @@ export default {
       event: null,
       bosses: null,
       bossId: null,
+      index: 0,
       currentBoss: null,
       bossItems: null,
       rosterCharacters: [],
@@ -265,6 +264,20 @@ export default {
     },
     updateBoss() {
       this.currentBoss = this.bosses.find((boss) => boss.id === this.bossId);
+      this.index = this.bosses.indexOf(this.currentBoss);
+      this.loadBossItems();
+    },
+    nextBoss() {
+      this.index++;
+      if (this.index >= this.bosses.length)
+        this.$router.push({
+          name: "event-result",
+          params: { eventId: this.eventId },
+        });
+      else {
+        this.currentBoss = this.bosses[this.index];
+        this.loadBossItems();
+      }
     },
     unassign(lootHistory) {
       let _this = this;
