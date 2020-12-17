@@ -8,6 +8,13 @@
           </v-col>
         </v-row>
         <v-row>
+          <v-col>
+            <v-alert v-model="formError" dismissible type="error">
+              Echec de l'identification.
+            </v-alert>
+          </v-col>
+        </v-row>
+        <v-row>
           <v-col cols="12" md="6">
             <v-text-field
               v-model="name"
@@ -87,6 +94,7 @@ export default {
     name: "Jean",
     password: "1234",
     showPassword: false,
+    formError: false,
   }),
   computed: {
     isLoggedIn() {
@@ -95,19 +103,29 @@ export default {
   },
   methods: {
     login: function () {
+      let _this = this;
+
       let name = this.name;
       let password = this.password;
 
       this.$store
         .dispatch("login", { name, password })
         .then(() => this.$router.push("/"))
-        .catch((err) => console.log(err));
+        .catch(function (error) {
+          console.log(error);
+          _this.formError = true;
+        });
     },
     logout: function () {
+      let _this = this;
+
       this.$store
         .dispatch("logout")
         .then(() => this.$router.push("/"))
-        .catch((err) => console.log(err));
+        .catch(function (error) {
+          console.log(error);
+          _this.formError = true;
+        });
     },
   },
 };
