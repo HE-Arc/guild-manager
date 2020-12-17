@@ -18,8 +18,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $gm_user_id
  * @property int $role_id
  * @property int $character_class_id
- * @property int $guild_id
- * @property int $guild_role_id
+ * @property int|null $guild_id
+ * @property int|null $guild_role_id
  * @property int $faction_id
  * @property int $server_id
  * @property Carbon|null $created_at
@@ -28,8 +28,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property CharacterClass $character_class
  * @property Faction $faction
  * @property GmUser $gm_user
- * @property Guild $guild
- * @property GuildRole $guild_role
+ * @property Guild|null $guild
+ * @property GuildRole|null $guild_role
  * @property Role $role
  * @property Server $server
  * @property Collection|Item[] $items

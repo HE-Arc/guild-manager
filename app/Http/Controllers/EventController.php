@@ -103,8 +103,9 @@ class EventController extends Controller
             'subscription_delay' => 'required',
             'player_count' => 'required',
             'auto_bench' => 'required',
-            'status' => 'required',
+            'finished' => 'required',
             'password' => 'nullable',
+            'boss_id' => 'nullable',
             'guild_id' => 'required',
             'location_id' => 'required',
         ]);

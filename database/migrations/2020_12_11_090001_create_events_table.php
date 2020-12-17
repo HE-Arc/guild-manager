@@ -20,8 +20,9 @@ class CreateEventsTable extends Migration
             $table->timestamp('subscription_delay')->useCurrent();
             $table->unsignedMediumInteger('player_count');
             $table->boolean('auto_bench');
-            $table->string('status');
+            $table->boolean('finished');
             $table->string('password')->nullable();
+            $table->foreignId('boss_id')->nullable()->constrained('bosses')->onUpdate('cascade')->onDelete('set null');
             $table->foreignId('gm_user_id')->constrained('gm_users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('guild_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('location_id')->constrained()->onUpdate('cascade')->onDelete('cascade');

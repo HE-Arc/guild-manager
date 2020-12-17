@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $updated_at
  * 
  * @property Location $location
+ * @property Collection|Event[] $events
  * @property Collection|Item[] $items
  *
  * @package App\Models
@@ -40,6 +41,11 @@ class Boss extends Model
 	public function location()
 	{
 		return $this->belongsTo(Location::class);
+	}
+
+	public function events()
+	{
+		return $this->hasMany(Event::class);
 	}
 
 	public function items()
