@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <div v-if="event && eventCharacters">
     <event-info-component v-bind:event="event"></event-info-component>
     <v-container fluid>
       <v-row dense>
@@ -214,6 +215,7 @@
         <span>Supprimer l'événement</span>
       </v-tooltip>
     </v-speed-dial>
+    </div>
   </v-app>
 </template>
 

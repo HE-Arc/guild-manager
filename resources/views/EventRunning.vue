@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-container v-if="event != null" fluid>
+    <v-container v-if="event && bosses && bossItems" fluid>
       <v-row>
         <v-col class="col-auto mr-auto">
           <h1>{{ event.name }}</h1>
@@ -21,6 +21,7 @@
         </v-col>
         <v-col class="col-auto" style="text-align: right">
           <v-select
+            @change="updateBoss"
             v-model="bossId"
             :items="bosses"
             item-text="name"
@@ -78,22 +79,20 @@
                 >
                   {{ item.type }}
                 </template>
-                <!--
                 <template v-slot:[`item.action`]="{ item }">
                   <v-select
-                    v-model="rosterCharacters"
-                    :items="characters"
+                    v-model="selectedCharacter"
+                    :items="rosterCharacters"
                     item-text="name"
                     item-value="id"
                     label="Assigner à..."
                   ></v-select>
-                </template> -->
+                </template>
               </v-data-table>
             </v-card>
           </template>
         </v-col>
-        <!--
-        <v-col cols="12" md="6">
+        <!--<v-col cols="12" md="6">
           <template>
             <v-card>
               <v-card-title>
@@ -139,7 +138,7 @@
               </v-data-table>
             </v-card>
           </template>
-        </v-col> -->
+        </v-col>-->
       </v-row>
     </v-container>
     <v-container v-else fill-height fluid>
@@ -160,7 +159,9 @@
 export default {
   computed: {
     computedItemsHeaders() {
-      return this.itemsHeaders.filter((h) => !h.hide || !this.$vuetify.breakpoint[h.hide]);
+      return this.itemsHeaders.filter(
+        (h) => !h.hide || !this.$vuetify.breakpoint[h.hide]
+      );
     },
   },
   data() {
@@ -192,7 +193,6 @@ export default {
     loadEvent() {
       let _this = this;
 
-      console.log(this.eventId);
       // Get event
       axios
         .get("/api/event/" + this.eventId)
@@ -216,7 +216,7 @@ export default {
         .then(function (response) {
           _this.bosses = response.data;
           _this.bossId = _this.event.boss_id;
-          console.log(_this.bossId);
+          //console.log(_this.bossId);
         })
         .catch(function (error) {
           console.log(error);
@@ -224,7 +224,6 @@ export default {
         .then(function () {
           console.log(_this.bosses);
           _this.loadBoss();
-          _this.loadBossItems();
         });
     },
     loadBoss() {
@@ -242,6 +241,7 @@ export default {
         })
         .then(function () {
           console.log(_this.currentBoss);
+          _this.loadBossItems();
         });
     },
     loadBossItems() {
@@ -263,12 +263,18 @@ export default {
           console.log(_this.bossItems);
         });
     },
+    updateBoss: function () {
+      this.currentBoss = bosses.filter((boss_id) => this.bossId);
+      console.log(this.currentBoss);
+
+      //this.loadBoss();
+    },
     unassign(assignament) {
       console.log("unnasigning" + assignament);
     },
   },
   created: function () {
-    this.loadEvent();
+    this.loadEvent();    
   },
 };
 </script>
