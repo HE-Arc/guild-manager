@@ -9,6 +9,7 @@ use App\Models\Character;
 use App\Models\Subscription;
 use App\Models\Event;
 use App\Models\Location;
+use App\Models\Boss;
 
 class EventController extends Controller
 {
@@ -38,6 +39,9 @@ class EventController extends Controller
         if ($user == null)
             return response('Invalid token', 401);
 
+        $event = Event::find($eventId);
+        $location_id = Location::find($event->location_id);
+
         try {
             if ($event = Event::find($eventId)) {
                 $event->status = 'running';
@@ -59,7 +63,7 @@ class EventController extends Controller
             return response('Invalid token', 401);
 
         $event = Event::find($eventId);
-        if ($event->status == 'running')
+        if ($event->boss_id)
             return true;
         else
             return false;

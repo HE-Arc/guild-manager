@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <event-info-component v-bind:eventId="this.eventId"> </event-info-component>
+    <event-info-component v-bind:event="event"></event-info-component>
     <v-container fluid>
       <v-row dense>
         <v-col cols="12" md="6" lg="4">
@@ -155,7 +155,7 @@
         </v-col>
       </v-row>
     </v-container>
-    <v-speed-dial v-model="fab" fixed bottom right>
+    <v-speed-dial v-if="event.boss_id" v-model="fab" fixed bottom right>
       <template v-slot:activator>
         <v-tooltip left>
           <template v-slot:activator="{ on, attrs }">
@@ -169,7 +169,7 @@
         </v-tooltip>
       </template>
     </v-speed-dial>
-    <v-speed-dial v-if="this.isRunning() == false" v-model="fab" fixed bottom right>
+    <v-speed-dial v-else v-model="fab" fixed bottom right>
       <template v-slot:activator>
         <v-tooltip left>
           <template v-slot:activator="{ on, attrs }">
@@ -241,25 +241,13 @@ export default {
       benchCharacters: [],
       absentCharacters: [],
       eventId: this.$route.params["id"],
+      event: null,
       modifying: false,
     };
   },
   methods: {
     clickItem(item) {
       console.log(item);
-    },
-    isRunning() {
-      let _this = this;
-
-      axios
-        .get("/api/event/" + _this.eventId + "/is_running")
-        .then(function (response) {
-          console.log(response.data);
-          return response.data;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
     },
     bench(character) {
       let _this = this;
@@ -280,6 +268,20 @@ export default {
         .post("/api/character/" + character.id + "/event/" + this.eventId + "/unbench")
         .then(function (response) {
           _this.loadEventCharacters();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    loadEvent() {
+      let _this = this;
+
+      console.log(this.eventId);
+      // Get event
+      axios
+        .get("/api/event/" + this.eventId)
+        .then(function (response) {
+          _this.event = response.data;
         })
         .catch(function (error) {
           console.log(error);
@@ -314,7 +316,10 @@ export default {
         .then(function (response) {
           // TODO send bossId
           console.log(response);
-          _this.$router.push({ name: "event-running", params: { eventId: _this.eventId } });
+          _this.$router.push({
+            name: "event-running",
+            params: { eventId: _this.eventId },
+          });
         })
         .catch(function (error) {
           console.log(error);
@@ -349,6 +354,7 @@ export default {
     },
   },
   created: function () {
+    this.loadEvent();
     this.loadEventCharacters();
   },
 };

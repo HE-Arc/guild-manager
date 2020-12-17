@@ -85,27 +85,12 @@
 
 <script>
 export default {
-  props: ["eventId"],
+  props: ["event"],
   data: () => ({
-    event: null,
   }),
-  methods: {
-    loadEvent() {
-      let _this = this;
-
-      // Get event
-      axios
-        .get("/api/event/" + this.eventId)
-        .then(function (response) {
-          _this.event = response.data;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
+  methods: {    
   },
   created: function () {
-    this.loadEvent();
   },
 };
 </script>
