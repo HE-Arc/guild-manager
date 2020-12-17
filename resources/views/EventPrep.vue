@@ -234,6 +234,18 @@ export default {
     clickItem(item) {
       console.log(item);
     },
+    isRunning(character) {
+      let _this = this;
+
+      axios
+        .get("/api/character/" + character.id + "/event/" + this.eventId + "/bench")
+        .then(function (response) {
+          _this.loadEventCharacters();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
     bench(character) {
       let _this = this;
 
@@ -286,7 +298,7 @@ export default {
         .post("/api/event/" + _this.eventId + "/run")
         .then(function (response) {
           // TODO send bossId
-          $router.push({name: 'event-running', params: {eventId : eventId}});
+          $router.push({ name: "event-running", params: { eventId: eventId } });
         })
         .catch(function (error) {
           console.log(error);

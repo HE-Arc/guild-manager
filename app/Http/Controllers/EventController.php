@@ -37,7 +37,7 @@ class EventController extends Controller
         $user = GmUser::find($token);
         if ($user == null)
             return response('Invalid token', 401);
-        
+
         try {
             if ($event = Event::find($eventId)) {
                 $event->status = 'running';
@@ -49,6 +49,20 @@ class EventController extends Controller
         } catch (Exception $e) {
             return response("Delete failed: " + $e, 500);
         }
+    }
+
+    public function isRunning(Request $request, $eventId)
+    {
+        $token = $request->header('Authorization');
+        $user = GmUser::find($token);
+        if ($user == null)
+            return response('Invalid token', 401);
+
+        $event = Event::find($eventId);
+        if ($event->status == 'running')
+            return true;
+        else
+            return false;
     }
 
     public function deleteEvent(Request $request, $eventId)
