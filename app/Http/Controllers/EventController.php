@@ -53,6 +53,26 @@ class EventController extends Controller
         }
     }
 
+    public function finish(Request $request, $eventId)
+    {
+        $token = $request->header('Authorization');
+        $user = GmUser::find($token);
+        if ($user == null)
+            return response('Invalid token', 401);
+
+        try {
+            if ($event = Event::find($eventId)) {                
+                $event->finished = true;
+                $event->save();
+            } else
+                return response('Event does not exist', 500);
+
+            return response(200);
+        } catch (Exception $e) {
+            return response("Finish failed: " + $e, 500);
+        }
+    }
+
     public function isRunning(Request $request, $eventId)
     {
         $token = $request->header('Authorization');

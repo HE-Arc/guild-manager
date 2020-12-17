@@ -30,6 +30,7 @@ Route::post('/api/event/{eventId}/delete', 'App\Http\Controllers\EventController
 Route::get('/api/event/{eventId}', 'App\Http\Controllers\EventController@getEvent');
 Route::post('/api/event/{eventId}/run/{locationId}', 'App\Http\Controllers\EventController@run');
 Route::get('/api/event/{eventId}/is_running', 'App\Http\Controllers\EventController@isRunning');
+Route::post('/api/event/{eventId}/finish', 'App\Http\Controllers\EventController@finish');
 
 // Subscription
 Route::get('/api/eventCharacters/{eventId}', 'App\Http\Controllers\SubscriptionController@getCharactersByEvent');
