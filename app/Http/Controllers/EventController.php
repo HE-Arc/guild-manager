@@ -36,9 +36,7 @@ class EventController extends Controller
         $token = $request->header('Authorization');
         $user = GmUser::find($token);
         if ($user == null)
-            //return response('Invalid token', 401);
-
-        
+            return response('Invalid token', 401);
         
         try {
             if ($event = Event::find($eventId)) {
