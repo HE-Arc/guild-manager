@@ -17,7 +17,8 @@ class GuildSeeder extends Seeder
         /* `guild_manager`.`guild` */
         $guildData = array(
             array('name' => 'Harde', 'faction_id' => '1', 'server_id' => '2', 'password' => NULL),
-            array('name' => 'Reapers', 'faction_id' => '2', 'server_id' => '1', 'password' => NULL)
+            array('name' => 'Reapers', 'faction_id' => '2', 'server_id' => '1', 'password' => NULL),
+            array('name' => 'Voltigeurs', 'faction_id' => '2', 'server_id' => '1', 'password' => NULL),
         );
 
         foreach ($guildData as $guild) {

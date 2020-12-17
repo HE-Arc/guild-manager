@@ -17,8 +17,20 @@ class GmUserSeeder extends Seeder
     {
         /* `guild_manager`.`gm_user` */
         $gmUserData = array(
-            array('name' => 'Jean', 'email' => 'jean@hotmail.com', 'password' => '1234'),
-            array('name' => 'Jacques', 'email' => 'jacques@hotmail.com', 'password' => '4321')
+            array('name' => 'Henry', 'email' => 'henry@hotmail.com', 'password' => '1234'),
+            array('name' => 'Jenifer', 'email' => 'jenifer@hotmail.com', 'password' => '1234'),
+            array('name' => 'Ravioli', 'email' => 'ravioli@hotmail.com', 'password' => '1234'),
+            array('name' => 'Niguan', 'email' => 'niguan@hotmail.com', 'password' => '1234'),
+            array('name' => 'Arthur', 'email' => 'arthur@hotmail.com', 'password' => '1234'),
+            array('name' => 'Josef', 'email' => 'josef@hotmail.com', 'password' => '1234'),
+            array('name' => 'Vladimir', 'email' => 'vladimir@hotmail.com', 'password' => '1234'),
+            array('name' => 'Pitievic', 'email' => 'pitievic@hotmail.com', 'password' => '1234'),
+            array('name' => 'Preskovic', 'email' => 'preskovic@hotmail.com', 'password' => '1234'),
+            array('name' => 'Ulfric', 'email' => 'ulfric@hotmail.com', 'password' => '1234'),
+            array('name' => 'Ibrahim', 'email' => 'ibrahim@hotmail.com', 'password' => '1234'),
+            array('name' => 'Joris', 'email' => 'joris@hotmail.com', 'password' => '1234'),
+            array('name' => 'Tendebert', 'email' => 'tendebert@hotmail.com', 'password' => '1234'),
+            array('name' => 'Enoris', 'email' => 'enoris@hotmail.com', 'password' => '1234'),
         );
 
         foreach ($gmUserData as $gmUser) {
