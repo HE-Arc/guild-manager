@@ -53,7 +53,7 @@
               <v-data-table
                 dense
                 hide-default-footer
-                :headers="itemHeaders"
+                :headers="computedItemsHeaders"
                 :items="bossItems"
                 sort-by="name"
                 class="elevation-1"
@@ -78,6 +78,7 @@
                 >
                   {{ item.type }}
                 </template>
+                <!--
                 <template v-slot:[`item.action`]="{ item }">
                   <v-select
                     v-model="rosterCharacters"
@@ -86,52 +87,59 @@
                     item-value="id"
                     label="Assigner à..."
                   ></v-select>
-                </template>
+                </template> -->
               </v-data-table>
             </v-card>
           </template>
         </v-col>
+        <!--
         <v-col cols="12" md="6">
-          <v-card-title>
-            <h3>Pièces attribuées</h3>
-            <v-spacer></v-spacer>
-            <v-text-field
-              v-model="search"
-              append-icon="mdi-magnify"
-              label="Search"
-              single-line
-              hide-details
-            ></v-text-field>
-          </v-card-title>
-          <v-data-table
-            :headers="lootHistoryHeaders"
-            :items="lootHistory"
-            sort-by="date"
-            class="elevation-1"
-            :search="search"
-            :loading="loadingLootHistory ? 'loading' : 'done'"
-            :loading-text="
-              loadingLootHistory ? 'Chargement en cours...' : 'Aucune donnée'
-            "
-            hide-default-footer
-          >
-            <template v-slot:[`item.itemName`]="{ item }">
-              {{ item.itemName }}
-            </template>
-            <template v-slot:[`item.recipient`]="{ item }">
-              {{ item.recipient }}
-            </template>
-            <template
-              v-slot:[`item.type`]="{ item }"
-              v-if="!$vuetify.breakpoint.xsAndDown"
-            >
-              {{ item.type }}
-            </template>
-            <template v-slot:[`item.action`]="{ item }">
-              <v-btn dark color="orange" @click="unassign(item)"> Désattribuer ></v-btn>
-            </template>
-          </v-data-table>
-        </v-col>
+          <template>
+            <v-card>
+              <v-card-title>
+                <h3>Pièces attribuées</h3>
+                <v-spacer></v-spacer>
+                <v-text-field
+                  v-model="search"
+                  append-icon="mdi-magnify"
+                  label="Search"
+                  single-line
+                  hide-details
+                ></v-text-field>
+              </v-card-title>
+              <v-data-table
+                :headers="lootHistoryHeaders"
+                :items="lootHistory"
+                sort-by="date"
+                class="elevation-1"
+                :search="search"
+                :loading="loadingLootHistory ? 'loading' : 'done'"
+                :loading-text="
+                  loadingLootHistory ? 'Chargement en cours...' : 'Aucune donnée'
+                "
+                hide-default-footer
+              >
+                <template v-slot:[`item.itemName`]="{ item }">
+                  {{ item.itemName }}
+                </template>
+                <template v-slot:[`item.recipient`]="{ item }">
+                  {{ item.recipient }}
+                </template>
+                <template
+                  v-slot:[`item.type`]="{ item }"
+                  v-if="!$vuetify.breakpoint.xsAndDown"
+                >
+                  {{ item.type }}
+                </template>
+                <template v-slot:[`item.action`]="{ item }">
+                  <v-btn dark color="orange" @click="unassign(item)">
+                    Désattribuer ></v-btn
+                  >
+                </template>
+              </v-data-table>
+            </v-card>
+          </template>
+        </v-col> -->
       </v-row>
     </v-container>
     <v-container v-else fill-height fluid>
@@ -151,15 +159,15 @@
 <script>
 export default {
   computed: {
-    computedHeaders() {
-      return this.headers.filter((h) => !h.hide || !this.$vuetify.breakpoint[h.hide]);
+    computedItemsHeaders() {
+      return this.itemsHeaders.filter((h) => !h.hide || !this.$vuetify.breakpoint[h.hide]);
     },
   },
   data() {
     // TODO : edit
     return {
       search: "",
-      itemHeaders: [
+      itemsHeaders: [
         { text: "Nom", value: "name" },
         { text: "Rareté", value: "rarity", hide: "xs" },
         { text: "Type", value: "type", hide: "xs" },
@@ -227,6 +235,7 @@ export default {
         .get("/api/boss/" + this.bossId)
         .then(function (response) {
           _this.currentBoss = response.data;
+          console.log(_this.bossId);
         })
         .catch(function (error) {
           console.log(error);
@@ -239,15 +248,18 @@ export default {
       let _this = this;
 
       // Get bosses for this location
+      this.loadingBossItems = true;
       axios
         .get("/api/bossItems/" + this.bossId)
         .then(function (response) {
-          _this.items = response.data;
+          //console.log(response.data);
+          _this.bossItems = response.data;
         })
         .catch(function (error) {
           console.log(error);
         })
         .then(function () {
+          _this.loadingBossItems = false;
           console.log(_this.bossItems);
         });
     },
