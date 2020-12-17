@@ -21,7 +21,7 @@
         </v-col>
         <v-col class="col-auto" style="text-align: right">
           <v-select
-            @change="updateBoss"
+            @change="updateBoss()"
             v-model="bossId"
             :items="bosses"
             item-text="name"
@@ -176,10 +176,11 @@ export default {
       ],
       lootHistoryHeaders: [{ text: "Nom", value: "name" }],
       event: null,
-      bossItems: null,
       bosses: null,
       bossId: null,
       currentBoss: null,
+      bossItems: null,
+      rosterCharacters: [],
       lootHistory: null,
       loadingBossItems: false,
       loadingLootHistory: false,
@@ -216,31 +217,14 @@ export default {
         .then(function (response) {
           _this.bosses = response.data;
           _this.bossId = _this.event.boss_id;
+          _this.updateBoss();
           //console.log(_this.bossId);
         })
         .catch(function (error) {
           console.log(error);
         })
         .then(function () {
-          console.log(_this.bosses);
-          _this.loadBoss();
-        });
-    },
-    loadBoss() {
-      let _this = this;
-
-      // Get current boss
-      axios
-        .get("/api/boss/" + this.bossId)
-        .then(function (response) {
-          _this.currentBoss = response.data;
-          console.log(_this.bossId);
-        })
-        .catch(function (error) {
-          console.log(error);
-        })
-        .then(function () {
-          console.log(_this.currentBoss);
+          //console.log(_this.bosses);
           _this.loadBossItems();
         });
     },
@@ -252,7 +236,6 @@ export default {
       axios
         .get("/api/bossItems/" + this.bossId)
         .then(function (response) {
-          //console.log(response.data);
           _this.bossItems = response.data;
         })
         .catch(function (error) {
@@ -260,14 +243,11 @@ export default {
         })
         .then(function () {
           _this.loadingBossItems = false;
-          console.log(_this.bossItems);
+          //console.log(_this.bossItems);
         });
     },
-    updateBoss: function () {
-      this.currentBoss = bosses.filter((boss_id) => this.bossId);
-      console.log(this.currentBoss);
-
-      //this.loadBoss();
+    updateBoss() {
+      this.currentBoss = this.bosses.find(boss => boss.id === this.bossId);
     },
     unassign(assignament) {
       console.log("unnasigning" + assignament);
