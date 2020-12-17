@@ -201,9 +201,9 @@ export default {
           subscription_delay: this.delay,
           player_count: this.playerCount,
           auto_bench: this.autoBench,
-          status: "preparing",
+          finished: false,
           password: this.password,
-          gm_user_id: this.$store.state.token,
+          boss_id: null,
           guild_id: this.selectedGuild,
           location_id: this.selectedLocation,
         })

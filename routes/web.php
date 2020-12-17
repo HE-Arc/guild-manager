@@ -48,8 +48,16 @@ Route::post('api/character/create', 'App\Http\Controllers\CharacterController@cr
 Route::post('/api/character/{characterId}/delete', 'App\Http\Controllers\CharacterController@delete');
 
 // Guilds
+Route::get('api/guild/{guildId}', 'App\Http\Controllers\GuildController@getGuild');
+Route::get('api/guild/{guildId}/characters', 'App\Http\Controllers\GuildController@getGuildMembers');
 Route::get('api/guilds', 'App\Http\Controllers\GuildController@getMyGuilds');
 Route::post('api/guild/create', 'App\Http\Controllers\GuildController@create');
+Route::post('api/guild/{guildId}/actor/{actorId}/delete', 'App\Http\Controllers\GuildController@delete');
+Route::post('api/guild/{guildId}/character/{characterId}/join', 'App\Http\Controllers\GuildController@join');
+Route::post('api/guild/{guildId}/character/{characterId}/quit', 'App\Http\Controllers\GuildController@quit');
+Route::post('api/guild/{guildId}/actor/{actorId}/target/{targetId}/promote', 'App\Http\Controllers\GuildController@promote');
+Route::post('api/guild/{guildId}/actor/{actorId}/target/{targetId}/demote', 'App\Http\Controllers\GuildController@demote');
+Route::post('api/guild/{guildId}/actor/{actorId}/target/{targetId}/kick', 'App\Http\Controllers\GuildController@kick');
 
 // Locations
 Route::get('api/locations', 'App\Http\Controllers\LocationController@getLocations');

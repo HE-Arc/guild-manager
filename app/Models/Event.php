@@ -19,14 +19,16 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon $subscription_delay
  * @property int $player_count
  * @property bool $auto_bench
- * @property string $status
+ * @property bool $finished
  * @property string|null $password
+ * @property int|null $boss_id
  * @property int $gm_user_id
  * @property int $guild_id
  * @property int $location_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
+ * @property Boss|null $boss
  * @property GmUser $gm_user
  * @property Guild $guild
  * @property Location $location
@@ -42,6 +44,8 @@ class Event extends Model
 	protected $casts = [
 		'player_count' => 'int',
 		'auto_bench' => 'bool',
+		'finished' => 'bool',
+		'boss_id' => 'int',
 		'gm_user_id' => 'int',
 		'guild_id' => 'int',
 		'location_id' => 'int'
@@ -62,12 +66,18 @@ class Event extends Model
 		'subscription_delay',
 		'player_count',
 		'auto_bench',
-		'status',
+		'finished',
 		'password',
+		'boss_id',
 		'gm_user_id',
 		'guild_id',
 		'location_id'
 	];
+
+	public function boss()
+	{
+		return $this->belongsTo(Boss::class);
+	}
 
 	public function gm_user()
 	{

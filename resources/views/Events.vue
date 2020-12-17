@@ -65,7 +65,7 @@
           </template>
           <template v-slot:[`item.status`]="{ item }">
             <v-chip
-              :color="item.status == 'ongoing' ? 'green' : 'red'"
+              :color="item.boss_id != null ? 'green' : 'red'"
               small
               dark
             ></v-chip>
@@ -237,10 +237,10 @@ export default {
         .get("/api/character/" + characterId + "/events")
         .then(function (response) {
           _this.ongoingEvents = response.data.filter(
-            (event) => event.status != "finished"
+            (event) => !event.finished
           );
           _this.finishedEvents = response.data.filter(
-            (event) => event.status == "finished"
+            (event) => event.finished
           );
         })
         .catch(function (error) {
