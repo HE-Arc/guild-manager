@@ -214,7 +214,7 @@ export default {
             location_id: this.event.location_id,
           })
           .then(function (response) {
-            _this.$router.push({ name: "events" });
+            _this.$router.push({ path: "/event/" + response.data });
           })
           .catch(function (error) {
             console.log(error);
@@ -235,7 +235,7 @@ export default {
             location_id: this.event.location_id,
           })
           .then(function (response) {
-            _this.$router.push({ name: "events" });
+            _this.$router.push({ path: "/event/" + response.data });
           })
           .catch(function (error) {
             console.log(error);

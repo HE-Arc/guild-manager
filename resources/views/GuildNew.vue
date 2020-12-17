@@ -118,7 +118,7 @@ export default {
             server_id: this.guild.server_id,
           })
           .then(function (response) {
-            _this.$router.push({ name: "guilds" });
+            _this.$router.push({ path: "/guild/" + response.data });
           })
           .catch(function (error) {
             console.log(error);
@@ -134,7 +134,7 @@ export default {
             server_id: this.guild.server_id,
           })
           .then(function (response) {
-            _this.$router.push({ name: "guilds" });
+            _this.$router.push({ path: "/guild/" + response.data });
           })
           .catch(function (error) {
             console.log(error);

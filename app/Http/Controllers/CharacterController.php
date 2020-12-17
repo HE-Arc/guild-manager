@@ -92,7 +92,9 @@ class CharacterController extends Controller
             'server_id' => 'required',
         ]);
 
-        Character::create($request->all());
+        $new_character = Character::create($request->all());
+        
+        return response($new_character->id, 200);
     }
 
     public function update(Request $request)
@@ -117,6 +119,8 @@ class CharacterController extends Controller
             return response('Invalid character', 500);
 
         $character->update($request->all());
+
+        return response($character->id, 200);
     }
 
     public function delete(Request $request, $characterId)

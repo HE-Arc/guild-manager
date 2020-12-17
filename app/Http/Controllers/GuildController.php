@@ -120,6 +120,8 @@ class GuildController extends Controller
 
         $new_guild = Guild::create($request->all());
         Character::where('id', $creator_id)->update(['guild_id' => $new_guild->id, 'guild_role_id' => 1]);
+
+        return response($new_guild->id, 200);
     }
 
     public function update(Request $request)
@@ -150,6 +152,8 @@ class GuildController extends Controller
             return response('Invalid character', 500);
 
         $guild->update($request->all());
+
+        return response($guild->id, 200);
     }
 
     public function delete(Request $request, $guildId, $actorId)

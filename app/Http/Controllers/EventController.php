@@ -143,7 +143,9 @@ class EventController extends Controller
             'location_id' => 'required',
         ]);
 
-        Event::create($request->all());
+        $new_event = Event::create($request->all());
+
+        return response($new_event->id, 200);
     }
 
     public function update(Request $request)
@@ -172,5 +174,7 @@ class EventController extends Controller
             return response('Invalid event', 500);
 
         $event->update($request->all());
+
+        return response($event->id, 200);
     }
 }

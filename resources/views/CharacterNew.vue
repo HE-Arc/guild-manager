@@ -135,7 +135,7 @@ export default {
             server_id: this.character.server_id,
           })
           .then(function (response) {
-            _this.$router.push({ name: "characters" });
+            _this.$router.push({ path: "/character/" + response.data });
           })
           .catch(function (error) {
             console.log(error);
@@ -152,7 +152,7 @@ export default {
             server_id: this.character.server_id,
           })
           .then(function (response) {
-            _this.$router.push({ name: "characters" });
+            _this.$router.push({ path: "/character/" + response.data });
           })
           .catch(function (error) {
             console.log(error);
