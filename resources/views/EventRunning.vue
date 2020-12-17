@@ -1,19 +1,17 @@
 <template>
   <v-app>
-    <v-container fluid>
+    <v-container v-if="event && bosses && bossItems" fluid>
       <v-row>
         <v-col class="col-auto mr-auto">
           <h1>{{ event.name }}</h1>
         </v-col>
-        <v-col class="col-auto" style="text-align: bottom">
+        <v-col class="col-auto" style="text-align: right">
           <v-btn
             color="primary"
             small
             dark
             class="mb-2"
-            @click="
-              $router.push({ name: 'event-prep', params: { eventId: this.eventId } })
-            "
+            @click="$router.push({ name: 'event-prep', params: { eventId: eventId } })"
           >
             <v-icon left>mdi-pen</v-icon>
             Gérer les participants
@@ -21,15 +19,16 @@
         </v-col>
         <v-col class="col-auto" style="text-align: right">
           <v-select
-            v-model="bosses"
+            @change="updateBoss()"
+            v-model="bossId"
             :items="bosses"
             item-text="name"
             item-value="id"
-            :label="currentBoss.name"
+            label="Changer de boss"
           ></v-select>
         </v-col>
         <v-col class="col-auto" style="text-align: right">
-          <v-btn color="primary" dark class="mb-2" @click="nextBoss()">            
+          <v-btn large color="primary" dark class="mb-2" @click="nextBoss()">
             Boss suivant
             <v-icon right>mdi-arrow-right</v-icon>
           </v-btn>
@@ -53,7 +52,7 @@
               <v-data-table
                 dense
                 hide-default-footer
-                :headers="itemHeaders"
+                :headers="computedItemsHeaders"
                 :items="bossItems"
                 sort-by="name"
                 class="elevation-1"
@@ -80,8 +79,8 @@
                 </template>
                 <template v-slot:[`item.action`]="{ item }">
                   <v-select
-                    v-model="rosterCharacters"
-                    :items="characters"
+                    v-model="selectedCharacter"
+                    :items="rosterCharacters"
                     item-text="name"
                     item-value="id"
                     label="Assigner à..."
@@ -92,47 +91,53 @@
           </template>
         </v-col>
         <v-col cols="12" md="6">
-          <v-card-title>
-            <h3>Pièces attribuées</h3>
-            <v-spacer></v-spacer>
-            <v-text-field
-              v-model="search"
-              append-icon="mdi-magnify"
-              label="Search"
-              single-line
-              hide-details
-            ></v-text-field>
-          </v-card-title>
-          <v-data-table
-            :headers="lootHistoryHeaders"
-            :items="lootHistory"
-            sort-by="date"
-            class="elevation-1"
-            :search="search"
-            :loading="loadingLootHistory ? 'loading' : 'done'"
-            :loading-text="
-              loadingLootHistory ? 'Chargement en cours...' : 'Aucune donnée'
-            "
-            hide-default-footer
-          >
-            <template v-slot:[`item.itemName`]="{ item }">
-              {{ item.itemName }}
-            </template>
-            <template v-slot:[`item.recipient`]="{ item }">
-              {{ item.recipient }}
-            </template>
-            <template
-              v-slot:[`item.type`]="{ item }"
-              v-if="!$vuetify.breakpoint.xsAndDown"
-            >
-              {{ item.type }}
-            </template>
-            <template v-slot:[`item.action`]="{ item }">
-              <v-btn dark color="orange" @click="unassign(item)">
-                Désattribuer ></v-btn
+          <template>
+            <v-card>
+              <v-card-title>
+                <h3>Pièces attribuées</h3>
+                <v-spacer></v-spacer>
+                <v-text-field
+                  v-model="search"
+                  append-icon="mdi-magnify"
+                  label="Search"
+                  single-line
+                  hide-details
+                ></v-text-field>
+              </v-card-title>
+              <v-data-table
+                :headers="lootHistoryHeaders"
+                :items="lootHistory"
+                class="elevation-1"
+                :search="search"
+                :loading="loadingLootHistory ? 'loading' : 'done'"
+                :loading-text="
+                  loadingLootHistory ? 'Chargement en cours...' : 'Aucune donnée'
+                "
+                hide-default-footer
               >
-            </template>
-          </v-data-table>
+                <template v-slot:[`item.item.name`]="{ item }">
+                  {{ item.item.name }}
+                </template>
+                <template v-slot:[`item.character.name`]="{ item }">
+                  {{ item.character.name }}
+                </template>
+                <template v-slot:[`item.action`]="{ item }">
+                  <v-btn dark color="orange" @click="unassign(item)"> Désattribuer</v-btn>
+                </template>
+              </v-data-table>
+            </v-card>
+          </template>
+        </v-col>
+      </v-row>
+    </v-container>
+    <v-container v-else fill-height fluid>
+      <v-row align="center" justify="center">
+        <v-col style="text-align: center">
+          <v-progress-circular
+            indeterminate
+            color="primary"
+            :size="70"
+          ></v-progress-circular>
         </v-col>
       </v-row>
     </v-container>
@@ -142,28 +147,34 @@
 <script>
 export default {
   computed: {
-    computedHeaders() {
-      return this.headers.filter((h) => !h.hide || !this.$vuetify.breakpoint[h.hide]);
+    computedItemsHeaders() {
+      return this.itemsHeaders.filter(
+        (h) => !h.hide || !this.$vuetify.breakpoint[h.hide]
+      );
     },
   },
   data() {
     // TODO : edit
     return {
       search: "",
-      itemHeaders: [
-        { text: "Nom", value: "name" },
+      itemsHeaders: [
+        { text: "Pièce", value: "name" },
         { text: "Rareté", value: "rarity", hide: "xs" },
         { text: "Type", value: "type", hide: "xs" },
         { text: "Action", value: "action", sortable: false },
       ],
       lootHistoryHeaders: [
-        { text: "Nom", value: "name" },
+        { text: "Pièce", value: "item.name" },
+        { text: "Personnage", value: "character.name" },
+        { text: "Action", value: "action", sortable: false },
       ],
       event: null,
-      bossItems: null,
       bosses: null,
       bossId: null,
+      index: 0,
       currentBoss: null,
+      bossItems: null,
+      rosterCharacters: [],
       lootHistory: null,
       loadingBossItems: false,
       loadingLootHistory: false,
@@ -176,71 +187,113 @@ export default {
     },
     loadEvent() {
       let _this = this;
-      
-      console.log(this.eventId);
+
       // Get event
       axios
         .get("/api/event/" + this.eventId)
         .then(function (response) {
           _this.event = response.data;
-          _this.loadBosses();
         })
         .catch(function (error) {
           console.log(error);
+        })
+        .then(function () {
+          //console.log(_this.event);
+          _this.loadBosses();
+          _this.loadLootHistory();
         });
     },
     loadBosses() {
       let _this = this;
 
-      console.log(this.event);
-      console.log(this.event.location_id);
       // Get bosses for this location
       axios
         .get("/api/locationBosses/" + this.event.location_id)
         .then(function (response) {
           _this.bosses = response.data;
-          //console.log(_this.bosses[0]);
-          _this.bossId = _this.bosses[0].id;        
+          _this.bossId = _this.event.boss_id;
+          _this.updateBoss();
+          //console.log(_this.bossId);
         })
         .catch(function (error) {
           console.log(error);
-        });
-    },
-    loadBoss() {
-      let _this = this;
-
-      // Get current boss
-      axios
-        .get("/api/boss/" + this.bossId)
-        .then(function (response) {
-          _this.currentBoss = response.data;
         })
-        .catch(function (error) {
-          console.log(error);
+        .then(function () {
+          //console.log(_this.bosses);
+          _this.loadBossItems();
         });
     },
     loadBossItems() {
       let _this = this;
 
       // Get bosses for this location
+      this.loadingBossItems = true;
       axios
         .get("/api/bossItems/" + this.bossId)
         .then(function (response) {
-          _this.items = response.data;
+          _this.bossItems = response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+        .then(function () {
+          _this.loadingBossItems = false;
+          //console.log(_this.bossItems);
+        });
+    },
+    loadLootHistory() {
+      let _this = this;
+
+      // Get loot history
+      this.loadingLootHistory = true;
+
+      console.log(this.event.id);
+
+      axios
+        .get("/api/event/" + this.event.id + "/histories")
+        .then(function (response) {
+          _this.lootHistory = response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+        .then(function (response) {
+          _this.loadingLootHistory = false;
+          console.log(_this.lootHistory[0].character.name);
+        });
+    },
+    updateBoss() {
+      this.currentBoss = this.bosses.find((boss) => boss.id === this.bossId);
+      this.index = this.bosses.indexOf(this.currentBoss);
+      this.loadBossItems();
+    },
+    nextBoss() {
+      this.index++;
+      if (this.index >= this.bosses.length)
+        this.$router.push({
+          name: "event-result",
+          params: { eventId: this.eventId },
+        });
+      else {
+        this.currentBoss = this.bosses[this.index];
+        this.loadBossItems();
+      }
+    },
+    unassign(lootHistory) {
+      let _this = this;
+
+      axios
+        .post("/api/history/" + lootHistory.id + "/delete")
+        .then(function (response) {
+          _this.loadLootHistory();
         })
         .catch(function (error) {
           console.log(error);
         });
     },
-    unassign(assignament) {
-      console.log("unnasigning" + assignament);
-    }
   },
   created: function () {
     this.loadEvent();
-    
-    this.loadBoss();
-    this.loadBossItems();
   },
 };
 </script>

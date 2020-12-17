@@ -9,6 +9,7 @@ use App\Models\Character;
 use App\Models\Subscription;
 use App\Models\Event;
 use App\Models\Location;
+use App\Models\Boss;
 
 class EventController extends Controller
 {
@@ -31,7 +32,7 @@ class EventController extends Controller
         return $event;
     }
 
-    public function run(Request $request, $eventId)
+    public function run(Request $request, $eventId, $locationId)
     {
         $token = $request->header('Authorization');
         $user = GmUser::find($token);
@@ -40,14 +41,15 @@ class EventController extends Controller
 
         try {
             if ($event = Event::find($eventId)) {
-                $event->status = 'running';
+                $first_boss_id = Boss::where('location_id', $locationId)->first()->id;
+                $event->boss_id = $first_boss_id;
                 $event->save();
             } else
                 return response('Event does not exist', 500);
 
-            return response($eventId, 200);
+            return response($first_boss_id, 200);
         } catch (Exception $e) {
-            return response("Delete failed: " + $e, 500);
+            return response("Run failed: " + $e, 500);
         }
     }
 
@@ -59,7 +61,7 @@ class EventController extends Controller
             return response('Invalid token', 401);
 
         $event = Event::find($eventId);
-        if ($event->status == 'running')
+        if ($event->boss_id)
             return true;
         else
             return false;

@@ -1,6 +1,6 @@
 <!--TODO display with vuetify list-->
 <template>
-  <v-container v-if="event" fluid>
+  <v-container fluid>
     <v-row>
       <v-col cols="4">
         <v-tooltip bottom>
@@ -70,42 +70,16 @@
       </v-col>
     </v-row>
   </v-container>
-  <v-container v-else fluid>
-    <v-row align="center" justify="center">
-      <v-col style="text-align: center">
-        <v-progress-circular
-          indeterminate
-          color="primary"
-          :size="70"
-        ></v-progress-circular>
-      </v-col>
-    </v-row>
-  </v-container>
 </template>
 
 <script>
 export default {
-  props: ["eventId"],
+  props: ["event"],
   data: () => ({
-    event: null,
   }),
-  methods: {
-    loadEvent() {
-      let _this = this;
-
-      // Get event
-      axios
-        .get("/api/event/" + this.eventId)
-        .then(function (response) {
-          _this.event = response.data;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
+  methods: {    
   },
   created: function () {
-    this.loadEvent();
   },
 };
 </script>

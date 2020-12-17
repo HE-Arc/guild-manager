@@ -10,6 +10,7 @@ use App\Models\Item;
 use App\Models\History;
 use App\Models\Location;
 use App\Models\Subscription;
+use Exception;
 
 class HistoryController extends Controller
 {
@@ -71,5 +72,26 @@ class HistoryController extends Controller
         }
 
         return $histories;
+    }
+
+    public function delete(Request $request, $historyId)
+    {
+        $token = $request->header('Authorization');
+        $user = GmUser::where('id', $token)->first();
+
+        if ($user == null)
+            return response('Invalid token', 401);
+
+        try {
+            if (History::where('id', $historyId)->exists()) {
+                $event = History::find($historyId);
+                $event->delete();
+            } else
+                return response('History entry does not exist', 500);
+
+            return response(200);
+        } catch (Exception $e) {
+            return response("Delete failed: " + $e, 500);
+        }
     }
 }

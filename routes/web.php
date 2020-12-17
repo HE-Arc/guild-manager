@@ -28,8 +28,7 @@ Route::post('api/event/update', 'App\Http\Controllers\EventController@update');
 Route::post('/api/event/{eventId}/update', 'App\Http\Controllers\EventController@updateEvent');
 Route::post('/api/event/{eventId}/delete', 'App\Http\Controllers\EventController@deleteEvent');
 Route::get('/api/event/{eventId}', 'App\Http\Controllers\EventController@getEvent');
-//TODO use update instead
-Route::post('/api/event/{eventId}/run', 'App\Http\Controllers\EventController@run');
+Route::post('/api/event/{eventId}/run/{locationId}', 'App\Http\Controllers\EventController@run');
 Route::get('/api/event/{eventId}/is_running', 'App\Http\Controllers\EventController@isRunning');
 
 // EventCharacter
@@ -45,6 +44,7 @@ Route::post('api/character/{characterId}/event/{eventId}/skip', 'App\Http\Contro
 // History
 Route::get('/api/event/{eventId}/histories', 'App\Http\Controllers\HistoryController@getEventHistories');
 Route::get('/api/character/{characterId}/histories', 'App\Http\Controllers\HistoryController@getCharacterHistories');
+Route::post('/api/history/{historyId}/delete', 'App\Http\Controllers\HistoryController@delete');
 
 // Characters
 Route::get('api/character/{characterId}', 'App\Http\Controllers\CharacterController@getCharacter');
