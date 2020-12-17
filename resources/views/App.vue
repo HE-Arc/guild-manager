@@ -48,13 +48,24 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
+      <div v-if="isLoggedIn">
+        <v-btn icon @click="$router.push({ name: 'login' }).catch(() => {})">
+          <v-icon>mdi-account-circle</v-icon>
+        </v-btn>
 
-      <v-btn icon @click="$router.push({ name: 'login' }).catch(() => {})">
-        <v-icon>mdi-account-circle</v-icon>
-      </v-btn>
+        <v-btn icon @click="$router.push({ name: 'login' }).catch(() => {})">
+          <v-icon>mdi-logout</v-icon>
+        </v-btn>
+      </div>
+      <div v-else>
+        <v-btn icon @click="$router.push({ name: 'register' }).catch(() => {})">
+          <v-icon>mdi-account-plus</v-icon>
+        </v-btn>
+
+        <v-btn icon @click="$router.push({ name: 'login' }).catch(() => {})">
+          <v-icon>mdi-login</v-icon>
+        </v-btn>
+      </div>
     </v-app-bar>
 
     <!-- Sizes your content based upon application components -->
@@ -78,14 +89,24 @@ export default {
     drawer: false,
     group: null,
   }),
+  computed: {
+    isLoggedIn() {
+      return this.$store.getters.isLoggedIn;
+    },
+  },
   created: function () {
     // Handling expired token cases
     let _this = this;
     axios.interceptors.response.use(undefined, function (err) {
       return new Promise(function (resolve, reject) {
-        if (err.response && err.response.status === 401 && err.config && !err.config.__isRetryRequest) {
+        if (
+          err.response &&
+          err.response.status === 401 &&
+          err.config &&
+          !err.config.__isRetryRequest
+        ) {
           _this.$store.dispatch("logout");
-          _this.$router.push({ name: 'login' }).catch(() => {})
+          _this.$router.push({ name: "login" }).catch(() => {});
         }
         throw err;
       });

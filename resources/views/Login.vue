@@ -60,6 +60,7 @@
       </div>
     </v-container>
 
+    <!--
     <v-container fluid>
       <v-row>
         <v-col class="col-sm-12 col-md-6">
@@ -70,6 +71,7 @@
         </v-col>
       </v-row>
     </v-container>
+    -->
   </v-app>
 </template>
 
