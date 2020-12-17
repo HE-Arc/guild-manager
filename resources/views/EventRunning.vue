@@ -20,7 +20,7 @@
         <v-col class="col-auto" style="text-align: right">
           <v-select
             @change="updateBoss()"
-            v-model="index"
+            v-model="bossId"
             :items="bosses"
             item-text="name"
             item-value="id"
@@ -252,8 +252,6 @@ export default {
       // Get loot history
       this.loadingLootHistory = true;
 
-      console.log(this.event.id);
-
       axios
         .get("/api/event/" + this.event.id + "/histories")
         .then(function (response) {
@@ -264,7 +262,7 @@ export default {
         })
         .then(function (response) {
           _this.loadingLootHistory = false;
-          console.log(_this.lootHistory[0].character.name);
+          //console.log(_this.lootHistory[0].character.name);
         });
     },
     loadSubscriptions() {
@@ -282,14 +280,12 @@ export default {
         })
         .then(function (response) {
           _this.loadingSubscriptions = false;
-          console.log(_this.subscriptions);
+          //console.log(_this.subscriptions);
         });
     },
     updateBoss() {
-      console.log("index");
-      console.log(this.index);
-      this.currentBoss = this.bosses[this.index];
-      this.bossId = this.currentBoss.id;
+      this.currentBoss = this.bosses.find((boss) => boss.id === this.bossId);
+      this.index = this.bosses.indexOf(this.currentBoss);
       this.loadBossItems();
     },
     nextBoss() {
@@ -309,16 +305,13 @@ export default {
             console.log(error);
           });
       else {
-       this.updateBoss();
+        this.currentBoss = this.bosses[this.index];
+        this.bossId = this.currentBoss.id;
+        this.loadBossItems();
       }
     },
     assign(itemId) {
       let _this = this;
-
-      console.log("check");
-      console.log(this.eventId);
-      console.log(itemId);
-      console.log(this.selectedCharacter);
 
       axios
         .post("/api/history/create", {
