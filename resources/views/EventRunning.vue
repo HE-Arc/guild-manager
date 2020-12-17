@@ -5,9 +5,10 @@
         <v-col class="col-auto mr-auto">
           <h1>{{ event.name }}</h1>
         </v-col>
-        <v-col class="col-auto" style="text-align: right">
+        <v-col class="col-auto" style="text-align: bottom">
           <v-btn
             color="primary"
+            small
             dark
             class="mb-2"
             @click="
@@ -28,9 +29,9 @@
           ></v-select>
         </v-col>
         <v-col class="col-auto" style="text-align: right">
-          <v-btn color="primary" dark class="mb-2" @click="nextBoss()">
-            <v-icon left>mdi-arrow</v-icon>
+          <v-btn color="primary" dark class="mb-2" @click="nextBoss()">            
             Boss suivant
+            <v-icon right>mdi-arrow-right</v-icon>
           </v-btn>
         </v-col>
       </v-row>
@@ -107,8 +108,8 @@
             :items="lootHistory"
             sort-by="date"
             class="elevation-1"
-            :loading="loadingLootHistory ? 'loading' : 'done'"
             :search="search"
+            :loading="loadingLootHistory ? 'loading' : 'done'"
             :loading-text="
               loadingLootHistory ? 'Chargement en cours...' : 'Aucune donnée'
             "
@@ -127,7 +128,7 @@
               {{ item.type }}
             </template>
             <template v-slot:[`item.action`]="{ item }">
-              <v-btn dark color="orange" @click="unassign(item.id)">
+              <v-btn dark color="orange" @click="unassign(item)">
                 Désattribuer ></v-btn
               >
             </template>
@@ -155,12 +156,17 @@ export default {
         { text: "Type", value: "type", hide: "xs" },
         { text: "Action", value: "action", sortable: false },
       ],
+      lootHistoryHeaders: [
+        { text: "Nom", value: "name" },
+      ],
       event: [],
-      items: [],
+      bossItems: [],
       bosses: [],
       bossId: null,
       currentBoss: [],
-      loadingEvent: false,
+      lootHistory: [],
+      loadingBossItems: false,
+      loadingLootHistory: false,
       eventId: this.$route.params["id"],
     };
   },
@@ -189,6 +195,7 @@ export default {
         .get("/api/locationBosses/" + this.event.location_id)
         .then(function (response) {
           _this.bosses = response.data;
+          console.log(_this.bosses[0]);
           _this.bossId = _this.bosses[0].id;        
         })
         .catch(function (error) {
@@ -208,7 +215,7 @@ export default {
           console.log(error);
         });
     },
-    loadingBossItems() {
+    loadBossItems() {
       let _this = this;
 
       // Get bosses for this location
@@ -220,12 +227,16 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
+    },
+    unassign(assignament) {
+      console.log("unnasigning" + assignament);
     }
   },
   created: function () {
     this.loadEvent();
     this.loadBosses();
     this.loadBoss();
+    this.loadBossItems();
   },
 };
 </script>
