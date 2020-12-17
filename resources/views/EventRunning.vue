@@ -124,9 +124,7 @@
                   {{ item.character.name }}
                 </template>
                 <template v-slot:[`item.action`]="{ item }">
-                  <v-btn dark color="orange" @click="unassign(item)">
-                    Désattribuer</v-btn
-                  >
+                  <v-btn dark color="orange" @click="unassign(item)"> Désattribuer</v-btn>
                 </template>
               </v-data-table>
             </v-card>
@@ -255,7 +253,7 @@ export default {
       axios
         .get("/api/event/" + this.event.id + "/histories")
         .then(function (response) {
-          _this.lootHistory = response.data;          
+          _this.lootHistory = response.data;
         })
         .catch(function (error) {
           console.log(error);
@@ -268,12 +266,21 @@ export default {
     updateBoss() {
       this.currentBoss = this.bosses.find((boss) => boss.id === this.bossId);
     },
-    unassign(assignament) {
-      console.log("unnasigning" + assignament.id);
+    unassign(lootHistory) {
+      let _this = this;
+
+      axios
+        .post("/api/history/" + lootHistory.id + "/delete")
+        .then(function (response) {
+          _this.loadLootHistory();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
   },
   created: function () {
-    this.loadEvent();    
+    this.loadEvent();
   },
 };
 </script>

@@ -43,6 +43,7 @@ Route::post('api/character/{characterId}/event/{eventId}/skip', 'App\Http\Contro
 // History
 Route::get('/api/event/{eventId}/histories', 'App\Http\Controllers\HistoryController@getEventHistories');
 Route::get('/api/character/{characterId}/histories', 'App\Http\Controllers\HistoryController@getCharacterHistories');
+Route::post('/api/history/{historyId}/delete', 'App\Http\Controllers\HistoryController@delete');
 
 // Characters
 Route::get('api/character/{characterId}', 'App\Http\Controllers\CharacterController@getCharacter');

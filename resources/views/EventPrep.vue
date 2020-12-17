@@ -342,7 +342,7 @@ export default {
       let _this = this;
 
       axios
-        .post("/api/event/" + _this.eventId + "/delete")
+        .post("/api/event/" + this.eventId + "/delete")
         .then(function (response) {
           _this.$router.push({
             name: "events",
