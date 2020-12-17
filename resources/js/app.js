@@ -240,6 +240,13 @@ const router = new VueRouter({
             meta: { requiresAuth: true }
         },
         {
+            path: '/guild/:guildId/update',
+            props: true,
+            name: 'guild-new',
+            component: GuildNew,
+            meta: { requiresAuth: true }
+        },
+        {
             path: '/guild/:guildId',
             props: true,
             name: 'guild',

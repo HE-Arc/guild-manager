@@ -4,13 +4,13 @@
       <v-container fluid>
         <v-row>
           <v-col>
-            <h1>Créer une guilde</h1>
+            <h1>{{ guildId == null ? "Créer" : "Modifier" }} une guilde</h1>
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="12" md="6">
             <v-text-field
-              v-model="name"
+              v-model="guild.name"
               :rules="[rules.required, rules.min, rules.max]"
               :counter="64"
               label="Nom"
@@ -19,12 +19,16 @@
           </v-col>
           <v-col cols="12" md="6">
             <v-select
-              v-model="selectedFreeCharacter"
-              :items="freeCharacters"
+              v-model="guild.actor_id"
+              :items="actors"
               item-text="name"
               item-value="id"
               :rules="[rules.required]"
-              label="Créateur (personnage sans guilde)"
+              :label="
+                guildId == null
+                  ? 'Créateur (personnage sans guilde)'
+                  : 'Maître de guilde'
+              "
               required
             ></v-select>
           </v-col>
@@ -32,7 +36,7 @@
         <v-row>
           <v-col cols="12" md="6">
             <v-select
-              v-model="selectedFaction"
+              v-model="guild.faction_id"
               :items="factions"
               item-text="name"
               item-value="id"
@@ -43,7 +47,7 @@
           </v-col>
           <v-col cols="12" md="6">
             <v-select
-              v-model="selectedServer"
+              v-model="guild.server_id"
               :items="servers"
               item-text="name"
               item-value="id"
@@ -61,17 +65,14 @@
               class="mr-4"
               @click="createGuild"
             >
-              Créer la guilde
+              {{ guildId == null ? "Créer" : "Modifier" }} la guilde
             </v-btn>
           </v-col>
         </v-row>
         <v-row>
           <v-col>
-            <v-alert v-model="formSuccess" dismissible type="success">
-              Guilde créé avec succès.
-            </v-alert>
             <v-alert v-model="formError" dismissible type="error">
-              Erreur lors de la création de la guilde.
+              Erreur lors de la création/modification de la guilde.
             </v-alert>
           </v-col>
         </v-row>
@@ -82,6 +83,7 @@
 
 <script>
 export default {
+  props: ["guildId"],
   data: () => ({
     valid: false,
     rules: {
@@ -89,13 +91,15 @@ export default {
       min: (v) => v.length >= 4 || "Au moins 4 charactères",
       max: (v) => v.length <= 64 || "Au maximum de 64 lettres",
     },
-    name: "",
-    freeCharacters: [],
-    selectedFreeCharacter: null,
+    guild: {
+      name: "",
+      actor_id: null,
+      faction_id: null,
+      server_id: null,
+    },
+    actors: [],
     factions: [],
-    selectedFaction: null,
     servers: [],
-    selectedServer: null,
     formSuccess: false,
     formError: false,
   }),
@@ -105,32 +109,55 @@ export default {
       this.formSuccess = false;
       this.formError = false;
 
-      axios
-        .post("/api/guild/create", {
-          name: this.name,
-          creator_id: this.selectedFreeCharacter,
-          faction_id: this.selectedFaction,
-          server_id: this.selectedServer,
-        })
-        .then(function (response) {
-          _this.$router.push({ name: "guilds" });
-        })
-        .catch(function (error) {
-          console.log(error);
-          _this.formError = true;
-        });
+      if (this.guild.id == null) {
+        axios
+          .post("/api/guild/create", {
+            name: this.guild.name,
+            creator_id: this.guild.actor_id,
+            faction_id: this.guild.faction_id,
+            server_id: this.guild.server_id,
+          })
+          .then(function (response) {
+            _this.$router.push({ name: "guilds" });
+          })
+          .catch(function (error) {
+            console.log(error);
+            _this.formError = true;
+          });
+      } else {
+        axios
+          .post("/api/guild/update", {
+            id: this.guild.id,
+            name: this.guild.name,
+            actor_id: this.guild.actor_id,
+            faction_id: this.guild.faction_id,
+            server_id: this.guild.server_id,
+          })
+          .then(function (response) {
+            _this.$router.push({ name: "guilds" });
+          })
+          .catch(function (error) {
+            console.log(error);
+            _this.formError = true;
+          });
+      }
     },
   },
   created: function () {
     let _this = this;
-    
-    // Get my free characters
+
+    // Get my free characters / guild masters
     axios
       .get("/api/characters")
       .then(function (response) {
-        _this.freeCharacters = response.data.filter(
-            (character) => character.guild_id == null
-          );
+        _this.actors =
+          _this.guildId != null
+            ? response.data.filter(
+                (character) =>
+                  character.guild_id == _this.guildId &&
+                  character.guild_role_id == 1
+              )
+            : response.data.filter((character) => character.guild_id == null);
       })
       .catch(function (error) {
         console.log(error);
@@ -155,6 +182,18 @@ export default {
       .catch(function (error) {
         console.log(error);
       });
+
+    // Get the guild
+    if (this.guildId != null) {
+      axios
+        .get("/api/guild/" + this.guildId)
+        .then(function (response) {
+          _this.guild = response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
   },
 };
 </script>

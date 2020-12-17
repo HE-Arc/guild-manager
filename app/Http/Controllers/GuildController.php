@@ -82,8 +82,8 @@ class GuildController extends Controller
 
                 $guild = Guild::find($character->guild_id);
 
-                $faction = Faction::find($character->faction_id);
-                $server = Server::find($character->server_id);
+                $faction = Faction::find($guild->faction_id);
+                $server = Server::find($guild->server_id);
                 $player_count = Character::where('guild_id', $guild->id)->count();
 
                 $guild->faction = $faction;
@@ -120,6 +120,36 @@ class GuildController extends Controller
 
         $new_guild = Guild::create($request->all());
         Character::where('id', $creator_id)->update(['guild_id' => $new_guild->id, 'guild_role_id' => 1]);
+    }
+
+    public function update(Request $request)
+    {
+        $token = $request->header('Authorization');
+        $user = GmUser::find($token);
+        if ($user == null)
+            return response('Invalid token', 401);
+
+        $request->validate([
+            'id' => 'required',
+            'name' => 'required',
+            'actor_id' => 'required',
+            'faction_id' => 'required',
+            'server_id' => 'required',
+        ]);
+
+        $guild = Guild::find($request->id);
+        // The guild must exist
+        if (is_null($guild))
+            return response('Invalid guild id', 500);
+
+        // Check creator id
+        $actor_id = $request->input('actor_id');
+        $character = Character::find($actor_id);
+        // The character must belong to the user and have a master role within the guild
+        if (is_null($character) || $character->gm_user_id != $user->id || $character->guild_id != $guild->id || $character->guild_role_id != 1)
+            return response('Invalid character', 500);
+
+        $guild->update($request->all());
     }
 
     public function delete(Request $request, $guildId, $actorId)
