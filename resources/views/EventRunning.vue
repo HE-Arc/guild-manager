@@ -79,8 +79,9 @@
                 </template>
                 <template v-slot:[`item.action`]="{ item }">
                   <v-select
+                    @change="assign(item.id)"
                     v-model="selectedCharacter"
-                    :items="rosterCharacters"
+                    :items="subscriptions"
                     item-text="name"
                     item-value="id"
                     label="Assigner à..."
@@ -174,10 +175,12 @@ export default {
       index: 0,
       currentBoss: null,
       bossItems: null,
-      rosterCharacters: [],
+      subscriptions: null,
+      selectedCharacter: null,
       lootHistory: null,
       loadingBossItems: false,
       loadingLootHistory: false,
+      loadingSubscriptions: false,
       eventId: this.$route.params["id"],
     };
   },
@@ -201,6 +204,7 @@ export default {
           //console.log(_this.event);
           _this.loadBosses();
           _this.loadLootHistory();
+          _this.loadSubscriptions();
         });
     },
     loadBosses() {
@@ -262,6 +266,24 @@ export default {
           console.log(_this.lootHistory[0].character.name);
         });
     },
+    loadSubscriptions() {
+      let _this = this;
+
+      // Get subscriptions
+      this.loadingSubscriptions = true;
+      axios
+        .get("/api/eventCharacters/" + this.eventId)
+        .then(function (response) {
+          _this.subscriptions = response.data.roster;
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+        .then(function (response) {
+          _this.loadingSubscriptions = false;
+          console.log(_this.subscriptions);
+        });
+    },
     updateBoss() {
       this.currentBoss = this.bosses.find((boss) => boss.id === this.bossId);
       this.index = this.bosses.indexOf(this.currentBoss);
@@ -278,6 +300,27 @@ export default {
         this.currentBoss = this.bosses[this.index];
         this.loadBossItems();
       }
+    },
+    assign(itemId) {
+      let _this = this;
+
+      console.log("check");
+      console.log(this.eventId);
+      console.log(itemId);
+      console.log(this.selectedCharacter);
+
+      axios
+        .post("/api/history/create", {
+          event_id: this.eventId,
+          item_id: itemId,
+          character_id: this.selectedCharacter,
+        })
+        .then(function (response) {
+          _this.loadLootHistory();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
     unassign(lootHistory) {
       let _this = this;

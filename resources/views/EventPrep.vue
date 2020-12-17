@@ -257,7 +257,6 @@ export default {
       absentCharacters: [],
       eventId: this.$route.params["id"],
       event: null,
-      modifying: false,
     };
   },
   methods: {
