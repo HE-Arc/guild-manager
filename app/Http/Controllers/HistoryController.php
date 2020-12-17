@@ -94,4 +94,26 @@ class HistoryController extends Controller
             return response("Delete failed: " + $e, 500);
         }
     }
+
+    public function create(Request $request)
+    {
+        $token = $request->header('Authorization');
+        $user = GmUser::find($token);
+        if ($user == null)
+            return response('Invalid token', 401);
+
+        $request->merge([
+            'gm_user_id' => $user->id,
+        ]);
+
+        $request->validate([
+            'character_id' => 'required',
+            'event_id' => 'required',
+            'item_id' => 'required',
+        ]);
+
+        $new_history = History::create($request->all());
+        
+        return response($new_history->id, 200);
+    }
 }
