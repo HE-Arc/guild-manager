@@ -20,7 +20,7 @@
         <v-col class="col-auto" style="text-align: right">
           <v-select
             @change="updateBoss()"
-            v-model="bossId"
+            v-model="index"
             :items="bosses"
             item-text="name"
             item-value="id"
@@ -29,7 +29,8 @@
         </v-col>
         <v-col class="col-auto" style="text-align: right">
           <v-btn large color="primary" dark class="mb-2" @click="nextBoss()">
-            Boss suivant
+           <span v-if="index < bosses.length - 1">Boss suivant</span>
+           <span v-else>Terminer</span>
             <v-icon right>mdi-arrow-right</v-icon>
           </v-btn>
         </v-col>
@@ -285,20 +286,30 @@ export default {
         });
     },
     updateBoss() {
-      this.currentBoss = this.bosses.find((boss) => boss.id === this.bossId);
-      this.index = this.bosses.indexOf(this.currentBoss);
+      console.log("index");
+      console.log(this.index);
+      this.currentBoss = this.bosses[this.index];
+      this.bossId = this.currentBoss.id;
       this.loadBossItems();
     },
     nextBoss() {
+      let _this = this;
+
       this.index++;
       if (this.index >= this.bosses.length)
-        this.$router.push({
-          name: "event-result",
-          params: { eventId: this.eventId },
-        });
+        axios
+          .post("/api/event/" + this.eventId + "/finish")
+          .then(function (response) {
+            _this.$router.push({
+              name: "event-result",
+              params: { eventId: _this.eventId },
+            });
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
       else {
-        this.currentBoss = this.bosses[this.index];
-        this.loadBossItems();
+       this.updateBoss();
       }
     },
     assign(itemId) {
