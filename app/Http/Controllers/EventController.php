@@ -95,6 +95,7 @@ class EventController extends Controller
 
         $request->merge([
             'gm_user_id' => $user->id,
+            'finished' => false,
         ]);
 
         $request->validate([
@@ -103,13 +104,39 @@ class EventController extends Controller
             'subscription_delay' => 'required',
             'player_count' => 'required',
             'auto_bench' => 'required',
-            'finished' => 'required',
             'password' => 'nullable',
-            'boss_id' => 'nullable',
             'guild_id' => 'required',
             'location_id' => 'required',
         ]);
 
         Event::create($request->all());
+    }
+
+    public function update(Request $request)
+    {
+        $token = $request->header('Authorization');
+        $user = GmUser::find($token);
+        if ($user == null)
+            return response('Invalid token', 401);
+
+        $request->validate([
+            'id' => 'required',
+            'name' => 'required',
+            'date' => 'required',
+            'subscription_delay' => 'required',
+            'player_count' => 'required',
+            'auto_bench' => 'required',
+            'finished' => 'required',
+            'boss_id' => 'nullable',
+            'guild_id' => 'required',
+            'location_id' => 'required',
+        ]);
+
+        $event = Event::find($request->id);
+        // The event must exist and belong to the user
+        if (is_null($event) || $event->gm_user_id != $user->id)
+            return response('Invalid event', 500);
+
+        $event->update($request->all());
     }
 }

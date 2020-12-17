@@ -4,13 +4,13 @@
       <v-container fluid>
         <v-row>
           <v-col>
-            <h1>Créer un évênement</h1>
+            <h1>{{ eventId == null ? "Créer" : "Modifier" }} un évênement</h1>
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="12" md="6">
             <v-text-field
-              v-model="name"
+              v-model="event.name"
               :rules="[rules.required, rules.min, rules.max]"
               :counter="64"
               label="Nom"
@@ -19,7 +19,7 @@
           </v-col>
           <v-col cols="12" md="6">
             <v-select
-              v-model="selectedLocation"
+              v-model="event.location_id"
               :items="locations"
               item-text="name"
               item-value="id"
@@ -32,7 +32,7 @@
         <v-row>
           <v-col cols="12" md="6">
             <v-select
-              v-model="selectedGuild"
+              v-model="event.guild_id"
               :items="guilds"
               item-text="name"
               item-value="id"
@@ -43,7 +43,7 @@
           </v-col>
           <v-col cols="12" md="6">
             <v-text-field
-              v-model="playerCount"
+              v-model="event.player_count"
               :rules="[rules.required, freeSpotsRules.min, freeSpotsRules.max]"
               label="Nombre de places"
               type="number"
@@ -62,8 +62,11 @@
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
-                  v-model="date"
-                  :rules="[rules.required, dateRules.chronology(date, delay)]"
+                  v-model="event.date"
+                  :rules="[
+                    rules.required,
+                    dateRules.chronology(event.date, event.subscription_delay),
+                  ]"
                   label="Date"
                   prepend-icon="mdi-calendar"
                   readonly
@@ -72,7 +75,7 @@
                 ></v-text-field>
               </template>
               <v-date-picker
-                v-model="date"
+                v-model="event.date"
                 no-title
                 @input="dateMenu = false"
               ></v-date-picker>
@@ -88,8 +91,11 @@
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
-                  v-model="delay"
-                  :rules="[rules.required, dateRules.chronology(date, delay)]"
+                  v-model="event.subscription_delay"
+                  :rules="[
+                    rules.required,
+                    dateRules.chronology(event.date, event.subscription_delay),
+                  ]"
                   label="Délais d'inscription"
                   prepend-icon="mdi-calendar"
                   readonly
@@ -98,7 +104,7 @@
                 ></v-text-field>
               </template>
               <v-date-picker
-                v-model="delay"
+                v-model="event.subscription_delay"
                 no-title
                 @input="delayMenu = false"
               ></v-date-picker>
@@ -108,7 +114,7 @@
         <v-row>
           <v-col cols="12" md="6">
             <v-text-field
-              v-model="password"
+              v-model="event.password"
               :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
               :rules="[rules.max]"
               :type="showPassword ? 'text' : 'password'"
@@ -120,9 +126,9 @@
           </v-col>
           <v-col cols="12" md="6">
             <v-switch
-              v-model="autoBench"
+              v-model="event.auto_bench"
               :label="`Bench automatique: ${
-                autoBench ? `activé` : `désactivé`
+                event.auto_bench ? `activé` : `désactivé`
               }`"
             ></v-switch>
           </v-col>
@@ -133,19 +139,16 @@
               :disabled="!valid"
               color="success"
               class="mr-4"
-              @click="createEvent"
+              @click="createUpdateEvent"
             >
-              Créer l'évênement
+              {{ eventId == null ? "Créer" : "Modifier" }} l'évênement
             </v-btn>
           </v-col>
         </v-row>
         <v-row>
           <v-col>
-            <v-alert v-model="formSuccess" dismissible type="success">
-              Évênement créé avec succès.
-            </v-alert>
             <v-alert v-model="formError" dismissible type="error">
-              Erreur lors de la création de l'évênement.
+              Erreur lors de la création/modification de l'évênement.
             </v-alert>
           </v-col>
         </v-row>
@@ -156,6 +159,7 @@
 
 <script>
 export default {
+  props: ["eventId"],
   data: () => ({
     valid: false,
     rules: {
@@ -172,48 +176,72 @@ export default {
         dateAfter >= dateBefore ||
         "Le délais d'inscription ne peux être après l'évênement",
     },
-    name: "",
-    playerCount: 40,
-    locations: [],
-    selectedLocation: null,
+    event: {
+      id: null,
+      name: "",
+      date: new Date().toISOString().substr(0, 10),
+      subscription_delay: new Date().toISOString().substr(0, 10),
+      player_count: 40,
+      auto_bench: false,
+      password: "",
+      guild_id: null,
+      location_id: null,
+    },
     guilds: [],
-    selectedGuild: null,
-    password: "",
-    autoBench: false,
-    date: new Date().toISOString().substr(0, 10),
-    dateMenu: false,
-    delay: new Date().toISOString().substr(0, 10),
-    delayMenu: false,
+    locations: [],
     showPassword: false,
+    dateMenu: false,
+    delayMenu: false,
     formSuccess: false,
     formError: false,
   }),
   methods: {
-    createEvent() {
+    createUpdateEvent() {
       let _this = this;
       this.formSuccess = false;
       this.formError = false;
 
-      axios
-        .post("/api/event/create", {
-          name: this.name,
-          date: this.date,
-          subscription_delay: this.delay,
-          player_count: this.playerCount,
-          auto_bench: this.autoBench,
-          finished: false,
-          password: this.password,
-          boss_id: null,
-          guild_id: this.selectedGuild,
-          location_id: this.selectedLocation,
-        })
-        .then(function (response) {
-          _this.$router.push({ name: "events" });
-        })
-        .catch(function (error) {
-          console.log(error);
-          _this.formError = true;
-        });
+      if (this.event.id == null) {
+        axios
+          .post("/api/event/create", {
+            name: this.event.name,
+            date: this.event.date,
+            subscription_delay: this.event.subscription_delay,
+            player_count: this.event.player_count,
+            auto_bench: this.event.auto_bench,
+            password: this.event.password,
+            guild_id: this.event.guild_id,
+            location_id: this.event.location_id,
+          })
+          .then(function (response) {
+            _this.$router.push({ name: "events" });
+          })
+          .catch(function (error) {
+            console.log(error);
+            _this.formError = true;
+          });
+      } else {
+        axios
+          .post("/api/event/update", {
+            id: this.event.id,
+            name: this.event.name,
+            date: this.event.date,
+            subscription_delay: this.event.subscription_delay,
+            player_count: this.event.player_count,
+            auto_bench: this.event.auto_bench,
+            finished: this.event.finished,
+            boss_id: this.event.boss_id,
+            guild_id: this.event.guild_id,
+            location_id: this.event.location_id,
+          })
+          .then(function (response) {
+            _this.$router.push({ name: "events" });
+          })
+          .catch(function (error) {
+            console.log(error);
+            _this.formError = true;
+          });
+      }
     },
   },
   created: function () {
@@ -238,6 +266,18 @@ export default {
       .catch(function (error) {
         console.log(error);
       });
+
+    // Get the event
+    if (this.eventId != null) {
+      axios
+        .get("/api/event/" + this.eventId)
+        .then(function (response) {
+          _this.event = response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
   },
 };
 </script>

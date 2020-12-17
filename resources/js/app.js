@@ -182,6 +182,13 @@ const router = new VueRouter({
             meta: { requiresAuth: true }
         },
         {
+            path: '/event/:eventId/update',
+            props: true,
+            name: 'event-new',
+            component: EventNew,
+            meta: { requiresAuth: true }
+        },
+        {
             path: '/event/:id',
             name: 'event-prep',
             component: EventPrep,

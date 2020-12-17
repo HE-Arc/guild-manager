@@ -23,6 +23,7 @@ Route::post('api/register', 'App\Http\Controllers\UserController@register');
 Route::get('api/event/{eventId}', 'App\Http\Controllers\EventController@getEvent');
 Route::get('api/character/{characterId}/events', 'App\Http\Controllers\EventController@getCharacterSubscriptions');
 Route::post('api/event/create', 'App\Http\Controllers\EventController@create');
+Route::post('api/event/update', 'App\Http\Controllers\EventController@update');
 Route::post('/api/event/{eventId}/update', 'App\Http\Controllers\EventController@updateEvent');
 Route::post('/api/event/{eventId}/delete', 'App\Http\Controllers\EventController@deleteEvent');
 Route::get('/api/event/{eventId}', 'App\Http\Controllers\EventController@getEvent');
