@@ -57,6 +57,13 @@ Route::post('api/guild/create', 'App\Http\Controllers\GuildController@create');
 // Locations
 Route::get('api/locations', 'App\Http\Controllers\LocationController@getLocations');
 
+// Bosses
+Route::get('api/locationBosses/{location_id}', 'App\Http\Controllers\BossController@getBossesByLocation');
+Route::get('api/boss/{boss_id}', 'App\Http\Controllers\BossController@getBoss');
+
+// Items
+Route::get('api/bossItems/{boss_id}', 'App\Http\Controllers\ItemController@getItemsByBoss');
+
 // Roles
 Route::get('api/roles', 'App\Http\Controllers\RoleController@getRoles');
 

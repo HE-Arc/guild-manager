@@ -11,7 +11,7 @@
             dark
             class="mb-2"
             @click="
-              $router.push({ name: 'event-prep', params: { bossId: currentBoss.id } })
+              $router.push({ name: 'event-prep', params: { eventId: this.eventId } })
             "
           >
             <v-icon left>mdi-pen</v-icon>
@@ -24,7 +24,7 @@
             :items="bosses"
             item-text="name"
             item-value="id"
-            label="Aller au boss..."
+            :label="currentBoss.name"
           ></v-select>
         </v-col>
         <v-col class="col-auto" style="text-align: right">
@@ -149,28 +149,83 @@ export default {
     // TODO : edit
     return {
       search: "",
-      headers: [
-        { text: "Nom", value: "name", groupable: false },
-        { text: "Classe", value: "class", hide: "xs" },
-        { text: "Rôle", value: "role", hide: "xs" },
-        { text: "Action", value: "action", sortable: false, groupable: false },
+      itemHeaders: [
+        { text: "Nom", value: "name" },
+        { text: "Rareté", value: "rarity", hide: "xs" },
+        { text: "Type", value: "type", hide: "xs" },
+        { text: "Action", value: "action", sortable: false },
       ],
-      loadingEventCharacters: false,
-      eventCharacters: [],
-      rosterCharacters: [],
-      benchCharacters: [],
-      absentCharacters: [],
+      event: [],
+      items: [],
+      bosses: [],
+      bossId: null,
+      currentBoss: [],
+      loadingEvent: false,
       eventId: this.$route.params["id"],
-      modifying: false,
     };
   },
   methods: {
     clickItem(item) {
       console.log(item);
     },
+    loadEvent() {
+      let _this = this;
+
+      // Get event
+      axios
+        .get("/api/event/" + this.eventId)
+        .then(function (response) {
+          _this.event = response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    loadBosses() {
+      let _this = this;
+
+      // Get bosses for this location
+      axios
+        .get("/api/locationBosses/" + this.event.location_id)
+        .then(function (response) {
+          _this.bosses = response.data;
+          _this.bossId = _this.bosses[0].id;        
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    loadBoss() {
+      let _this = this;
+
+      // Get current boss
+      axios
+        .get("/api/boss/" + this.bossId)
+        .then(function (response) {
+          _this.currentBoss = response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    loadingBossItems() {
+      let _this = this;
+
+      // Get bosses for this location
+      axios
+        .get("/api/bossItems/" + this.bossId)
+        .then(function (response) {
+          _this.items = response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
   },
   created: function () {
-    //TODO
+    this.loadEvent();
+    this.loadBosses();
+    this.loadBoss();
   },
 };
 </script>

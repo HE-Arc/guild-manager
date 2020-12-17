@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <event-info-component v-bind:eventId="this.eventId"> </event-info-component>
-    <v-container class="grey lighten-5" fluid>
+    <v-container fluid>
       <v-row dense>
         <v-col cols="12" md="6" lg="4">
           <template>
@@ -160,6 +160,20 @@
         <v-tooltip left>
           <template v-slot:activator="{ on, attrs }">
             <div v-bind="attrs" v-on="on">
+              <v-btn fab dark color="green" @click="playEvent()">
+                <v-icon>mdi-play</v-icon>
+              </v-btn>
+            </div>
+          </template>
+          <span>Continuer</span>
+        </v-tooltip>
+      </template>
+    </v-speed-dial>
+    <v-speed-dial v-if="this.isRunning() == false" v-model="fab" fixed bottom right>
+      <template v-slot:activator>
+        <v-tooltip left>
+          <template v-slot:activator="{ on, attrs }">
+            <div v-bind="attrs" v-on="on">
               <v-btn fab color="blue darken-2" dark>
                 <v-icon v-if="fab"> x </v-icon>
                 <v-icon v-else> + </v-icon>
@@ -234,13 +248,14 @@ export default {
     clickItem(item) {
       console.log(item);
     },
-    isRunning(character) {
+    isRunning() {
       let _this = this;
 
       axios
-        .get("/api/character/" + character.id + "/event/" + this.eventId + "/bench")
+        .get("/api/event/" + _this.eventId + "/is_running")
         .then(function (response) {
-          _this.loadEventCharacters();
+          console.log(response.data);
+          return response.data;
         })
         .catch(function (error) {
           console.log(error);
@@ -295,10 +310,11 @@ export default {
       let _this = this;
 
       axios
-        .post("/api/event/" + _this.eventId + "/run")
+        .post("/api/event/" + this.eventId + "/run")
         .then(function (response) {
           // TODO send bossId
-          $router.push({ name: "event-running", params: { eventId: eventId } });
+          console.log(response);
+          _this.$router.push({ name: "event-running", params: { eventId: _this.eventId } });
         })
         .catch(function (error) {
           console.log(error);
