@@ -95,6 +95,30 @@ class CharacterController extends Controller
         Character::create($request->all());
     }
 
+    public function update(Request $request)
+    {
+        $token = $request->header('Authorization');
+        $user = GmUser::find($token);
+        if ($user == null)
+            return response('Invalid token', 401);
+
+        $request->validate([
+            'id' => 'required',
+            'name' => 'required',
+            'role_id' => 'required',
+            'character_class_id' => 'required',
+            'faction_id' => 'required',
+            'server_id' => 'required'
+        ]);
+
+        $character = Character::find($request->id);
+        // The character must exist and belong to the user
+        if (is_null($character) || $character->gm_user_id != $user->id)
+            return response('Invalid character', 500);
+
+        $character->update($request->all());
+    }
+
     public function delete(Request $request, $characterId)
     {
         $token = $request->header('Authorization');

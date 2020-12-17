@@ -69,6 +69,14 @@
           <v-btn color="red" dark class="mb-2" @click="deleteCharacter()">
             Supprimer le personnage
           </v-btn>
+          <v-btn
+            color="primary"
+            dark
+            class="mb-2"
+            @click="$router.push('/character/' + character.id + '/update')"
+          >
+            Modifier le personnage
+          </v-btn>
         </v-col>
       </v-row>
     </v-container>

@@ -160,6 +160,14 @@
           <v-btn color="red" dark class="mb-2" @click="deleteGuild()">
             Supprimer la guilde
           </v-btn>
+          <v-btn
+            color="primary"
+            dark
+            class="mb-2"
+            @click="$router.push('/guild/' + guild.id + '/update')"
+          >
+            Modifier la guilde
+          </v-btn>
         </v-col>
       </v-row>
     </v-container>

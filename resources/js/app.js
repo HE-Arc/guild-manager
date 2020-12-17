@@ -182,6 +182,13 @@ const router = new VueRouter({
             meta: { requiresAuth: true }
         },
         {
+            path: '/event/:eventId/update',
+            props: true,
+            name: 'event-new',
+            component: EventNew,
+            meta: { requiresAuth: true }
+        },
+        {
             path: '/event/:id',
             name: 'event-prep',
             component: EventPrep,
@@ -207,6 +214,13 @@ const router = new VueRouter({
             meta: { requiresAuth: true }
         },
         {
+            path: '/character/:characterId/update',
+            props: true,
+            name: 'character-new',
+            component: CharacterNew,
+            meta: { requiresAuth: true }
+        },
+        {
             path: '/character/:characterId',
             props: true,
             name: 'character',
@@ -221,6 +235,13 @@ const router = new VueRouter({
         },
         {
             path: '/guild/new',
+            name: 'guild-new',
+            component: GuildNew,
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/guild/:guildId/update',
+            props: true,
             name: 'guild-new',
             component: GuildNew,
             meta: { requiresAuth: true }
