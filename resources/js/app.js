@@ -58,6 +58,7 @@ import Register from '../views/Register'
 import Events from '../views/Events'
 import EventNew from '../views/EventNew'
 import EventPrep from '../views/EventPrep'
+import EventRunning from '../views/EventRunning'
 import EventResult from '../views/EventResult'
 import Characters from '../views/Characters'
 import CharacterNew from '../views/CharacterNew'
@@ -192,6 +193,12 @@ const router = new VueRouter({
             path: '/event/:id',
             name: 'event-prep',
             component: EventPrep,
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/event/:id/running',
+            name: 'event-running',
+            component: EventRunning,
             meta: { requiresAuth: true }
         },
         {

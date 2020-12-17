@@ -1,3 +1,4 @@
+<!--TODO display with vuetify list-->
 <template>
   <v-container v-if="event" fluid>
     <v-row>
