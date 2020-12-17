@@ -92,7 +92,7 @@
             </v-card>
           </template>
         </v-col>
-        <!--<v-col cols="12" md="6">
+        <v-col cols="12" md="6">
           <template>
             <v-card>
               <v-card-title>
@@ -109,7 +109,6 @@
               <v-data-table
                 :headers="lootHistoryHeaders"
                 :items="lootHistory"
-                sort-by="date"
                 class="elevation-1"
                 :search="search"
                 :loading="loadingLootHistory ? 'loading' : 'done'"
@@ -118,27 +117,21 @@
                 "
                 hide-default-footer
               >
-                <template v-slot:[`item.itemName`]="{ item }">
-                  {{ item.itemName }}
+                <template v-slot:[`item.item.name`]="{ item }">
+                  {{ item.item.name }}
                 </template>
-                <template v-slot:[`item.recipient`]="{ item }">
-                  {{ item.recipient }}
-                </template>
-                <template
-                  v-slot:[`item.type`]="{ item }"
-                  v-if="!$vuetify.breakpoint.xsAndDown"
-                >
-                  {{ item.type }}
+                <template v-slot:[`item.character.name`]="{ item }">
+                  {{ item.character.name }}
                 </template>
                 <template v-slot:[`item.action`]="{ item }">
                   <v-btn dark color="orange" @click="unassign(item)">
-                    Désattribuer ></v-btn
+                    Désattribuer</v-btn
                   >
                 </template>
               </v-data-table>
             </v-card>
           </template>
-        </v-col>-->
+        </v-col>
       </v-row>
     </v-container>
     <v-container v-else fill-height fluid>
@@ -169,12 +162,16 @@ export default {
     return {
       search: "",
       itemsHeaders: [
-        { text: "Nom", value: "name" },
+        { text: "Pièce", value: "name" },
         { text: "Rareté", value: "rarity", hide: "xs" },
         { text: "Type", value: "type", hide: "xs" },
         { text: "Action", value: "action", sortable: false },
       ],
-      lootHistoryHeaders: [{ text: "Nom", value: "name" }],
+      lootHistoryHeaders: [
+        { text: "Pièce", value: "item.name" },
+        { text: "Personnage", value: "character.name" },
+        { text: "Action", value: "action", sortable: false },
+      ],
       event: null,
       bosses: null,
       bossId: null,
@@ -204,8 +201,9 @@ export default {
           console.log(error);
         })
         .then(function () {
-          console.log(_this.event);
+          //console.log(_this.event);
           _this.loadBosses();
+          _this.loadLootHistory();
         });
     },
     loadBosses() {
@@ -246,11 +244,32 @@ export default {
           //console.log(_this.bossItems);
         });
     },
+    loadLootHistory() {
+      let _this = this;
+
+      // Get loot history
+      this.loadingLootHistory = true;
+
+      console.log(this.event.id);
+
+      axios
+        .get("/api/event/" + this.event.id + "/histories")
+        .then(function (response) {
+          _this.lootHistory = response.data;          
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+        .then(function (response) {
+          _this.loadingLootHistory = false;
+          console.log(_this.lootHistory[0].character.name);
+        });
+    },
     updateBoss() {
-      this.currentBoss = this.bosses.find(boss => boss.id === this.bossId);
+      this.currentBoss = this.bosses.find((boss) => boss.id === this.bossId);
     },
     unassign(assignament) {
-      console.log("unnasigning" + assignament);
+      console.log("unnasigning" + assignament.id);
     },
   },
   created: function () {

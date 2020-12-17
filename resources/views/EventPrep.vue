@@ -1,163 +1,191 @@
 <template>
   <v-app>
     <div v-if="event && eventCharacters">
-    <event-info-component v-bind:event="event"></event-info-component>
-    <v-container fluid>
-      <v-row dense>
-        <v-col cols="12" md="6" lg="4">
-          <template>
-            <v-card>
-              <v-card-title>
-                <h3>Roster</h3>
-                <v-spacer></v-spacer>
-                <v-text-field
-                  v-model="search"
-                  append-icon="mdi-magnify"
-                  label="Search"
-                  single-line
-                  hide-details
-                ></v-text-field>
-              </v-card-title>
-              <v-data-table
-                dense
-                hide-default-footer
-                :headers="computedHeaders"
-                :items="rosterCharacters"
-                sort-by="name"
-                group-by="role"
-                class="elevation-1"
-                show-group-by
-                :search="search"
-                :loading="loadingEventCharacters ? 'loading' : 'done'"
-                :loading-text="
-                  loadingEventCharacters ? 'Chargement en cours...' : 'Aucune donnée'
-                "
-              >
-                <template v-slot:[`item.name`]="{ item }">
-                  {{ item.name }}
-                </template>
-                <template
-                  v-slot:[`item.class_id`]="{ item }"
-                  v-if="!$vuetify.breakpoint.xsAndDown"
+      <event-info-component v-bind:event="event"></event-info-component>
+      <v-container fluid>
+        <v-row dense>
+          <v-col cols="12" md="6" lg="4">
+            <template>
+              <v-card>
+                <v-card-title>
+                  <h3>Roster</h3>
+                  <v-spacer></v-spacer>
+                  <v-text-field
+                    v-model="search"
+                    append-icon="mdi-magnify"
+                    label="Search"
+                    single-line
+                    hide-details
+                  ></v-text-field>
+                </v-card-title>
+                <v-data-table
+                  dense
+                  hide-default-footer
+                  :headers="computedHeaders"
+                  :items="rosterCharacters"
+                  sort-by="name"
+                  group-by="role"
+                  class="elevation-1"
+                  show-group-by
+                  :search="search"
+                  :loading="loadingEventCharacters ? 'loading' : 'done'"
+                  :loading-text="
+                    loadingEventCharacters ? 'Chargement en cours...' : 'Aucune donnée'
+                  "
                 >
-                  {{ item.class_id }}
-                </template>
-                <template
-                  v-slot:[`item.role_id`]="{ item }"
-                  v-if="!$vuetify.breakpoint.xsAndDown"
+                  <template v-slot:[`item.name`]="{ item }">
+                    {{ item.name }}
+                  </template>
+                  <template
+                    v-slot:[`item.class_id`]="{ item }"
+                    v-if="!$vuetify.breakpoint.xsAndDown"
+                  >
+                    {{ item.class_id }}
+                  </template>
+                  <template
+                    v-slot:[`item.role_id`]="{ item }"
+                    v-if="!$vuetify.breakpoint.xsAndDown"
+                  >
+                    {{ item.role_id }}
+                  </template>
+                  <template v-slot:[`item.action`]="{ item }">
+                    <v-btn color="orange" small dark @click="bench(item)"> Bench </v-btn>
+                  </template>
+                </v-data-table>
+              </v-card>
+            </template>
+          </v-col>
+          <v-col cols="12" md="6" lg="4">
+            <template>
+              <v-card>
+                <v-card-title>
+                  <h3>Bench</h3>
+                  <v-spacer></v-spacer>
+                  <v-text-field
+                    v-model="search"
+                    append-icon="mdi-magnify"
+                    label="Search"
+                    single-line
+                    hide-details
+                  ></v-text-field>
+                </v-card-title>
+                <v-data-table
+                  dense
+                  hide-default-footer
+                  :headers="computedHeaders"
+                  :items="benchCharacters"
+                  sort-by="name"
+                  group-by="role"
+                  class="elevation-1"
+                  show-group-by
+                  :search="search"
+                  :loading="loadingEventCharacters ? 'loading' : 'done'"
+                  :loading-text="
+                    loadingEventCharacters ? 'Chargement en cours...' : 'Aucune donnée'
+                  "
                 >
-                  {{ item.role_id }}
-                </template>
-                <template v-slot:[`item.action`]="{ item }">
-                  <v-btn color="orange" small dark @click="bench(item)"> Bench </v-btn>
-                </template>
-              </v-data-table>
-            </v-card>
-          </template>
-        </v-col>
-        <v-col cols="12" md="6" lg="4">
-          <template>
-            <v-card>
-              <v-card-title>
-                <h3>Bench</h3>
-                <v-spacer></v-spacer>
-                <v-text-field
-                  v-model="search"
-                  append-icon="mdi-magnify"
-                  label="Search"
-                  single-line
-                  hide-details
-                ></v-text-field>
-              </v-card-title>
-              <v-data-table
-                dense
-                hide-default-footer
-                :headers="computedHeaders"
-                :items="benchCharacters"
-                sort-by="name"
-                group-by="role"
-                class="elevation-1"
-                show-group-by
-                :search="search"
-                :loading="loadingEventCharacters ? 'loading' : 'done'"
-                :loading-text="
-                  loadingEventCharacters ? 'Chargement en cours...' : 'Aucune donnée'
-                "
-              >
-                <template v-slot:[`item.name`]="{ item }">
-                  {{ item.name }}
-                </template>
-                <template
-                  v-slot:[`item.class_id`]="{ item }"
-                  v-if="!$vuetify.breakpoint.xsAndDown"
+                  <template v-slot:[`item.name`]="{ item }">
+                    {{ item.name }}
+                  </template>
+                  <template
+                    v-slot:[`item.class_id`]="{ item }"
+                    v-if="!$vuetify.breakpoint.xsAndDown"
+                  >
+                    {{ item.class_id }}
+                  </template>
+                  <template
+                    v-slot:[`item.role_id`]="{ item }"
+                    v-if="!$vuetify.breakpoint.xsAndDown"
+                  >
+                    {{ item.role_id }}
+                  </template>
+                  <template v-slot:[`item.action`]="{ item }">
+                    <v-btn color="green" small dark @click="unbench(item)">
+                      Unbench
+                    </v-btn>
+                  </template>
+                </v-data-table>
+              </v-card>
+            </template>
+          </v-col>
+          <v-col cols="12" md="6" lg="4">
+            <template>
+              <v-card>
+                <v-card-title>
+                  <h3>Absent</h3>
+                  <v-spacer></v-spacer>
+                  <v-text-field
+                    v-model="search"
+                    append-icon="mdi-magnify"
+                    label="Search"
+                    single-line
+                    hide-details
+                  ></v-text-field>
+                </v-card-title>
+                <v-data-table
+                  dense
+                  hide-default-footer
+                  :headers="computedHeaders"
+                  :items="absentCharacters"
+                  sort-by="name"
+                  group-by="role"
+                  class="elevation-1"
+                  show-group-by
+                  :search="search"
+                  :loading="loadingEventCharacters ? 'loading' : 'done'"
+                  :loading-text="
+                    loadingEventCharacters ? 'Chargement en cours...' : 'Aucune donnée'
+                  "
                 >
-                  {{ item.class_id }}
-                </template>
-                <template
-                  v-slot:[`item.role_id`]="{ item }"
-                  v-if="!$vuetify.breakpoint.xsAndDown"
-                >
-                  {{ item.role_id }}
-                </template>
-                <template v-slot:[`item.action`]="{ item }">
-                  <v-btn color="green" small dark @click="unbench(item)"> Unbench </v-btn>
-                </template>
-              </v-data-table>
-            </v-card>
-          </template>
-        </v-col>
-        <v-col cols="12" md="6" lg="4">
-          <template>
-            <v-card>
-              <v-card-title>
-                <h3>Absent</h3>
-                <v-spacer></v-spacer>
-                <v-text-field
-                  v-model="search"
-                  append-icon="mdi-magnify"
-                  label="Search"
-                  single-line
-                  hide-details
-                ></v-text-field>
-              </v-card-title>
-              <v-data-table
-                dense
-                hide-default-footer
-                :headers="computedHeaders"
-                :items="absentCharacters"
-                sort-by="name"
-                group-by="role"
-                class="elevation-1"
-                show-group-by
-                :search="search"
-                :loading="loadingEventCharacters ? 'loading' : 'done'"
-                :loading-text="
-                  loadingEventCharacters ? 'Chargement en cours...' : 'Aucune donnée'
-                "
-              >
-                <template v-slot:[`item.name`]="{ item }">
-                  {{ item.name }}
-                </template>
-                <template
-                  v-slot:[`item.class_id`]="{ item }"
-                  v-if="!$vuetify.breakpoint.xsAndDown"
-                >
-                  {{ item.class_id }}
-                </template>
-                <template
-                  v-slot:[`item.role_id`]="{ item }"
-                  v-if="!$vuetify.breakpoint.xsAndDown"
-                >
-                  {{ item.role_id }}
-                </template>
-              </v-data-table>
-            </v-card>
-          </template>
-        </v-col>
-      </v-row>
-    </v-container>
-    <v-speed-dial v-if="event.boss_id" v-model="fab" fixed bottom right>
-      <template v-slot:activator>
+                  <template v-slot:[`item.name`]="{ item }">
+                    {{ item.name }}
+                  </template>
+                  <template
+                    v-slot:[`item.class_id`]="{ item }"
+                    v-if="!$vuetify.breakpoint.xsAndDown"
+                  >
+                    {{ item.class_id }}
+                  </template>
+                  <template
+                    v-slot:[`item.role_id`]="{ item }"
+                    v-if="!$vuetify.breakpoint.xsAndDown"
+                  >
+                    {{ item.role_id }}
+                  </template>
+                </v-data-table>
+              </v-card>
+            </template>
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-speed-dial v-if="event.boss_id" v-model="fab" fixed bottom right>
+        <template v-slot:activator>
+          <v-tooltip left>
+            <template v-slot:activator="{ on, attrs }">
+              <div v-bind="attrs" v-on="on">
+                <v-btn fab dark color="green" @click="playEvent()">
+                  <v-icon>mdi-play</v-icon>
+                </v-btn>
+              </div>
+            </template>
+            <span>Continuer</span>
+          </v-tooltip>
+        </template>
+      </v-speed-dial>
+      <v-speed-dial v-else v-model="fab" fixed bottom right>
+        <template v-slot:activator>
+          <v-tooltip left>
+            <template v-slot:activator="{ on, attrs }">
+              <div v-bind="attrs" v-on="on">
+                <v-btn fab color="blue darken-2" dark>
+                  <v-icon v-if="fab"> x </v-icon>
+                  <v-icon v-else> + </v-icon>
+                </v-btn>
+              </div>
+            </template>
+            <span>Actions</span>
+          </v-tooltip>
+        </template>
         <v-tooltip left>
           <template v-slot:activator="{ on, attrs }">
             <div v-bind="attrs" v-on="on">
@@ -166,56 +194,41 @@
               </v-btn>
             </div>
           </template>
-          <span>Continuer</span>
+          <span>Lancer l'événement</span>
         </v-tooltip>
-      </template>
-    </v-speed-dial>
-    <v-speed-dial v-else v-model="fab" fixed bottom right>
-      <template v-slot:activator>
         <v-tooltip left>
           <template v-slot:activator="{ on, attrs }">
             <div v-bind="attrs" v-on="on">
-              <v-btn fab color="blue darken-2" dark>
-                <v-icon v-if="fab"> x </v-icon>
-                <v-icon v-else> + </v-icon>
+              <v-btn fab dark color="indigo" @click="modifyEvent()">
+                <v-icon>mdi-pencil</v-icon>
               </v-btn>
             </div>
           </template>
-          <span>Actions</span>
+          <span>Modifier l'événement</span>
         </v-tooltip>
-      </template>
-      <v-tooltip left>
-        <template v-slot:activator="{ on, attrs }">
-          <div v-bind="attrs" v-on="on">
-            <v-btn fab dark color="green" @click="playEvent()">
-              <v-icon>mdi-play</v-icon>
-            </v-btn>
-          </div>
-        </template>
-        <span>Lancer l'événement</span>
-      </v-tooltip>
-      <v-tooltip left>
-        <template v-slot:activator="{ on, attrs }">
-          <div v-bind="attrs" v-on="on">
-            <v-btn fab dark color="indigo" @click="modifyEvent()">
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
-          </div>
-        </template>
-        <span>Modifier l'événement</span>
-      </v-tooltip>
-      <v-tooltip left>
-        <template v-slot:activator="{ on, attrs }">
-          <div v-bind="attrs" v-on="on">
-            <v-btn fab dark color="red" @click="deleteEvent()">
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
-          </div>
-        </template>
-        <span>Supprimer l'événement</span>
-      </v-tooltip>
-    </v-speed-dial>
+        <v-tooltip left>
+          <template v-slot:activator="{ on, attrs }">
+            <div v-bind="attrs" v-on="on">
+              <v-btn fab dark color="red" @click="deleteEvent()">
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </div>
+          </template>
+          <span>Supprimer l'événement</span>
+        </v-tooltip>
+      </v-speed-dial>
     </div>
+    <v-container v-else fill-height fluid>
+      <v-row align="center" justify="center">
+        <v-col style="text-align: center">
+          <v-progress-circular
+            indeterminate
+            color="primary"
+            :size="70"
+          ></v-progress-circular>
+        </v-col>
+      </v-row>
+    </v-container>
   </v-app>
 </template>
 
