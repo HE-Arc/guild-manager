@@ -46,6 +46,7 @@ Route::get('/api/character/{characterId}/histories', 'App\Http\Controllers\Histo
 Route::get('api/character/{characterId}', 'App\Http\Controllers\CharacterController@getCharacter');
 Route::get('api/characters', 'App\Http\Controllers\CharacterController@getMyCharacters');
 Route::post('api/character/create', 'App\Http\Controllers\CharacterController@create');
+Route::post('api/character/update', 'App\Http\Controllers\CharacterController@update');
 Route::post('/api/character/{characterId}/delete', 'App\Http\Controllers\CharacterController@delete');
 
 // Guilds

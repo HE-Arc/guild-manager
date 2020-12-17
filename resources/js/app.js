@@ -214,6 +214,13 @@ const router = new VueRouter({
             meta: { requiresAuth: true }
         },
         {
+            path: '/character/:characterId/update',
+            props: true,
+            name: 'character-new',
+            component: CharacterNew,
+            meta: { requiresAuth: true }
+        },
+        {
             path: '/character/:characterId',
             props: true,
             name: 'character',

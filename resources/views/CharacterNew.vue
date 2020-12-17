@@ -4,13 +4,15 @@
       <v-container fluid>
         <v-row>
           <v-col>
-            <h1>Créer un personnage</h1>
+            <h1>
+              {{ characterId == null ? "Créer" : "Modifier" }} un personnage
+            </h1>
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="12" md="6">
             <v-text-field
-              v-model="name"
+              v-model="character.name"
               :rules="[rules.required, rules.min, rules.max]"
               :counter="64"
               label="Nom"
@@ -19,7 +21,7 @@
           </v-col>
           <v-col cols="12" md="6">
             <v-select
-              v-model="selectedRole"
+              v-model="character.role_id"
               :items="roles"
               item-text="name"
               item-value="id"
@@ -32,7 +34,7 @@
         <v-row>
           <v-col cols="12" md="6">
             <v-select
-              v-model="selectedClass"
+              v-model="character.character_class_id"
               :items="classes"
               item-text="name"
               item-value="id"
@@ -43,7 +45,7 @@
           </v-col>
           <v-col cols="12" md="6">
             <v-select
-              v-model="selectedFaction"
+              v-model="character.faction_id"
               :items="factions"
               item-text="name"
               item-value="id"
@@ -56,7 +58,7 @@
         <v-row>
           <v-col cols="12" md="6">
             <v-select
-              v-model="selectedServer"
+              v-model="character.server_id"
               :items="servers"
               item-text="name"
               item-value="id"
@@ -72,19 +74,16 @@
               :disabled="!valid"
               color="success"
               class="mr-4"
-              @click="createCharacter"
+              @click="createUpdateCharacter"
             >
-              Créer le personnage
+              {{ characterId == null ? "Créer" : "Modifier" }} le personnage
             </v-btn>
           </v-col>
         </v-row>
         <v-row>
           <v-col>
-            <v-alert v-model="formSuccess" dismissible type="success">
-              Personnage créé avec succès.
-            </v-alert>
             <v-alert v-model="formError" dismissible type="error">
-              Erreur lors de la création du personnage.
+              Erreur lors de la création/modification du personnage.
             </v-alert>
           </v-col>
         </v-row>
@@ -95,6 +94,7 @@
 
 <script>
 export default {
+  props: ["characterId"],
   data: () => ({
     valid: false,
     rules: {
@@ -102,41 +102,63 @@ export default {
       min: (v) => v.length >= 4 || "Au moins 4 charactères",
       max: (v) => v.length <= 64 || "Au maximum de 64 lettres",
     },
-    name: "",
+    character: {
+      id: null,
+      name: "",
+      role_id: null,
+      character_class_id: null,
+      faction_id: null,
+      server_id: null,
+    },
     roles: [],
-    selectedRole: null,
     classes: [],
-    selectedClass: null,
     factions: [],
-    selectedFaction: null,
     servers: [],
-    selectedServer: null,
     formSuccess: false,
     formError: false,
   }),
   methods: {
-    createCharacter() {
+    createUpdateCharacter() {
       let _this = this;
       this.formSuccess = false;
       this.formError = false;
 
-      axios
-        .post("/api/character/create", {
-          name: this.name,
-          role_id: this.selectedRole,
-          character_class_id: this.selectedClass,
-          guild_id: null,
-          guild_role_id: null,
-          faction_id: this.selectedFaction,
-          server_id: this.selectedServer,
-        })
-        .then(function (response) {
-          _this.$router.push({ name: "characters" });
-        })
-        .catch(function (error) {
-          console.log(error);
-          _this.formError = true;
-        });
+      if (this.character.id == null) {
+        axios
+          .post("/api/character/create", {
+            name: this.character.name,
+            role_id: this.character.role_id,
+            character_class_id: this.character.character_class_id,
+            guild_id: null,
+            guild_role_id: null,
+            faction_id: this.character.faction_id,
+            server_id: this.character.server_id,
+          })
+          .then(function (response) {
+            _this.$router.push({ name: "characters" });
+          })
+          .catch(function (error) {
+            console.log(error);
+            _this.formError = true;
+          });
+      } else {
+        axios
+          .post("/api/character/update", {
+            id: this.character.id,
+            name: this.character.name,
+            role_id: this.character.role_id,
+            character_class_id: this.character.character_class_id,
+            faction_id: this.character.faction_id,
+            server_id: this.character.server_id,
+          })
+          .then(function (response) {
+            _this.$router.push({ name: "characters" });
+          })
+          .catch(function (error) {
+            console.log(error);
+            _this.formError = true;
+          });
+      }
     },
   },
   created: function () {
@@ -181,6 +203,18 @@ export default {
       .catch(function (error) {
         console.log(error);
       });
+
+    // Get the character
+    if (this.characterId != null) {
+      axios
+        .get("/api/character/" + this.characterId)
+        .then(function (response) {
+          _this.character = response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
   },
 };
 </script>
