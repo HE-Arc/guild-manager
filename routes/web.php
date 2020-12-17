@@ -26,6 +26,8 @@ Route::post('api/event/create', 'App\Http\Controllers\EventController@create');
 Route::post('/api/event/{eventId}/update', 'App\Http\Controllers\EventController@updateEvent');
 Route::post('/api/event/{eventId}/delete', 'App\Http\Controllers\EventController@deleteEvent');
 Route::get('/api/event/{eventId}', 'App\Http\Controllers\EventController@getEvent');
+//TODO use update instead
+Route::get('/api/event/{eventId}/run', 'App\Http\Controllers\EventController@run');
 
 // EventCharacter
 Route::post('/api/character/{characterId}/event/{eventId}/bench', 'App\Http\Controllers\SubscriptionController@bench');

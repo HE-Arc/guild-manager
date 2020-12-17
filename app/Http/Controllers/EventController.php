@@ -31,6 +31,28 @@ class EventController extends Controller
         return $event;
     }
 
+    public function run(Request $request, $eventId)
+    {
+        $token = $request->header('Authorization');
+        $user = GmUser::find($token);
+        if ($user == null)
+            //return response('Invalid token', 401);
+
+        
+        
+        try {
+            if ($event = Event::find($eventId)) {
+                $event->status = 'running';
+                $event->save();
+            } else
+                return response('Event does not exist', 500);
+
+            return response($eventId, 200);
+        } catch (Exception $e) {
+            return response("Delete failed: " + $e, 500);
+        }
+    }
+
     public function deleteEvent(Request $request, $eventId)
     {
         $token = $request->header('Authorization');

@@ -29,9 +29,7 @@
                 :search="search"
                 :loading="loadingEventCharacters ? 'loading' : 'done'"
                 :loading-text="
-                  loadingEventCharacters
-                    ? 'Chargement en cours...'
-                    : 'Aucune donnée'
+                  loadingEventCharacters ? 'Chargement en cours...' : 'Aucune donnée'
                 "
               >
                 <template v-slot:[`item.name`]="{ item }">
@@ -50,9 +48,7 @@
                   {{ item.role_id }}
                 </template>
                 <template v-slot:[`item.action`]="{ item }">
-                  <v-btn color="orange" small dark @click="bench(item)">
-                    Bench
-                  </v-btn>
+                  <v-btn color="orange" small dark @click="bench(item)"> Bench </v-btn>
                 </template>
               </v-data-table>
             </v-card>
@@ -84,9 +80,7 @@
                 :search="search"
                 :loading="loadingEventCharacters ? 'loading' : 'done'"
                 :loading-text="
-                  loadingEventCharacters
-                    ? 'Chargement en cours...'
-                    : 'Aucune donnée'
+                  loadingEventCharacters ? 'Chargement en cours...' : 'Aucune donnée'
                 "
               >
                 <template v-slot:[`item.name`]="{ item }">
@@ -105,9 +99,7 @@
                   {{ item.role_id }}
                 </template>
                 <template v-slot:[`item.action`]="{ item }">
-                  <v-btn color="green" small dark @click="unbench(item)">
-                    Unbench
-                  </v-btn>
+                  <v-btn color="green" small dark @click="unbench(item)"> Unbench </v-btn>
                 </template>
               </v-data-table>
             </v-card>
@@ -139,9 +131,7 @@
                 :search="search"
                 :loading="loadingEventCharacters ? 'loading' : 'done'"
                 :loading-text="
-                  loadingEventCharacters
-                    ? 'Chargement en cours...'
-                    : 'Aucune donnée'
+                  loadingEventCharacters ? 'Chargement en cours...' : 'Aucune donnée'
                 "
               >
                 <template v-slot:[`item.name`]="{ item }">
@@ -167,20 +157,48 @@
     </v-container>
     <v-speed-dial v-model="fab" fixed bottom right>
       <template v-slot:activator>
-        <v-btn fab color="blue darken-2" dark>
-          <v-icon v-if="fab"> x </v-icon>
-          <v-icon v-else> + </v-icon>
-        </v-btn>
+        <v-tooltip left>
+          <template v-slot:activator="{ on, attrs }">
+            <div v-bind="attrs" v-on="on">
+              <v-btn fab color="blue darken-2" dark>
+                <v-icon v-if="fab"> x </v-icon>
+                <v-icon v-else> + </v-icon>
+              </v-btn>
+            </div>
+          </template>
+          <span>Actions</span>
+        </v-tooltip>
       </template>
-      <v-btn fab dark color="green" @click="playEvent()">
-        <v-icon>mdi-play</v-icon>
-      </v-btn>
-      <v-btn fab dark color="indigo" @click="modifyEvent()">
-        <v-icon>mdi-pencil</v-icon>
-      </v-btn>
-      <v-btn fab dark color="red" @click="deleteEvent()">
-        <v-icon>mdi-delete</v-icon>
-      </v-btn>
+      <v-tooltip left>
+        <template v-slot:activator="{ on, attrs }">
+          <div v-bind="attrs" v-on="on">
+            <v-btn fab dark color="green" @click="playEvent()">
+              <v-icon>mdi-play</v-icon>
+            </v-btn>
+          </div>
+        </template>
+        <span>Lancer l'événement</span>
+      </v-tooltip>
+      <v-tooltip left>
+        <template v-slot:activator="{ on, attrs }">
+          <div v-bind="attrs" v-on="on">
+            <v-btn fab dark color="indigo" @click="modifyEvent()">
+              <v-icon>mdi-pencil</v-icon>
+            </v-btn>
+          </div>
+        </template>
+        <span>Modifier l'événement</span>
+      </v-tooltip>
+      <v-tooltip left>
+        <template v-slot:activator="{ on, attrs }">
+          <div v-bind="attrs" v-on="on">
+            <v-btn fab dark color="red" @click="deleteEvent()">
+              <v-icon>mdi-delete</v-icon>
+            </v-btn>
+          </div>
+        </template>
+        <span>Supprimer l'événement</span>
+      </v-tooltip>
     </v-speed-dial>
   </v-app>
 </template>
@@ -191,9 +209,7 @@ export default {
   components: { EventInfoComponent },
   computed: {
     computedHeaders() {
-      return this.headers.filter(
-        (h) => !h.hide || !this.$vuetify.breakpoint[h.hide]
-      );
+      return this.headers.filter((h) => !h.hide || !this.$vuetify.breakpoint[h.hide]);
     },
   },
   data() {
@@ -222,9 +238,7 @@ export default {
       let _this = this;
 
       axios
-        .post(
-          "/api/character/" + character.id + "/event/" + this.eventId + "/bench"
-        )
+        .post("/api/character/" + character.id + "/event/" + this.eventId + "/bench")
         .then(function (response) {
           _this.loadEventCharacters();
         })
@@ -236,13 +250,7 @@ export default {
       let _this = this;
 
       axios
-        .post(
-          "/api/character/" +
-            character.id +
-            "/event/" +
-            this.eventId +
-            "/unbench"
-        )
+        .post("/api/character/" + character.id + "/event/" + this.eventId + "/unbench")
         .then(function (response) {
           _this.loadEventCharacters();
         })
@@ -271,7 +279,19 @@ export default {
           _this.loadingEventCharacters = false;
         });
     },
-    playEvent() {},
+    playEvent() {
+      let _this = this;
+
+      axios
+        .post("/api/event/" + _this.eventId + "/run")
+        .then(function (response) {
+          // TODO send bossId
+          $router.push({name: 'event-running', params: {eventId : eventId}});
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
     activateModification() {
       let _this = this;
 
