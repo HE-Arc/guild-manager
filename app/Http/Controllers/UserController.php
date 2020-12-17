@@ -41,6 +41,29 @@ class UserController extends Controller
 
     public function register(Request $request)
     {
-        return "WIP";
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+
+        $userEgo = GmUser::where('email', $request->input('email'))->first();
+        if (!is_null($userEgo))
+            return response('Email already used', 500);
+
+        GmUser::create($request->all());
+    }
+
+    public function delete(Request $request)
+    {
+        $token = $request->header('Authorization');
+        $user = GmUser::find($token);
+        if ($user == null)
+            return response('Invalid token', 401);
+
+        $userName = $user->name;
+        $user->delete();
+
+        return response($userName, 200);
     }
 }

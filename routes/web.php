@@ -18,6 +18,7 @@ Route::get('api/users', 'App\Http\Controllers\UserController@getUsers');
 Route::get('api/user/{id}', 'App\Http\Controllers\UserController@getUser');
 Route::post('api/login', 'App\Http\Controllers\UserController@login');
 Route::post('api/register', 'App\Http\Controllers\UserController@register');
+Route::post('/api/user/delete', 'App\Http\Controllers\UserController@delete');
 
 // Event
 Route::get('api/event/{eventId}', 'App\Http\Controllers\EventController@getEvent');
