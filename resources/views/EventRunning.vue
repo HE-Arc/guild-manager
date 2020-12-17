@@ -159,12 +159,12 @@ export default {
       lootHistoryHeaders: [
         { text: "Nom", value: "name" },
       ],
-      event: [],
-      bossItems: [],
-      bosses: [],
+      event: null,
+      bossItems: null,
+      bosses: null,
       bossId: null,
-      currentBoss: [],
-      lootHistory: [],
+      currentBoss: null,
+      lootHistory: null,
       loadingBossItems: false,
       loadingLootHistory: false,
       eventId: this.$route.params["id"],
@@ -176,12 +176,14 @@ export default {
     },
     loadEvent() {
       let _this = this;
-
+      
+      console.log(this.eventId);
       // Get event
       axios
         .get("/api/event/" + this.eventId)
         .then(function (response) {
           _this.event = response.data;
+          _this.loadBosses();
         })
         .catch(function (error) {
           console.log(error);
@@ -190,12 +192,14 @@ export default {
     loadBosses() {
       let _this = this;
 
+      console.log(this.event);
+      console.log(this.event.location_id);
       // Get bosses for this location
       axios
         .get("/api/locationBosses/" + this.event.location_id)
         .then(function (response) {
           _this.bosses = response.data;
-          console.log(_this.bosses[0]);
+          //console.log(_this.bosses[0]);
           _this.bossId = _this.bosses[0].id;        
         })
         .catch(function (error) {
@@ -234,7 +238,7 @@ export default {
   },
   created: function () {
     this.loadEvent();
-    this.loadBosses();
+    
     this.loadBoss();
     this.loadBossItems();
   },

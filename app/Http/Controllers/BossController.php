@@ -30,6 +30,11 @@ class BossController extends Controller
 
         $bosses = Boss::where('location_id', $location_id)->get();
 
+        foreach ($bosses as $boss) {
+
+            $boss->location_id = "He";
+        }
+
         return $bosses;
     }
 }
