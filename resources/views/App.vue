@@ -49,7 +49,14 @@
       <v-spacer></v-spacer>
 
       <div v-if="isLoggedIn">
-        <v-btn icon @click="$router.push({ name: 'login' }).catch(() => {})">
+        <v-btn
+          icon
+          @click="
+            $router
+              .push({ path: '/user/' + $store.state.token })
+              .catch(() => {})
+          "
+        >
           <v-icon>mdi-account-circle</v-icon>
         </v-btn>
 

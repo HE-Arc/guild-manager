@@ -43,4 +43,17 @@ class UserController extends Controller
     {
         return "WIP";
     }
+
+    public function delete(Request $request)
+    {
+        $token = $request->header('Authorization');
+        $user = GmUser::find($token);
+        if ($user == null)
+            return response('Invalid token', 401);
+
+        $userName = $user->name;
+        $user->delete();
+
+        return response($userName, 200);
+    }
 }
