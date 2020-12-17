@@ -1,6 +1,6 @@
 <!--TODO display with vuetify list-->
 <template>
-  <v-container v-if="event" fluid>
+  <v-container fluid>
     <v-row>
       <v-col cols="4">
         <v-tooltip bottom>
@@ -67,17 +67,6 @@
             </v-card>
           </v-col>
         </v-row>
-      </v-col>
-    </v-row>
-  </v-container>
-  <v-container v-else fluid>
-    <v-row align="center" justify="center">
-      <v-col style="text-align: center">
-        <v-progress-circular
-          indeterminate
-          color="primary"
-          :size="70"
-        ></v-progress-circular>
       </v-col>
     </v-row>
   </v-container>

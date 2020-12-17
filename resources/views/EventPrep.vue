@@ -312,26 +312,12 @@ export default {
       let _this = this;
 
       axios
-        .post("/api/event/" + this.eventId + "/run")
+        .post("/api/event/" + this.eventId + "/run/" + this.event.location_id)
         .then(function (response) {
-          // TODO send bossId
-          console.log(response);
           _this.$router.push({
             name: "event-running",
             params: { eventId: _this.eventId },
           });
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
-    activateModification() {
-      let _this = this;
-
-      axios
-        .post("/api/event/" + _this.eventId + "/update")
-        .then(function (response) {
-          // do stuff
         })
         .catch(function (error) {
           console.log(error);

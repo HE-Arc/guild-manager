@@ -1,11 +1,11 @@
 <template>
   <v-app>
-    <v-container fluid>
+    <v-container v-if="event != null" fluid>
       <v-row>
         <v-col class="col-auto mr-auto">
           <h1>{{ event.name }}</h1>
         </v-col>
-        <v-col class="col-auto" style="text-align: bottom">
+        <v-col class="col-auto" style="text-align: right">
           <v-btn
             color="primary"
             small
@@ -21,15 +21,15 @@
         </v-col>
         <v-col class="col-auto" style="text-align: right">
           <v-select
-            v-model="bosses"
+            v-model="bossId"
             :items="bosses"
             item-text="name"
             item-value="id"
-            :label="currentBoss.name"
+            label="Changer de boss"
           ></v-select>
         </v-col>
         <v-col class="col-auto" style="text-align: right">
-          <v-btn color="primary" dark class="mb-2" @click="nextBoss()">            
+          <v-btn large color="primary" dark class="mb-2" @click="nextBoss()">
             Boss suivant
             <v-icon right>mdi-arrow-right</v-icon>
           </v-btn>
@@ -128,11 +128,20 @@
               {{ item.type }}
             </template>
             <template v-slot:[`item.action`]="{ item }">
-              <v-btn dark color="orange" @click="unassign(item)">
-                Désattribuer ></v-btn
-              >
+              <v-btn dark color="orange" @click="unassign(item)"> Désattribuer ></v-btn>
             </template>
           </v-data-table>
+        </v-col>
+      </v-row>
+    </v-container>
+    <v-container v-else fill-height fluid>
+      <v-row align="center" justify="center">
+        <v-col style="text-align: center">
+          <v-progress-circular
+            indeterminate
+            color="primary"
+            :size="70"
+          ></v-progress-circular>
         </v-col>
       </v-row>
     </v-container>
@@ -156,9 +165,7 @@ export default {
         { text: "Type", value: "type", hide: "xs" },
         { text: "Action", value: "action", sortable: false },
       ],
-      lootHistoryHeaders: [
-        { text: "Nom", value: "name" },
-      ],
+      lootHistoryHeaders: [{ text: "Nom", value: "name" }],
       event: null,
       bossItems: null,
       bosses: null,
@@ -176,34 +183,40 @@ export default {
     },
     loadEvent() {
       let _this = this;
-      
+
       console.log(this.eventId);
       // Get event
       axios
         .get("/api/event/" + this.eventId)
         .then(function (response) {
           _this.event = response.data;
-          _this.loadBosses();
         })
         .catch(function (error) {
           console.log(error);
+        })
+        .then(function () {
+          console.log(_this.event);
+          _this.loadBosses();
         });
     },
     loadBosses() {
       let _this = this;
 
-      console.log(this.event);
-      console.log(this.event.location_id);
       // Get bosses for this location
       axios
         .get("/api/locationBosses/" + this.event.location_id)
         .then(function (response) {
           _this.bosses = response.data;
-          //console.log(_this.bosses[0]);
-          _this.bossId = _this.bosses[0].id;        
+          _this.bossId = _this.event.boss_id;
+          console.log(_this.bossId);
         })
         .catch(function (error) {
           console.log(error);
+        })
+        .then(function () {
+          console.log(_this.bosses);
+          _this.loadBoss();
+          _this.loadBossItems();
         });
     },
     loadBoss() {
@@ -217,6 +230,9 @@ export default {
         })
         .catch(function (error) {
           console.log(error);
+        })
+        .then(function () {
+          console.log(_this.currentBoss);
         });
     },
     loadBossItems() {
@@ -230,17 +246,17 @@ export default {
         })
         .catch(function (error) {
           console.log(error);
+        })
+        .then(function () {
+          console.log(_this.bossItems);
         });
     },
     unassign(assignament) {
       console.log("unnasigning" + assignament);
-    }
+    },
   },
   created: function () {
     this.loadEvent();
-    
-    this.loadBoss();
-    this.loadBossItems();
   },
 };
 </script>
