@@ -29,7 +29,8 @@ class DatabaseSeeder extends Seeder
             LocationSeeder::class,
             CharacterSeeder::class,
             BossSeeder::class,            
-            ItemSeeder::class,     
+            ItemSeeder::class,
+            EventSeeder::class,     
         ]);
     }
 }
