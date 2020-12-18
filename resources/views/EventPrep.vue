@@ -20,7 +20,6 @@
                 </v-card-title>
                 <v-data-table
                   dense
-                  hide-default-footer
                   :headers="computedHeaders"
                   :items="rosterCharacters"
                   sort-by="name"
@@ -79,7 +78,6 @@
                 </v-card-title>
                 <v-data-table
                   dense
-                  hide-default-footer
                   :headers="computedHeaders"
                   :items="benchCharacters"
                   sort-by="name"
@@ -138,7 +136,6 @@
                 </v-card-title>
                 <v-data-table
                   dense
-                  hide-default-footer
                   :headers="computedHeaders"
                   :items="absentCharacters"
                   sort-by="name"

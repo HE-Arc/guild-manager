@@ -12,7 +12,6 @@
             :headers="userHeaders"
             :items="[user]"
             class="elevation-1"
-            hide-default-footer
           >
           </v-data-table>
         </v-col>

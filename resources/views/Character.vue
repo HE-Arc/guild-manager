@@ -15,7 +15,6 @@
             :headers="characterHeaders"
             :items="[character]"
             class="elevation-1"
-            hide-default-footer
           >
             <template v-slot:[`item.role`]="{ item }">
               <v-chip :color="getRoleColor(item.role.name)" small dark>

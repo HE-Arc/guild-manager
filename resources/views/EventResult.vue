@@ -43,7 +43,6 @@
             :loading-text="
               loadingLootHistory ? 'Chargement en cours...' : 'Aucune donnée'
             "
-            hide-default-footer
           >
             <template v-slot:top>
               <v-toolbar flat>
@@ -67,7 +66,6 @@
             :loading-text="
               loadingSubscriptions ? 'Chargement en cours...' : 'Aucune donnée'
             "
-            hide-default-footer
           >
             <template v-slot:top>
               <v-toolbar flat>

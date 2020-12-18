@@ -33,7 +33,6 @@
         :loading-text="
           loadingGuilds ? 'Chargement en cours...' : 'Aucune donnée'
         "
-        hide-default-footer
       >
         <template v-slot:[`item.name`]="{ item }">
           <router-link :to="'/guild/' + item.id">

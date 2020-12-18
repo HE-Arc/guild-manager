@@ -17,7 +17,7 @@ class GmUserSeeder extends Seeder
     {
         /* `guild_manager`.`gm_user` */
         $gmUserData = array(
-            array('name' => 'Henry', 'email' => 'henry@hotmail.com', 'password' => '1234'),
+            array('name' => 'Jean', 'email' => 'jean@hotmail.com', 'password' => '1234'),
             array('name' => 'Jenifer', 'email' => 'jenifer@hotmail.com', 'password' => '1234'),
             array('name' => 'Ravioli', 'email' => 'ravioli@hotmail.com', 'password' => '1234'),
             array('name' => 'Niguan', 'email' => 'niguan@hotmail.com', 'password' => '1234'),

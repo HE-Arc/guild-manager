@@ -29,8 +29,8 @@
         </v-col>
         <v-col class="col-auto" style="text-align: right">
           <v-btn large color="primary" dark class="mb-2" @click="nextBoss()">
-           <span v-if="index < bosses.length - 1">Boss suivant</span>
-           <span v-else>Terminer</span>
+            <span v-if="index < bosses.length - 1">Boss suivant</span>
+            <span v-else>Terminer</span>
             <v-icon right>mdi-arrow-right</v-icon>
           </v-btn>
         </v-col>
@@ -52,7 +52,6 @@
               </v-card-title>
               <v-data-table
                 dense
-                hide-default-footer
                 :headers="computedItemsHeaders"
                 :items="bossItems"
                 sort-by="name"
@@ -115,7 +114,6 @@
                 :loading-text="
                   loadingLootHistory ? 'Chargement en cours...' : 'Aucune donnée'
                 "
-                hide-default-footer
               >
                 <template v-slot:[`item.item.name`]="{ item }">
                   {{ item.item.name }}
