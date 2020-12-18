@@ -3,9 +3,9 @@
     <v-container v-if="character != null" fluid>
       <v-row>
         <v-col>
-          <h1>{{ character.name }}</h1>
+          <h1>{{ character.name }}</h1>          
           <h3>
-            Utilisateur: <b>{{ character.user.name }}</b>
+            <v-icon>mdi-account</v-icon> {{ character.user.name }}
           </h3>
         </v-col>
       </v-row>
