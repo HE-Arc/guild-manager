@@ -61,7 +61,7 @@ class EventController extends Controller
             return response('Invalid token', 401);
 
         try {
-            if ($event = Event::find($eventId)) {                
+            if ($event = Event::find($eventId)) {
                 $event->finished = true;
                 $event->save();
             } else
@@ -95,7 +95,6 @@ class EventController extends Controller
         if ($user == null)
             return response('Invalid token', 401);
 
-        // TODO check if the character who created the event belongs to the users
         $eventName = "";
 
         try {

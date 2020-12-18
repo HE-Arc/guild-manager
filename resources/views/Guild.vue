@@ -62,11 +62,7 @@
       </v-row>
       <v-row>
         <v-col>
-          <v-alert
-            v-model="actionResultAlert"
-            dismissible
-            :type="actionResultType"
-          >
+          <v-alert v-model="actionResultAlert" dismissible :type="actionResultType">
             {{ actionResultMessage }}
           </v-alert>
         </v-col>
@@ -79,15 +75,11 @@
             sort-by="guild_role_id"
             class="elevation-1"
             :loading="loadingMembers ? 'loading' : 'done'"
-            :loading-text="
-              loadingMembers ? 'Chargement en cours...' : 'Aucune donnée'
-            "
+            :loading-text="loadingMembers ? 'Chargement en cours...' : 'Aucune donnée'"
           >
             <template v-slot:top>
               <v-toolbar flat>
-                <v-toolbar-title>
-                  Membres [{{ guild.player_count }}]
-                </v-toolbar-title>
+                <v-toolbar-title> Membres [{{ guild.player_count }}] </v-toolbar-title>
               </v-toolbar>
             </template>
             <template v-slot:[`item.role`]="{ item }">
@@ -108,8 +100,7 @@
             <template v-slot:[`item.moderation`]="{ item }">
               <div
                 v-if="
-                  selectedCharacterId != null &&
-                  selectedCharacter.guild_id == guild.id
+                  selectedCharacterId != null && selectedCharacter.guild_id == guild.id
                 "
               >
                 <div v-if="selectedCharacter.id == item.id">

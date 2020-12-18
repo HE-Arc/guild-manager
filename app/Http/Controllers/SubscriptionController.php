@@ -175,14 +175,6 @@ class SubscriptionController extends Controller
         if ($user == null)
             return response('Invalid token', 401);
 
-        $character = Character::find($characterId);
-        // The character must belong to the user
-        if ($character->gm_user_id != $user->id)
-            return response('Invalid character id', 500);
-
-        //TODO check if character is subscribed to the event
-
-
         // Update bench
         try {
             if (Subscription::where('event_id', $eventId)->where('character_id', $characterId)->exists()) {
@@ -202,13 +194,6 @@ class SubscriptionController extends Controller
         $user = GmUser::find($token);
         if ($user == null)
             return response('Invalid token', 401);
-
-        $character = Character::find($characterId);
-        // The character must belong to the user
-        if ($character->gm_user_id != $user->id)
-            return response('Invalid character id', 500);
-
-        //TODO check if character is subscribed to the event
 
         // Update bench
         try {
