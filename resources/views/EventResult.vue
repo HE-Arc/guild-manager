@@ -6,11 +6,11 @@
           <h1>{{ event.name }}</h1>
         </v-col>
         <v-col class="col-sm-12 col-md-6">
-          <v-list dense>
+          <v-list disabled dense>
             <v-list-item-group color="primary">
               <v-list-item>
                 <v-list-item-icon>
-                  <v-icon>mdi-clock</v-icon>
+                  <v-icon>mdi-calendar-clock</v-icon>
                 </v-list-item-icon>
                 <v-list-item-content>
                   <v-list-item-title>

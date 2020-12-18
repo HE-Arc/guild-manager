@@ -2,71 +2,54 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col cols="4">
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on, attrs }">
-            <div v-bind="attrs" v-on="on">
-              <h1>{{ event.name }}</h1>
-            </div>
-          </template>
-          <span>Nom du raid</span>
-        </v-tooltip>
+      <v-col class="col-sm-12 col-md-6">
+        <h1>{{ event.name }}</h1>
       </v-col>
-      <v-col cols="8">
-        <v-row no-gutters>
-          <v-col>
-            <v-card class="pa-2" outlined tile>
-              <v-tooltip bottom>
-                <template v-slot:activator="{ on, attrs }">
-                  <div v-bind="attrs" v-on="on">
-                    <h3>{{ event.location.name }}</h3>
-                  </div>
-                </template>
-                <span>Lieu</span>
-              </v-tooltip>
-            </v-card>
-          </v-col>
-          <v-col>
-            <v-card class="pa-2" outlined tile>
-              <v-tooltip bottom>
-                <template v-slot:activator="{ on, attrs }">
-                  <div v-bind="attrs" v-on="on">
-                    <h3>{{ event.formated_date }}</h3>
-                  </div>
-                </template>
-                <span>Date</span>
-              </v-tooltip>
-            </v-card>
-          </v-col>
-        </v-row>
-        <v-row no-gutters>
-          <v-col>
-            <v-card class="pa-2" outlined tile>
-              <v-tooltip bottom>
-                <template v-slot:activator="{ on, attrs }">
-                  <div v-bind="attrs" v-on="on">
-                    <h3>
-                      {{ event.subscription_count }}/{{ event.player_count }}
-                    </h3>
-                  </div>
-                </template>
-                <span>Nombre de participants</span>
-              </v-tooltip>
-            </v-card>
-          </v-col>
-          <v-col>
-            <v-card class="pa-2" outlined tile>
-              <v-tooltip bottom>
-                <template v-slot:activator="{ on, attrs }">
-                  <div v-bind="attrs" v-on="on">
-                    <h3>{{ event.formated_subscription_delay }}</h3>
-                  </div>
-                </template>
-                <span>Date limite pour l'inscription</span>
-              </v-tooltip>
-            </v-card>
-          </v-col>
-        </v-row>
+      <v-col class="col-sm-12 col-md-6">
+        <v-list disabled dense>
+          <v-list-item-group color="primary">
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon>mdi-calendar-clock</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>
+                  {{ event.formated_date }}
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon>mdi-flag</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>
+                  {{ event.location.name }}
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon>mdi-account-group</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>
+                  {{ event.subscription_count }}/{{ event.player_count }}
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon>mdi-account-clock</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>
+                  {{ event.formated_subscription_delay }}
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
       </v-col>
     </v-row>
   </v-container>
@@ -75,11 +58,8 @@
 <script>
 export default {
   props: ["event"],
-  data: () => ({
-  }),
-  methods: {    
-  },
-  created: function () {
-  },
+  data: () => ({}),
+  methods: {},
+  created: function () {},
 };
 </script>
