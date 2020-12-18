@@ -49,7 +49,15 @@
                     {{ item.role_id }}
                   </template>
                   <template v-slot:[`item.action`]="{ item }">
-                    <v-btn color="orange" small dark @click="bench(item)"> Bench </v-btn>
+                    <v-btn
+                      v-if="isOrganiser()"
+                      color="orange"
+                      small
+                      dark
+                      @click="bench(item)"
+                    >
+                      Bench
+                    </v-btn>
                   </template>
                 </v-data-table>
               </v-card>
@@ -100,7 +108,13 @@
                     {{ item.role_id }}
                   </template>
                   <template v-slot:[`item.action`]="{ item }">
-                    <v-btn color="green" small dark @click="unbench(item)">
+                    <v-btn
+                      v-if="isOrganiser()"
+                      color="green"
+                      small
+                      dark
+                      @click="unbench(item)"
+                    >
                       Unbench
                     </v-btn>
                   </template>
@@ -158,8 +172,35 @@
           </v-col>
         </v-row>
       </v-container>
-      <v-speed-dial v-if="event.boss_id" v-model="fab" fixed bottom right>
-        <template v-slot:activator>
+      <div v-if="isOrganiser()">
+        <v-speed-dial v-if="event.boss_id" v-model="fab" fixed bottom right>
+          <template v-slot:activator>
+            <v-tooltip left>
+              <template v-slot:activator="{ on, attrs }">
+                <div v-bind="attrs" v-on="on">
+                  <v-btn fab dark color="green" @click="playEvent()">
+                    <v-icon>mdi-play</v-icon>
+                  </v-btn>
+                </div>
+              </template>
+              <span>Continuer</span>
+            </v-tooltip>
+          </template>
+        </v-speed-dial>
+        <v-speed-dial v-else v-model="fab" fixed bottom right>
+          <template v-slot:activator>
+            <v-tooltip left>
+              <template v-slot:activator="{ on, attrs }">
+                <div v-bind="attrs" v-on="on">
+                  <v-btn fab color="blue darken-2" dark>
+                    <v-icon v-if="fab"> x </v-icon>
+                    <v-icon v-else> + </v-icon>
+                  </v-btn>
+                </div>
+              </template>
+              <span>Actions</span>
+            </v-tooltip>
+          </template>
           <v-tooltip left>
             <template v-slot:activator="{ on, attrs }">
               <div v-bind="attrs" v-on="on">
@@ -168,55 +209,30 @@
                 </v-btn>
               </div>
             </template>
-            <span>Continuer</span>
+            <span>Lancer l'événement</span>
           </v-tooltip>
-        </template>
-      </v-speed-dial>
-      <v-speed-dial v-else v-model="fab" fixed bottom right>
-        <template v-slot:activator>
           <v-tooltip left>
             <template v-slot:activator="{ on, attrs }">
               <div v-bind="attrs" v-on="on">
-                <v-btn fab color="blue darken-2" dark>
-                  <v-icon v-if="fab"> x </v-icon>
-                  <v-icon v-else> + </v-icon>
+                <v-btn fab dark color="indigo" @click="modifyEvent()">
+                  <v-icon>mdi-pencil</v-icon>
                 </v-btn>
               </div>
             </template>
-            <span>Actions</span>
+            <span>Modifier l'événement</span>
           </v-tooltip>
-        </template>
-        <v-tooltip left>
-          <template v-slot:activator="{ on, attrs }">
-            <div v-bind="attrs" v-on="on">
-              <v-btn fab dark color="green" @click="playEvent()">
-                <v-icon>mdi-play</v-icon>
-              </v-btn>
-            </div>
-          </template>
-          <span>Lancer l'événement</span>
-        </v-tooltip>
-        <v-tooltip left>
-          <template v-slot:activator="{ on, attrs }">
-            <div v-bind="attrs" v-on="on">
-              <v-btn fab dark color="indigo" @click="modifyEvent()">
-                <v-icon>mdi-pencil</v-icon>
-              </v-btn>
-            </div>
-          </template>
-          <span>Modifier l'événement</span>
-        </v-tooltip>
-        <v-tooltip left>
-          <template v-slot:activator="{ on, attrs }">
-            <div v-bind="attrs" v-on="on">
-              <v-btn fab dark color="red" @click="deleteEvent()">
-                <v-icon>mdi-delete</v-icon>
-              </v-btn>
-            </div>
-          </template>
-          <span>Supprimer l'événement</span>
-        </v-tooltip>
-      </v-speed-dial>
+          <v-tooltip left>
+            <template v-slot:activator="{ on, attrs }">
+              <div v-bind="attrs" v-on="on">
+                <v-btn fab dark color="red" @click="deleteEvent()">
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </div>
+            </template>
+            <span>Supprimer l'événement</span>
+          </v-tooltip>
+        </v-speed-dial>
+      </div>
     </div>
     <v-container v-else fill-height fluid>
       <v-row align="center" justify="center">
@@ -257,12 +273,14 @@ export default {
       absentCharacters: [],
       eventId: this.$route.params["id"],
       event: null,
-      modifying: false,
     };
   },
   methods: {
     clickItem(item) {
       console.log(item);
+    },
+    isOrganiser() {
+      return this.event.gm_user_id == this.$store.state.token ? true : false;
     },
     bench(character) {
       let _this = this;

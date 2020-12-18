@@ -30,21 +30,21 @@ Route::post('/api/event/{eventId}/delete', 'App\Http\Controllers\EventController
 Route::get('/api/event/{eventId}', 'App\Http\Controllers\EventController@getEvent');
 Route::post('/api/event/{eventId}/run/{locationId}', 'App\Http\Controllers\EventController@run');
 Route::get('/api/event/{eventId}/is_running', 'App\Http\Controllers\EventController@isRunning');
-
-// EventCharacter
-Route::post('/api/character/{characterId}/event/{eventId}/bench', 'App\Http\Controllers\SubscriptionController@bench');
-Route::post('/api/character/{characterId}/event/{eventId}/unbench', 'App\Http\Controllers\SubscriptionController@unbench');
-Route::get('/api/eventCharacters/{eventId}', 'App\Http\Controllers\SubscriptionController@getCharactersByEvent');
+Route::post('/api/event/{eventId}/finish', 'App\Http\Controllers\EventController@finish');
 
 // Subscription
+Route::get('/api/eventCharacters/{eventId}', 'App\Http\Controllers\SubscriptionController@getCharactersByEvent');
 Route::get('/api/event/{eventId}/subscriptions', 'App\Http\Controllers\SubscriptionController@getSubscriptions');
 Route::post('api/character/{characterId}/event/{eventId}/subscribe', 'App\Http\Controllers\SubscriptionController@subscribe');
 Route::post('api/character/{characterId}/event/{eventId}/skip', 'App\Http\Controllers\SubscriptionController@skip');
+Route::post('/api/character/{characterId}/event/{eventId}/bench', 'App\Http\Controllers\SubscriptionController@bench');
+Route::post('/api/character/{characterId}/event/{eventId}/unbench', 'App\Http\Controllers\SubscriptionController@unbench');
 
 // History
 Route::get('/api/event/{eventId}/histories', 'App\Http\Controllers\HistoryController@getEventHistories');
 Route::get('/api/character/{characterId}/histories', 'App\Http\Controllers\HistoryController@getCharacterHistories');
 Route::post('/api/history/{historyId}/delete', 'App\Http\Controllers\HistoryController@delete');
+Route::post('/api/history/create', 'App\Http\Controllers\HistoryController@create');
 
 // Characters
 Route::get('api/character/{characterId}', 'App\Http\Controllers\CharacterController@getCharacter');

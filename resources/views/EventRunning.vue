@@ -29,7 +29,8 @@
         </v-col>
         <v-col class="col-auto" style="text-align: right">
           <v-btn large color="primary" dark class="mb-2" @click="nextBoss()">
-            Boss suivant
+           <span v-if="index < bosses.length - 1">Boss suivant</span>
+           <span v-else>Terminer</span>
             <v-icon right>mdi-arrow-right</v-icon>
           </v-btn>
         </v-col>
@@ -79,8 +80,9 @@
                 </template>
                 <template v-slot:[`item.action`]="{ item }">
                   <v-select
+                    @change="assign(item.id)"
                     v-model="selectedCharacter"
-                    :items="rosterCharacters"
+                    :items="subscriptions"
                     item-text="name"
                     item-value="id"
                     label="Assigner à..."
@@ -174,10 +176,12 @@ export default {
       index: 0,
       currentBoss: null,
       bossItems: null,
-      rosterCharacters: [],
+      subscriptions: null,
+      selectedCharacter: null,
       lootHistory: null,
       loadingBossItems: false,
       loadingLootHistory: false,
+      loadingSubscriptions: false,
       eventId: this.$route.params["id"],
     };
   },
@@ -201,6 +205,7 @@ export default {
           //console.log(_this.event);
           _this.loadBosses();
           _this.loadLootHistory();
+          _this.loadSubscriptions();
         });
     },
     loadBosses() {
@@ -247,8 +252,6 @@ export default {
       // Get loot history
       this.loadingLootHistory = true;
 
-      console.log(this.event.id);
-
       axios
         .get("/api/event/" + this.event.id + "/histories")
         .then(function (response) {
@@ -259,7 +262,25 @@ export default {
         })
         .then(function (response) {
           _this.loadingLootHistory = false;
-          console.log(_this.lootHistory[0].character.name);
+          //console.log(_this.lootHistory[0].character.name);
+        });
+    },
+    loadSubscriptions() {
+      let _this = this;
+
+      // Get subscriptions
+      this.loadingSubscriptions = true;
+      axios
+        .get("/api/eventCharacters/" + this.eventId)
+        .then(function (response) {
+          _this.subscriptions = response.data.roster;
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+        .then(function (response) {
+          _this.loadingSubscriptions = false;
+          //console.log(_this.subscriptions);
         });
     },
     updateBoss() {
@@ -268,16 +289,42 @@ export default {
       this.loadBossItems();
     },
     nextBoss() {
+      let _this = this;
+
       this.index++;
       if (this.index >= this.bosses.length)
-        this.$router.push({
-          name: "event-result",
-          params: { eventId: this.eventId },
-        });
+        axios
+          .post("/api/event/" + this.eventId + "/finish")
+          .then(function (response) {
+            _this.$router.push({
+              name: "event-result",
+              params: { eventId: _this.eventId },
+            });
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
       else {
         this.currentBoss = this.bosses[this.index];
+        this.bossId = this.currentBoss.id;
         this.loadBossItems();
       }
+    },
+    assign(itemId) {
+      let _this = this;
+
+      axios
+        .post("/api/history/create", {
+          event_id: this.eventId,
+          item_id: itemId,
+          character_id: this.selectedCharacter,
+        })
+        .then(function (response) {
+          _this.loadLootHistory();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
     unassign(lootHistory) {
       let _this = this;
