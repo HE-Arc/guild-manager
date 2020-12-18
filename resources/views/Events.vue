@@ -43,9 +43,7 @@
           sort-by="date"
           class="elevation-1"
           :loading="loadingEvents ? 'loading' : 'done'"
-          :loading-text="
-            loadingEvents ? 'Chargement en cours...' : 'Aucune donnée'
-          "
+          :loading-text="loadingEvents ? 'Chargement en cours...' : 'Aucune donnée'"
         >
           <template v-slot:top>
             <v-toolbar flat>
@@ -64,11 +62,7 @@
             {{ item.subscription_count }} / {{ item.player_count }}
           </template>
           <template v-slot:[`item.status`]="{ item }">
-            <v-chip
-              :color="item.boss_id != null ? 'green' : 'red'"
-              small
-              dark
-            ></v-chip>
+            <v-chip :color="item.boss_id != null ? 'green' : 'red'" small dark></v-chip>
           </template>
           <template v-slot:[`item.state`]="{ item }">
             <v-chip
@@ -90,17 +84,11 @@
               >
                 Rejoindre
               </v-btn>
-              <v-btn v-else color="orange" small dark @click="skip(item)">
-                Passer
-              </v-btn>
+              <v-btn v-else color="orange" small dark @click="skip(item)"> Passer </v-btn>
             </div>
             <div v-else>
-              <v-btn color="green" small dark @click="subscribe(item)">
-                Joindre
-              </v-btn>
-              <v-btn color="orange" small dark @click="skip(item)">
-                Passer
-              </v-btn>
+              <v-btn color="green" small dark @click="subscribe(item)"> Joindre </v-btn>
+              <v-btn color="orange" small dark @click="skip(item)"> Passer </v-btn>
             </div>
           </template>
         </v-data-table>
@@ -110,9 +98,7 @@
           sort-by="date"
           class="elevation-1"
           :loading="loadingEvents ? 'loading' : 'done'"
-          :loading-text="
-            loadingEvents ? 'Chargement en cours...' : 'Aucune donnée'
-          "
+          :loading-text="loadingEvents ? 'Chargement en cours...' : 'Aucune donnée'"
         >
           <template v-slot:top>
             <v-toolbar flat>
@@ -120,11 +106,9 @@
             </v-toolbar>
           </template>
           <template v-slot:[`item.name`]="{ item }">
-            <!-- TODO $router.push('/event/{id}') -->
-            <v-btn small @click="$router.push('/event/prep')">
+            <router-link :to="'/event/' + item.id + '/result'">
               {{ item.name }}
-              <v-icon right>mdi-arrow-right</v-icon>
-            </v-btn>
+            </router-link>
           </template>
           <template v-slot:[`item.location`]="{ item }">
             {{ item.location.name }}
@@ -141,7 +125,7 @@
         </v-data-table>
       </div>
       <div v-else>
-        <v-alert type="info">Veuillez sélectionner un personnage.</v-alert>
+        <v-alert type="info">Veuillez sélectionner un de vos personnages.</v-alert>
       </div>
     </v-container>
   </v-app>
@@ -173,8 +157,7 @@ export default {
       characters: [],
       selectedCharacter: null,
       eventDeleted: this.$route.params.deleted ? true : false,
-      eventDeletedLabel:
-        "Événement " + this.$route.params.deleted + " supprimé.",
+      eventDeletedLabel: "Événement " + this.$route.params.deleted + " supprimé.",
     };
   },
   methods: {
@@ -186,11 +169,7 @@ export default {
 
       axios
         .post(
-          "/api/character/" +
-            this.selectedCharacter +
-            "/event/" +
-            event.id +
-            "/subscribe"
+          "/api/character/" + this.selectedCharacter + "/event/" + event.id + "/subscribe"
         )
         .then(function (response) {
           _this.loadEvents();
@@ -203,13 +182,7 @@ export default {
       let _this = this;
 
       axios
-        .post(
-          "/api/character/" +
-            this.selectedCharacter +
-            "/event/" +
-            event.id +
-            "/skip"
-        )
+        .post("/api/character/" + this.selectedCharacter + "/event/" + event.id + "/skip")
         .then(function (response) {
           _this.loadEvents();
         })
@@ -236,12 +209,8 @@ export default {
       axios
         .get("/api/character/" + characterId + "/events")
         .then(function (response) {
-          _this.ongoingEvents = response.data.filter(
-            (event) => !event.finished
-          );
-          _this.finishedEvents = response.data.filter(
-            (event) => event.finished
-          );
+          _this.ongoingEvents = response.data.filter((event) => !event.finished);
+          _this.finishedEvents = response.data.filter((event) => event.finished);
         })
         .catch(function (error) {
           console.log(error);
