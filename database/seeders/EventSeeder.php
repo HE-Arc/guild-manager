@@ -17,7 +17,7 @@ class EventSeeder extends Seeder
         /* `guild_manager`.`event` */
         $eventData = array(
             array('name' => 'Raid De Pacques', 'player_count' => '40', 'auto_bench' => '0', 'finished' => '0', 'gm_user_id' => '1', 'guild_id' => '1', 'location_id' => '1'),
-            array('name' => 'Raid De Noel', 'player_count' => '40', 'auto_bench' => '0', 'finished' => '0', 'gm_user_id' => '1', 'guild_id' => '1', 'location_id' => '2'),
+            array('name' => 'Raid De Noel', 'player_count' => '40', 'auto_bench' => '0', 'finished' => '0', 'gm_user_id' => '1', 'guild_id' => '1', 'location_id' => '3'),
             array('name' => 'Raid De l Avant', 'player_count' => '40', 'auto_bench' => '0', 'finished' => '0', 'gm_user_id' => '2', 'guild_id' => '2', 'location_id' => '3'),
             array('name' => 'Raid Du Mardi Gras', 'player_count' => '40', 'auto_bench' => '0', 'finished' => '0', 'gm_user_id' => '2', 'guild_id' => '2', 'location_id' => '2'),
             array('name' => 'Raid De Carnaval', 'player_count' => '40', 'auto_bench' => '0', 'finished' => '0', 'gm_user_id' => '3', 'guild_id' => '1', 'location_id' => '3'),
